@@ -1,0 +1,11 @@
+--- a/kernel/trace/bpf_trace.c	2022-11-09 13:30:24.192940988 -0500
++++ b/kernel/trace/bpf_trace.c	2022-11-09 13:30:59.029810818 -0500
+@@ -1027,7 +1027,7 @@ static const struct bpf_func_proto bpf_g
+ };
+ 
+ #ifdef CONFIG_X86_KERNEL_IBT
+-static unsigned long get_entry_ip(unsigned long fentry_ip)
++static unsigned long __maybe_unused get_entry_ip(unsigned long fentry_ip)
+ {
+ 	u32 instr;
+ 

@@ -1,0 +1,37 @@
+name: Build
+
+on:
+  push:
+    branches: ["*"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-kernel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Docker Layer Caching
+        uses: jpribyl/action-docker-layer-caching@v0.1.1
+        continue-on-error: true
+        with:
+          key: charcoal-docker-cache-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            charcoal-docker-cache-
+      - name: Build docker image
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: docker build . -t charcoal
+      - name: Build Kernel
+
+        run: |
+          docker run --tmpfs /makepkg:exec,noatime,size=32G,mode=1777 --rm -v ${PWD}:/project charcoal chown -R nobody /project
+          docker run --tmpfs /makepkg:exec,noatime,size=32G,mode=1777 --rm -v ${PWD}:/project charcoal sudo -u nobody makepkg -Ccf
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: charcoal-linux
+          path: linux-*.tar.zst
+          if-no-files-found: warn
