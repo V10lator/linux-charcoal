@@ -27,8 +27,8 @@ jobs:
       - name: Build Kernel
 
         run: |
-          docker run --tmpfs /makepkg:exec,noatime,size=32G,mode=1777 --rm -v ${PWD}:/project charcoal chown -R nobody /project
-          docker run --tmpfs /makepkg:exec,noatime,size=32G,mode=1777 --rm -v ${PWD}:/project charcoal sudo -u nobody makepkg -Ccf
+          docker run --rm -v ${PWD}:/project charcoal chown -R nobody /project
+          docker run --rm -v ${PWD}:/project charcoal sudo -u nobody makepkg -Ccf
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
