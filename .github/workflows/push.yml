@@ -14,18 +14,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Docker Layer Caching
-        uses: jpribyl/action-docker-layer-caching@v0.1.1
-        continue-on-error: true
-        with:
-          key: charcoal-docker-cache-${{ hashFiles('Dockerfile') }}
-          restore-keys: |
-            charcoal-docker-cache-
       - name: Build docker image
-        if: steps.cache.outputs.cache-hit != 'true'
         run: docker build . -t charcoal
       - name: Build Kernel
-
         run: |
           docker run --rm -v ${PWD}:/project charcoal chown -R nobody /project
           docker run --rm -v ${PWD}:/project charcoal sudo -u nobody makepkg -Ccf
