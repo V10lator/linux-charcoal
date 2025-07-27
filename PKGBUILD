@@ -31,6 +31,11 @@ makedepends=(
   # Jupiter: we're using git+ssh for the source
   git
   openssh
+
+  # Charcoal: We build on LLVM
+  llvm
+  clang
+  lld
 )
 options=(
   !debug
