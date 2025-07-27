@@ -54,7 +54,7 @@ source=(
 sha256sums=('30e4aab0928507db3e0205e96aa570b00bb22388beb471cd84f3d29f2cc17dea'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
             '2ef605fbe1c4e80f1370050d077930e86cf055c86d943281b83165ec0c14f2a8'
-            '5d5112d1591914332977c8075b6857732f7f5382b8e361710fb5c6ba3e4a70dd'
+            '5a14c6b3d3a1c031b7277104fed0b7db20e627a6dde562ca2203e79530f8e37a'
             '1211fa56df93a51fd9ad9755062cfda56858f77e0341789254d8af08442ce1ce'
             '9df628fd530950e37d31da854cb314d536f33c83935adf5c47e71266a55f7004'
             '948298dff2552a7fa6f05b698bd7ab05a50b0af7516d2b9ac664d1ad38fda95f'
@@ -88,17 +88,17 @@ prepare() {
   echo "Setting config..."
   cp ../config .config
   scripts/kconfig/merge_config.sh -m ../config ../config-neptune ../config-charcoal # Charcoal: merge the extra fragment
-  make olddefconfig
+  make LLVM=1 olddefconfig
   diff -u ../config .config || :
 
-  make -s kernelrelease > version
+  make LLVM=1 -s kernelrelease > version
   echo "Prepared $pkgbase version $(<version)"
 }
 
 build() {
   cd $_srcname
-  make all
-  make -C tools/bpf/bpftool vmlinux.h feature-clang-bpf-co-re=1
+  make LLVM=1 all
+  make LLVM=1 -C tools/bpf/bpftool vmlinux.h feature-clang-bpf-co-re=1
 #  make htmldocs # Jupiter: Don't build the docs
 }
 
@@ -129,13 +129,13 @@ _package() {
   echo "Installing boot image..."
   # systemd expects to find the kernel here to allow hibernation
   # https://github.com/systemd/systemd/commit/edda44605f06a41fb86b7ab8128dcf99161d2344
-  install -Dm644 "$(make -s image_name)" "$modulesdir/vmlinuz"
+  install -Dm644 "$(make LLVM=1 -s image_name)" "$modulesdir/vmlinuz"
 
   # Used by mkinitcpio to name the kernel
   echo "$pkgbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
 
   echo "Installing modules..."
-  ZSTD_CLEVEL=19 make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
+  ZSTD_CLEVEL=19 make LLVM=1 INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
     DEPMOD=/doesnt/exist modules_install  # Suppress depmod
 
   # remove build link
