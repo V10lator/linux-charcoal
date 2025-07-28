@@ -1,7 +1,7 @@
 # Maintainer: John Schoenick <johns@valvesoftware.com>
 # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
 
-pkgbase=linux-neptune-611
+pkgbase=linux-charcoal-611
 _tag=6.11.11-valve20
 pkgver=${_tag//-/.}
 pkgrel=1
@@ -41,7 +41,7 @@ options=(
   !debug
   !strip
 )
-_srcname=archlinux-linux-neptune
+_srcname=archlinux-linux-charcoal
 source=(
   "$_srcname::git+https://gitlab.com/evlaV/linux-integration.git#tag=$_tag"
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
@@ -124,10 +124,14 @@ _package() {
     KSMBD-MODULE
     VIRTUALBOX-GUEST-MODULES
     WIREGUARD-MODULE
+    linux-neptune-611
   )
   replaces=(
     virtualbox-guest-modules-arch
     wireguard-arch
+  )
+  conflicts=(
+    linux-neptune-611
   )
 
   cd $_srcname

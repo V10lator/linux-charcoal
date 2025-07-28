@@ -23,6 +23,6 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: charcoal-linux
-          path: linux-*.tar.zst
+          name: linux-charcoal
+          path: linux-charcoal-*.pkg.tar.zst
           if-no-files-found: warn
