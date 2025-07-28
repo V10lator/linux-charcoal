@@ -22,10 +22,10 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 # Install
 Run the following on your Steam Deck:
 ```
-wget [Nightly URL]
 unzip linux-charcoal.zip
+rm linux-charcoal-headers-*.pkg.tar.zst
 sudo steamos-readonly disable
-sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst
+sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst # Confirm when it asks you to remove linux-neptune-*
 sudo steamos-readonly enable
 rm linux-charcoal*
 ```
