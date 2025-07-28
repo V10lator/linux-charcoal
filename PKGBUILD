@@ -151,7 +151,12 @@ _package() {
 
 _package-headers() {
   pkgdesc="Headers and scripts for building modules for the $pkgdesc kernel"
-  depends=(pahole)
+  depends=(
+    pahole
+    llvm
+    clang
+    lld
+  )
 
   cd $_srcname
   local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
