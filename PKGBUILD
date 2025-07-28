@@ -1,7 +1,9 @@
+# Maintainer: Thomas Rohloff <v10lator@myway.de>
 # Maintainer: John Schoenick <johns@valvesoftware.com>
 # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
 
 pkgbase=linux-charcoal-611
+_nepbase=linux-neptune-611
 _tag=6.11.11-valve20
 pkgver=${_tag//-/.}
 pkgrel=1
@@ -124,14 +126,14 @@ _package() {
     KSMBD-MODULE
     VIRTUALBOX-GUEST-MODULES
     WIREGUARD-MODULE
-    linux-neptune-611
+    $_nepbase
   )
   replaces=(
     virtualbox-guest-modules-arch
     wireguard-arch
   )
   conflicts=(
-    linux-neptune-611
+    $_nepbase
   )
 
   cd $_srcname
@@ -143,7 +145,7 @@ _package() {
   install -Dm644 "$(make LLVM=1 -s image_name)" "$modulesdir/vmlinuz"
 
   # Used by mkinitcpio to name the kernel
-  echo "$pkgbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
+  echo "$_nepbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
 
   echo "Installing modules..."
   ZSTD_CLEVEL=19 make LLVM=1 INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
