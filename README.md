@@ -23,7 +23,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 Run the following on your Steam Deck:
 ```
 unzip linux-charcoal.zip
-rm linux-charcoal-headers-*.pkg.tar.zst
+rm linux-charcoal-*-headers-*.pkg.tar.zst
 sudo steamos-readonly disable
 sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst # Confirm when it asks you to remove linux-neptune-*
 sudo steamos-readonly enable
