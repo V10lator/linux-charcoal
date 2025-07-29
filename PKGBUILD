@@ -131,6 +131,7 @@ _package() {
   replaces=(
     virtualbox-guest-modules-arch
     wireguard-arch
+    $_nepbase
   )
   conflicts=(
     $_nepbase
