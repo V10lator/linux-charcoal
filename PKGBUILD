@@ -58,6 +58,7 @@ source=(
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0009-ntsync.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0013-zstd.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/misc/dkms-clang.patch"
+  "0001-always-print-firmware-file-name.patch::https://732852.bugs.gentoo.org/attachment.cgi?id=649432"
 )
 sha256sums=('30e4aab0928507db3e0205e96aa570b00bb22388beb471cd84f3d29f2cc17dea'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
@@ -71,7 +72,8 @@ sha256sums=('30e4aab0928507db3e0205e96aa570b00bb22388beb471cd84f3d29f2cc17dea'
             '48e12a587e3a93e73ca2bba9f3b418d70c0a56592581d2705384a07243c70d61'
             '0e3f5ffe5c4d07d50df83f040ce9de91d00c1aa06cfe6b57a8a0fda81fd8ac1e'
             'ce7c5a0ddacb67ff756c0f198a2357131768526575cc98459865ef0dfa3238f7'
-            '65b5745c2e07d93495a5aa1ff7269c89e7aef42acff0d018ab05663560bdf8f7')
+            '65b5745c2e07d93495a5aa1ff7269c89e7aef42acff0d018ab05663560bdf8f7'
+            '6d5371c96444e87ef912f476ff0a34f961579f7adcacafa2aec151a951ad4e7e')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
