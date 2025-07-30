@@ -53,7 +53,12 @@ source=(
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0007-v6.11-fsync1_via_futex_waitv.patch"
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0013-optimize_harder_O3.patch"
   "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2000_BT-Check-key-sizes-only-if-Secure-Simple-Pairing-enabled.patch"
+  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2901_tools-lib-subcmd-compile-fix.patch"
   "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2910_bfp-mark-get-entry-ip-as--maybe-unused.patch"
+  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2951_libbpf-Prevent-compiler-warnings-errors.patch"
+  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2990_libbpf-v2-workaround-Wmaybe-uninitialized-false-pos.patch"
+  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2991_libbpf-workaround-Wmaybe-uninitialized-false-pos.patch"
+  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2996_kbuild-bpf-jobs-val-pahole-fix.patch"
   "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/5010_enable-cpu-optimizations-universal.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0009-ntsync.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0013-zstd.patch"
@@ -68,7 +73,12 @@ sha256sums=('30e4aab0928507db3e0205e96aa570b00bb22388beb471cd84f3d29f2cc17dea'
             '9df628fd530950e37d31da854cb314d536f33c83935adf5c47e71266a55f7004'
             '948298dff2552a7fa6f05b698bd7ab05a50b0af7516d2b9ac664d1ad38fda95f'
             '882156f8dfb21b5b1a85e9aaa48280540b4d1348f1bde0c358b47678aea9065a'
+            'f9994175cfd0bf55f36ac8331b2402b502b49cccb4ada631b1a079d07e34d481'
             '62a16f7d355343aec265a0485dc753370f1c9110f100dde0ec4f278f9b7df25a'
+            '199fe7e21cc0681803dbc9a9d3681bc93ab01c0da22c07bb6c05a52620c4bea3'
+            'a08fa9d2e7a943399fec7fb08eead6308bb51642c4592a9f57d1b79b06d5495c'
+            'b93edc9dfc4911acacda6f85ca2649852fd1f30e9a366f650380525ea2156f13'
+            '77d828e019650e34f7cc3adfa63c9b49018c9a14e586749a1fe6c841949abea0'
             '48e12a587e3a93e73ca2bba9f3b418d70c0a56592581d2705384a07243c70d61'
             '0e3f5ffe5c4d07d50df83f040ce9de91d00c1aa06cfe6b57a8a0fda81fd8ac1e'
             'ce7c5a0ddacb67ff756c0f198a2357131768526575cc98459865ef0dfa3238f7'
