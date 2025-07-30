@@ -55,18 +55,9 @@ CONFIG_CRYPTO_AES_NI_INTEL=y
 CONFIG_BLK_DEV_NVME=y
 CONFIG_SPI_AMD=y
 
-# LTO optimization: Build Steam Deck specific things into the kernel (TODO: Need a lsmod of a steam deck lcd)
-CONFIG_SND_SOC_AMD_ACP_COMMON=y
-CONFIG_SND_SOC_AMD_SOF_MACH=y
-CONFIG_SND_SOC_AMD_ACP=y
-CONFIG_SND_SOC_SOF_PCI=y
-CONFIG_SOUNDWIRE=y
-CONFIG_SOUNDWIRE_AMD=y
-CONFIG_SND_SOC_SOF_AMD_TOPLEVEL=y
-CONFIG_SND_SOC_SOF_AMD_VANGOGH=y
-CONFIG_SND_SOC_AMD_ACP63_TOPLEVEL=y
-CONFIG_SND_SOC_AMD_PS=y
-CONFIG_SND_SOC_AMD_SOUNDWIRE=y
+# LTO optimization: Build Steam Deck specific things into the kernel
+# TODO: Need a lsmod of a steam deck lcd
+# TODO: Firmware issues on gpu, sound and wifi
 CONFIG_HID_STEAM=y
 CONFIG_MFD_STEAMDECK=y
 CONFIG_LEDS_STEAMDECK=y
