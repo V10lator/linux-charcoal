@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: ["*"]
+    branches: ["master"]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,6 +14,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get current tag
+        run: echo "current_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_ENV
+      - name: Get previous tag
+        if: ${{ env.current_tag }}
+        run: echo "previous_tag=$(git describe --tags --abbrev=0 ${{ env.current_tag }}^ 2>/dev/null || echo '')" >> $GITHUB_ENV
+      - name: Generate changelog
+        id: changelog
+        uses: jaywcjlove/changelog-generator@main
+        if: ${{ env.current_tag && env.previous_tag }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         run: docker build . -t charcoal
       - name: Build Kernel
@@ -21,8 +34,20 @@ jobs:
           docker run --rm -v ${PWD}:/project charcoal chown -R nobody /project
           docker run --rm -v ${PWD}:/project charcoal sudo -u nobody makepkg -Ccf
       - name: Upload Artifacts
+        if: ${{ ! env.current_tag }}
         uses: actions/upload-artifact@v4
         with:
           name: linux-charcoal
           path: linux-charcoal-*.pkg.tar.zst
           if-no-files-found: warn
+      - name: Publish release
+        if: ${{ env.current_tag }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.current_tag }}
+          name: ${{ env.current_tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifactErrorsFailBuild: true
+          artifactContentType: application/zstd
+          body: ${{ steps.changelog.outputs.changelog }}
+          artifacts: linux-charcoal-*.pkg.tar.zst
