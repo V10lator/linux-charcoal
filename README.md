@@ -1,4 +1,6 @@
 # Charcoal SteamOS Kernel
+[![build](https://github.com/V10lator/linux-charcoal/actions/workflows/push.yml/badge.svg)](https://github.com/V10lator/linux-charcoal/actions)
+
 Works on Steam Deck and possibly other AMD based handheld PCs.
 
 # Changes to Neptune
@@ -21,10 +23,9 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Fix dkms with LLVM clang (from CachyOS)
 
 # Install
-Run the following on your Steam Deck:
+Download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run the following on your Steam Deck:
 ```
-unzip linux-charcoal.zip
-rm linux-charcoal-*-headers-*.pkg.tar.zst
+cd ~/Downloads
 sudo steamos-readonly disable
 sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst # Confirm when it asks you to remove linux-neptune-*
 sudo steamos-readonly enable
