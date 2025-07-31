@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Get current tag
-        run: echo "current_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_ENV
+        run: echo "current_tag=$(git describe --tags --abbrev=0 --exact-match 2>/dev/null || echo '')" >> $GITHUB_ENV
       - name: Get previous tag
         if: ${{ env.current_tag }}
         run: echo "previous_tag=$(git describe --tags --abbrev=0 ${{ env.current_tag }}^ 2>/dev/null || echo '')" >> $GITHUB_ENV
