@@ -1,0 +1,12 @@
+diff -Nru archlinux-linux-charcoal.old/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c archlinux-linux-charcoal/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+--- archlinux-linux-charcoal.old/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c	2025-07-31 12:54:49.775403950 +0200
++++ archlinux-linux-charcoal/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c	2025-07-31 21:14:48.224377468 +0200
+@@ -2173,7 +2173,7 @@
+ 	smu->gfx_actual_soft_max_freq = 0;
+ 
+ 	smu->cpu_default_soft_min_freq = 1400;
+-	smu->cpu_default_soft_max_freq = 3500;
++	smu->cpu_default_soft_max_freq = 4200;
+ 	smu->cpu_actual_soft_min_freq = 0;
+ 	smu->cpu_actual_soft_max_freq = 0;
+ 
