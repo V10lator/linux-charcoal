@@ -9,6 +9,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Optimize kernel with -O3 (from tkg)
 - Optimize for Zen 2 (from Gentoo)
 - Build with LLVM + LTO
+- Build-in various always needed modules for LTO to shine even more
 - Update zstd (from CachyOS)
 - Disable a lot of debugging
 - Disable CPU mitigations
