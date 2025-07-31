@@ -4,6 +4,7 @@
 Works on Steam Deck and possibly other AMD based handheld PCs.
 
 # Changes to Neptune
+- Change maximum allowed CPU frequency on Steam Deck from 3.5 to 4.2 GHz (as requested on Reddit)
 - Add NTSYNC (from CachyOS)
 - Add wait on multiple futexes opcode for fsync (from tkg)
 - Add Binder module (for Waydroid)
@@ -31,3 +32,5 @@ sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst # Confirm when it asks you to
 sudo steamos-readonly enable
 rm linux-charcoal*
 ```
+Note that you'll see erros like `==> ERROR: module not found: 'ata_generic'` but these are really just bad worded harmless warnings.
+Reboot and check `uname -a` to see the new kernel. If the string contains `charcoal` installation worked correctly.
