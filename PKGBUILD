@@ -65,6 +65,15 @@ source=(
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0013-zstd.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/misc/dkms-clang.patch"
   "0001-always-print-firmware-file-name.patch::https://732852.bugs.gentoo.org/attachment.cgi?id=649432"
+  "302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "017-v6.13-wifi-rtw88-Constify-some-arrays-and-structs.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/rtl/017-v6.13-wifi-rtw88-Constify-some-arrays-and-structs.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "022-v6.13-wifi-rtw88-Refactor-looping-in-rtw_phy_store_tx_powe.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/rtl/022-v6.13-wifi-rtw88-Refactor-looping-in-rtw_phy_store_tx_powe.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "931-wifi-ath11k-Support-to-assign-m3-dump-memory.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/931-wifi-ath11k-Support-to-assign-m3-dump-memory.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
 )
 sha256sums=('30e4aab0928507db3e0205e96aa570b00bb22388beb471cd84f3d29f2cc17dea'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
@@ -85,7 +94,16 @@ sha256sums=('30e4aab0928507db3e0205e96aa570b00bb22388beb471cd84f3d29f2cc17dea'
             '0e3f5ffe5c4d07d50df83f040ce9de91d00c1aa06cfe6b57a8a0fda81fd8ac1e'
             'ce7c5a0ddacb67ff756c0f198a2357131768526575cc98459865ef0dfa3238f7'
             '65b5745c2e07d93495a5aa1ff7269c89e7aef42acff0d018ab05663560bdf8f7'
-            '6d5371c96444e87ef912f476ff0a34f961579f7adcacafa2aec151a951ad4e7e')
+            '6d5371c96444e87ef912f476ff0a34f961579f7adcacafa2aec151a951ad4e7e'
+            'bf2186776d96122136019b7b11aea1f0f46914bf107aa83c949e654290f7eed3'
+            '78da5c2c011b2679f1309366c3964a919607db5fa1b76a3e426c5af67eded5a1'
+            '4929f7a8033f34715c2a19b606c45d0d711e7328452ed1b31a5bf52a0c1a7232'
+            '2e5c65a554578883ce956690b21db7b546bf574bfdfb2a0dba3ba9e1fefd08ee'
+            'b2f3bb786b3279f8e95ada9bb6c9643f8982f1a04b079513028f23950fb8e099'
+            '72e425a79fd722d5cb96116c94d3a2f43d10121d7ea06ba3b13ce1f813c4dd69'
+            '5777550680a9c3409406d5250db11b1655c06c6465dca17dc5d76908a36df81e'
+            'c93e3a86fabed21c00cc28b7281cf8fa9a027dec0447899eb22a1be04152290e'
+            'c821b9ec3b6433ffd77441f18255dc520271bdca40a925221c5e53c09773a574')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
