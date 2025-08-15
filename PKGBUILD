@@ -4,7 +4,7 @@
 
 pkgbase=linux-charcoal-611
 _nepbase=linux-neptune-611
-_tag=6.11.11-valve20
+_tag=6.11.11-valve24
 pkgver=${_tag//-/.}
 pkgrel=1
 pkgdesc='Linux'
@@ -75,9 +75,9 @@ source=(
   "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
   "931-wifi-ath11k-Support-to-assign-m3-dump-memory.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/931-wifi-ath11k-Support-to-assign-m3-dump-memory.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
 )
-sha256sums=('30e4aab0928507db3e0205e96aa570b00bb22388beb471cd84f3d29f2cc17dea'
+sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
-            '2ef605fbe1c4e80f1370050d077930e86cf055c86d943281b83165ec0c14f2a8'
+            'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
             'dfd21edbfb48808c0c583498755278a3a94f187cd4d05937c0664df67a1c624c'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1211fa56df93a51fd9ad9755062cfda56858f77e0341789254d8af08442ce1ce'
