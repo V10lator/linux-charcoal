@@ -73,6 +73,7 @@ source=(
   "001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
   "002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
   "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
 )
 sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
@@ -101,7 +102,8 @@ sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             'b2f3bb786b3279f8e95ada9bb6c9643f8982f1a04b079513028f23950fb8e099'
             '72e425a79fd722d5cb96116c94d3a2f43d10121d7ea06ba3b13ce1f813c4dd69'
             '5777550680a9c3409406d5250db11b1655c06c6465dca17dc5d76908a36df81e'
-            'c93e3a86fabed21c00cc28b7281cf8fa9a027dec0447899eb22a1be04152290e')
+            'c93e3a86fabed21c00cc28b7281cf8fa9a027dec0447899eb22a1be04152290e'
+            '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
