@@ -73,7 +73,6 @@ source=(
   "001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
   "002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
   "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "931-wifi-ath11k-Support-to-assign-m3-dump-memory.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/931-wifi-ath11k-Support-to-assign-m3-dump-memory.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
 )
 sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
@@ -102,8 +101,7 @@ sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             'b2f3bb786b3279f8e95ada9bb6c9643f8982f1a04b079513028f23950fb8e099'
             '72e425a79fd722d5cb96116c94d3a2f43d10121d7ea06ba3b13ce1f813c4dd69'
             '5777550680a9c3409406d5250db11b1655c06c6465dca17dc5d76908a36df81e'
-            'c93e3a86fabed21c00cc28b7281cf8fa9a027dec0447899eb22a1be04152290e'
-            'c821b9ec3b6433ffd77441f18255dc520271bdca40a925221c5e53c09773a574')
+            'c93e3a86fabed21c00cc28b7281cf8fa9a027dec0447899eb22a1be04152290e')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
