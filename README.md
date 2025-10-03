@@ -8,6 +8,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Change maximum allowed CPU frequency on Steam Deck from 3.5 to 4.2 GHz (as requested on Reddit)
 - Add NTSYNC (from CachyOS)
 - Add wait on multiple futexes opcode for fsync (from tkg)
+- Add [ADIOS](https://github.com/firelzrd/adios)
 - Add Binder module (for Waydroid)
 - Switch sheduling frequency to 1000 Hz
 - Optimize kernel with -O3 (from tkg)
