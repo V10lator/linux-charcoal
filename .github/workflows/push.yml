@@ -12,6 +12,8 @@ jobs:
   build-kernel:
     runs-on: ubuntu-latest
     steps:
+      - name: Free up space
+        run: rm -rf /opt/hostedtoolcache
       - name: Checkout
         uses: actions/checkout@v4
         with:
