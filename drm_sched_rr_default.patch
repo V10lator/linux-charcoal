@@ -1,0 +1,13 @@
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index a124d5e77b5e..7e63ac87ebad 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -90,7 +90,7 @@
+ #define to_drm_sched_job(sched_job)		\
+ 		container_of((sched_job), struct drm_sched_job, queue_node)
+ 
+-int drm_sched_policy = DRM_SCHED_POLICY_FIFO;
++int drm_sched_policy = DRM_SCHED_POLICY_RR;
+ 
+ /**
+  * DOC: sched_policy (int)
