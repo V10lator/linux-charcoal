@@ -11,6 +11,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Add [ADIOS](https://github.com/firelzrd/adios)
 - Add Binder module (for Waydroid)
 - Switch sheduling frequency to 1000 Hz
+- Switch default DRM scheduling policy to round-robin
 - Optimize kernel with -O3 (from tkg)
 - Optimize for Zen 2 (from Gentoo)
 - Build with LLVM + LTO
