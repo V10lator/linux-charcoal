@@ -25,6 +25,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Add some Clear Linux patches (from tkg)
 - Small fixes (from Gentoo)
 - Fix dkms with LLVM clang (from CachyOS)
+- Add [ryzen_smu](https://gitlab.com/leogx9r/ryzen_smu)
 
 # Install
 Download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run the following on your Steam Deck:
