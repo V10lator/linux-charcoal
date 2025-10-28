@@ -1,0 +1,22 @@
+[options]
+HoldPkg     = pacman glibc
+Architecture = auto
+CheckSpace
+ParallelDownloads = 6
+DownloadUser = alpm
+SigLevel    = Required DatabaseOptional
+LocalFileSigLevel = Optional
+
+[core-x86-64-v3]
+Include = /etc/pacman.d/alhp-mirrorlist
+[core-x86-64-v2]
+Include = /etc/pacman.d/alhp-mirrorlist
+[core]
+Include = /etc/pacman.d/mirrorlist
+
+[extra-x86-64-v3]
+Include = /etc/pacman.d/alhp-mirrorlist
+[extra-x86-64-v2]
+Include = /etc/pacman.d/alhp-mirrorlist
+[extra]
+Include = /etc/pacman.d/mirrorlist
