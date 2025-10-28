@@ -169,11 +169,13 @@ _package() {
     KSMBD-MODULE
     VIRTUALBOX-GUEST-MODULES
     WIREGUARD-MODULE
+    ryzen_smu
     $_nepbase
   )
   replaces=(
     virtualbox-guest-modules-arch
     wireguard-arch
+    ryzen_smu
     $_nepbase
   )
   conflicts=(
