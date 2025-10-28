@@ -79,7 +79,7 @@ source=(
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
   "01-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-1-a180b4c0c1c4@kernel.org/raw"
   "02-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-2-a180b4c0c1c4@kernel.org/raw"
-  "git+https://gitlab.com/leogx9r/ryzen_smu.git#tag=v0.1.2"
+  "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
 )
 sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
@@ -115,7 +115,7 @@ sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
             'e6fd7fbf249902cc87542af857c435251ff2e4c33c4707840277f0b2318e7f7b'
             'b0eca175a618950acfa8b8220bacff4da3092c7efd21fe3f552199b9279944aa'
-            'c506b92b60e6708f986fda8432a5008d6438e9d7f0e612c1694df435a863f0de')
+            '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
