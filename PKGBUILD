@@ -77,6 +77,8 @@ source=(
   "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/stable/0001-linux6.12.44-ADIOS-3.1.6.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
+  "01-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-1-a180b4c0c1c4@kernel.org/raw"
+  "02-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-2-a180b4c0c1c4@kernel.org/raw"
   "git+https://gitlab.com/leogx9r/ryzen_smu.git#tag=v0.1.2"
 )
 sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
@@ -111,6 +113,8 @@ sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf'
             '5b0faa43b05a6a1a6e2c0a3eb6bdf4d6d37d404a8126344ce1aa6bd1f842174e'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
+            'e6fd7fbf249902cc87542af857c435251ff2e4c33c4707840277f0b2318e7f7b'
+            'b0eca175a618950acfa8b8220bacff4da3092c7efd21fe3f552199b9279944aa'
             'c506b92b60e6708f986fda8432a5008d6438e9d7f0e612c1694df435a863f0de')
 
 export KBUILD_BUILD_HOST=archlinux
