@@ -1,0 +1,20 @@
+diff --git a/drv.c b/drv.c
+index 9dd7471..7fa6093 100755
+--- a/drv.c
++++ b/drv.c
+@@ -43,6 +43,7 @@ MODULE_LICENSE("GPL");
+ #define PCI_DEVICE_ID_AMD_19H_M70H_ROOT     0x14e8
+ #define PCI_DEVICE_ID_AMD_MI200_ROOT        0x14bb
+ #define PCI_DEVICE_ID_AMD_MI300_ROOT        0x14f8
++#define PCI_DEVICE_ID_AMD_VANGOGH_ROOT      0x1645
+ 
+ #define MAX_ATTRS_LEN                      13
+ 
+@@ -451,6 +452,7 @@ static struct pci_device_id ryzen_smu_id_table[] = {
+     { PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M70H_ROOT) },
+     { PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_ROOT) },
+     { PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI300_ROOT) },
++    { PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_VANGOGH_ROOT) },
+     { }
+ };
+ MODULE_DEVICE_TABLE(pci, ryzen_smu_id_table);

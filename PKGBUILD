@@ -51,6 +51,7 @@ source=(
   config-charcoal # Charcoal: The Charcoal kernel fragment file
   vangogh_allow_higher_cpu_freq.patch
   drm_sched_rr_default.patch
+  ryzen_smu.diff
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0002-clear-patches.patch"
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0007-v6.11-fsync1_via_futex_waitv.patch"
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0013-optimize_harder_O3.patch"
@@ -87,6 +88,7 @@ sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             'dfd21edbfb48808c0c583498755278a3a94f187cd4d05937c0664df67a1c624c'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
+            'e3eb210e66eabdd6cd21454011cd432b1af577e3fe649a24e7def754f48daed2'
             '3a6414ccd4a74fcea14b4327ad03473dd316559347ad748181b6ced3c184ddd3'
             '9df628fd530950e37d31da854cb314d536f33c83935adf5c47e71266a55f7004'
             '948298dff2552a7fa6f05b698bd7ab05a50b0af7516d2b9ac664d1ad38fda95f'
@@ -145,6 +147,10 @@ prepare() {
   diff -u ../config .config || :
 
   make LLVM=1 -s kernelrelease > version
+
+  cd ../ryzen_smu
+  patch -Np1 < ../ryzen_smu.diff
+
   echo "Prepared $pkgbase version $(<version)"
 }
 
