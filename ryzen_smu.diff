@@ -18,3 +18,15 @@ index 9dd7471..7fa6093 100755
      { }
  };
  MODULE_DEVICE_TABLE(pci, ryzen_smu_id_table);
+diff --git a/smu.c b/smu.c
+index 44f6b47..3561504 100755
+--- a/smu.c
++++ b/smu.c
+@@ -293,6 +293,7 @@ int smu_resolve_cpu_class(struct pci_dev *dev) {
+       g_smu.codename = CODENAME_MATISSE;
+       break;
+     case 0x90:
++    case 0x91:
+       g_smu.codename = CODENAME_VANGOGH;
+       break;
+     default:
