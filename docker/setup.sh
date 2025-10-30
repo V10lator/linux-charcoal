@@ -5,7 +5,7 @@ pushd /docker
   pacman -Syu --noconfirm git openssh
 
   num_cpus=$(nproc --all)
-  echo -e "LTOFLAGS=\"-flto=$num_cpus -fdevirtualize-at-ltrans\"\nMAKEFLAGS=\"-j$num_cpus\"" >> makepkg.conf
+  echo "MAKEFLAGS=\"-j$(nproc --all)\"" >> makepkg.conf
   mv makepkg.conf /etc/makepkg.conf.d/charcoal.conf
 
   git clone https://aur.archlinux.org/alhp-keyring.git
