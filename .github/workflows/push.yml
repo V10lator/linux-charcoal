@@ -2,7 +2,6 @@ name: Build
 
 on:
   push:
-    branches: ["master"]
   pull_request:
     types: [opened, reopened, edited]
 
@@ -21,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Get current tag
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && github.ref_name == 'master' }}
         run: echo "current_tag=$(git describe --tags --abbrev=0 --exact-match 2>/dev/null || echo '')" >> $GITHUB_ENV
       - name: Get previous tag
         if: ${{ env.current_tag }}
