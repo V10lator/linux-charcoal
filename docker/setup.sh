@@ -4,7 +4,6 @@ pushd /docker
   pacman-key --init
   pacman -Syu --noconfirm git openssh
 
-  num_cpus=$(nproc --all)
   echo "MAKEFLAGS=\"-j$(nproc --all)\"" >> makepkg.conf
   mv makepkg.conf /etc/makepkg.conf.d/charcoal.conf
 
