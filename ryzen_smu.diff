@@ -19,7 +19,7 @@ index 9dd7471..7fa6093 100755
  };
  MODULE_DEVICE_TABLE(pci, ryzen_smu_id_table);
 diff --git a/smu.c b/smu.c
-index 3c439e6..57b2930 100755
+index 3c439e6..32752e5 100755
 --- a/smu.c
 +++ b/smu.c
 @@ -293,6 +293,7 @@ int smu_resolve_cpu_class(struct pci_dev *dev) {
@@ -49,7 +49,7 @@ index 3c439e6..57b2930 100755
    case CODENAME_PHOENIX:
    case CODENAME_STRIXPOINT:
    case CODENAME_HAWKPOINT:
-+  case CODENANE_VANGOGH:
++  case CODENAME_VANGOGH:
      fn[0] = 0x66;
      goto BASE_ADDR_CLASS_1;
    case CODENAME_COLFAX:
