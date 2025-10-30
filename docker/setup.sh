@@ -1,10 +1,12 @@
 #!/usr/bin/bash
 
 pushd /docker
-  echo "MAKEFLAGS=\"-j$(nproc --all)\"" >> /etc/makepkg.conf
-
   pacman-key --init
   pacman -Syu --noconfirm git openssh
+
+  num_cpus=$(nproc --all)
+  echo -e "LTOFLAGS=\"-flto=$num_cpus -fdevirtualize-at-ltrans\"\nMAKEFLAGS=\"-j$num_cpus\"" >> makepkg.conf
+  mv makepkg.conf /etc/makepkg.conf.d/charcoal.conf
 
   git clone https://aur.archlinux.org/alhp-keyring.git
   git clone https://aur.archlinux.org/alhp-mirrorlist.git
