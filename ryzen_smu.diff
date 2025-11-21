@@ -19,7 +19,7 @@ index 9dd7471..7fa6093 100755
  };
  MODULE_DEVICE_TABLE(pci, ryzen_smu_id_table);
 diff --git a/smu.c b/smu.c
-index 3c439e6..32752e5 100755
+index 3c439e6..cbfa69d 100755
 --- a/smu.c
 +++ b/smu.c
 @@ -293,6 +293,7 @@ int smu_resolve_cpu_class(struct pci_dev *dev) {
@@ -45,53 +45,3 @@ index 3c439e6..32752e5 100755
    default:
      pr_err("Unknown processor codename: %d", g_smu.codename);
      return -ENODEV;
-@@ -672,6 +671,7 @@ u64 smu_get_dram_base_address(struct pci_dev *dev) {
-   case CODENAME_PHOENIX:
-   case CODENAME_STRIXPOINT:
-   case CODENAME_HAWKPOINT:
-+  case CODENAME_VANGOGH:
-     fn[0] = 0x66;
-     goto BASE_ADDR_CLASS_1;
-   case CODENAME_COLFAX:
-@@ -788,6 +788,7 @@ enum smu_return_val smu_transfer_table_to_dram(struct pci_dev *dev) {
-   case CODENAME_PHOENIX:
-   case CODENAME_STRIXPOINT:
-   case CODENAME_HAWKPOINT:
-+  case CODENAME_VANGOGH:
-     args.s.arg0 = 3;
-     fn = 0x65;
-     break;
-@@ -882,6 +883,7 @@ enum smu_return_val smu_get_pm_table_version(struct pci_dev *dev,
-   case CODENAME_PHOENIX:
-   case CODENAME_STRIXPOINT:
-   case CODENAME_HAWKPOINT:
-+  case CODENAME_VANGOGH:
-     fn = 0x06;
-     break;
-   default:
-@@ -897,6 +899,7 @@ enum smu_return_val smu_get_pm_table_version(struct pci_dev *dev,
- }
- 
- u32 smu_update_pmtable_size(u32 version) {
-+  pr_info("PM_TABLE VERSION: 0x%08X\n", version);
-   // These sizes are actually accurate and not just "guessed".
-   // Source: Ryzen Master.
-   switch (g_smu.codename) {
-@@ -1009,6 +1012,7 @@ u32 smu_update_pmtable_size(u32 version) {
-     }
-     break;
-   case CODENAME_REMBRANDT:
-+  case CODENAME_VANGOGH:
-     switch (version) {
-     case 0x450004:
-       g_smu.pm_dram_map_size = 0xAA4;
-@@ -1214,7 +1218,8 @@ enum smu_return_val smu_read_pm_table(struct pci_dev *dev, unsigned char *dst,
-         g_smu.codename == CODENAME_CHAGALL ||
-         g_smu.codename == CODENAME_MILAN ||
-         g_smu.codename == CODENAME_HAWKPOINT ||
--        g_smu.codename == CODENAME_STORMPEAK) {
-+        g_smu.codename == CODENAME_STORMPEAK ||
-+        g_smu.codename == CODENAME_VANGOGH) {
-       ret = smu_get_pm_table_version(dev, &version);
- 
-       if (ret != SMU_Return_OK) {
