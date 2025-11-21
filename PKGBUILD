@@ -50,6 +50,7 @@ source=(
   config-neptune  # Jupiter: the neptune kernel fragment file (overrides 'config' above)
   config-charcoal # Charcoal: The Charcoal kernel fragment file
   vangogh_allow_higher_cpu_freq.patch
+  vangogh_higher_max_power_limit.patch
   drm_sched_rr_default.patch
   ryzen_smu.diff
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0002-clear-patches.patch"
@@ -98,6 +99,7 @@ sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
             'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
             '3d05fd6b49ec5d7069b6dd62ffa1f9622640637fdc94158d0383a30e941858b4'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
+            'bbe1dcd6cafb0b36540b027b108ef6fedcef37899c26756bc33654e5c2dfc1e3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
             '4bcf61814a6daac8f72c46a425b9ce88c07f6bd95f6a0ac287d73dfd4d5da60b'
             '3a6414ccd4a74fcea14b4327ad03473dd316559347ad748181b6ced3c184ddd3'
