@@ -4,9 +4,9 @@
 
 pkgbase=linux-charcoal-611
 _nepbase=linux-neptune-611
-_tag=6.11.11-valve24
+_tag=6.11.11-valve26
 pkgver=${_tag//-/.}
-pkgrel=4
+pkgrel=1
 pkgdesc='Linux'
 url="https://gitlab.steamos.cloud/jupiter/linux-integration/-/tree/$_tag"
 arch=(x86_64)
@@ -94,7 +94,7 @@ source=(
   "https://github.com/zen-kernel/zen-kernel/commit/eb51c53e5ded1743830368815c550b871f950738.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/5a8fabcd4e7396500f2c0070f8b7ce9106eb9bfa.patch"
 )
-sha256sums=('22c9becc345328205391a142b28644a6670fbf6022c28bb16575bdb791b63e9b'
+sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
             'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
             '3d05fd6b49ec5d7069b6dd62ffa1f9622640637fdc94158d0383a30e941858b4'
