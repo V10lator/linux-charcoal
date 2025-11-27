@@ -13,8 +13,12 @@ jobs:
   build-kernel:
     runs-on: ubuntu-latest
     steps:
-      - name: Free up space
+      - name: Free up space (1)
         run: find /opt/ -maxdepth 1 -mindepth 1 '!' -path /opt/containerd '!' -path /opt/actionarchivecache '!' -path /opt/runner '!' -path /opt/runner-cache -exec echo Deleting '{}' ';' -exec rm -rf '{}' ';'
+      - name: Free up space (2)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: true
       - name: Checkout
         uses: actions/checkout@v4
         with:
