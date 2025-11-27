@@ -45,7 +45,7 @@ options=(
 )
 _srcname=archlinux-linux-charcoal
 source=(
-  "$_srcname::git+https://gitlab.com/evlaV/linux-integration.git#tag=$_tag"
+  "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_tag"
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
   config-neptune  # Jupiter: the neptune kernel fragment file (overrides 'config' above)
   config-charcoal # Charcoal: The Charcoal kernel fragment file
