@@ -5,7 +5,8 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 
 # Changes to Neptune
 - Add WiFi patches from OpenWRT
-- Change maximum allowed CPU frequency on Steam Deck from 3.5 to 4.2 GHz (as requested on Reddit)
+- Change maximum allowed CPU frequency on Steam Deck from 3.5 to 4.2 GHz (as requested on Discord)
+- Change maximum PPT limit on Steam Deck from 30 to 50 watt (as requested at #5)
 - Add NTSYNC (from CachyOS)
 - Add wait on multiple futexes opcode for fsync (from tkg)
 - Add [ADIOS](https://github.com/firelzrd/adios)
@@ -23,6 +24,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Disable various unneeded things (open a bug report in case something you need is missing)
 - Switch CPU IDLE sheduler
 - Add some Clear Linux patches (from tkg)
+- Add some Zen Linux patches
 - Small fixes (from Gentoo)
 - Fix dkms with LLVM clang (from CachyOS)
 - Add [ryzen_smu](https://gitlab.com/leogx9r/ryzen_smu)
