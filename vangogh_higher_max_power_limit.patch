@@ -1,6 +1,6 @@
 diff -Nru archlinux-linux-charcoal.old/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c archlinux-linux-charcoal/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
---- archlinux-linux-charcoal.old/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c	2025-11-21 19:14:02.719365804 +0100
-+++ archlinux-linux-charcoal/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c	2025-11-21 19:18:24.635346895 +0100
+--- archlinux-linux-charcoal.old/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c	2025-12-02 22:57:52.112045415 +0100
++++ archlinux-linux-charcoal/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c	2025-12-02 23:09:31.702012395 +0100
 @@ -2339,7 +2339,7 @@
  	if (default_power_limit)
  		*default_power_limit = ppt_limit / 1000;
@@ -10,3 +10,12 @@ diff -Nru archlinux-linux-charcoal.old/drivers/gpu/drm/amd/pm/swsmu/smu11/vangog
  	if (min_power_limit)
  		*min_power_limit = 0;
  
+@@ -2351,7 +2351,7 @@
+ 	/* convert from milliwatt to watt */
+ 	power_context->current_fast_ppt_limit =
+ 			power_context->default_fast_ppt_limit = ppt_limit / 1000;
+-	power_context->max_fast_ppt_limit = 30;
++	power_context->max_fast_ppt_limit = 51;
+ 
+ 	return ret;
+ }
