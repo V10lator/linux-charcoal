@@ -93,11 +93,12 @@ source=(
   "https://github.com/zen-kernel/zen-kernel/commit/5f16843397798d2c709e3b8af4b1a73539d13aa8.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/eb51c53e5ded1743830368815c550b871f950738.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/5a8fabcd4e7396500f2c0070f8b7ce9106eb9bfa.patch"
+  "hwmon-k10temp-Add-AMD-Steam-Deck-APU-ID.patch::https://patchwork.ozlabs.org/project/linux-pci/patch/20251117.193725.1655587639439350088.rene@exactco.de/raw/"
 )
 sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
             'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
-            '3d05fd6b49ec5d7069b6dd62ffa1f9622640637fdc94158d0383a30e941858b4'
+            '012e5672f528b6da12bed1cbdc5bfc65392f9e485519e091727d3cd4620598e6'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
@@ -141,7 +142,8 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             'cc3a6da71a1f091f458e8dac0754e7db83991db368b053c50ac2f5513248e002'
             'ae1eab0810f22dcbcff090aefebef49d2bccac67a7df696a7edb218cbe940c24'
             '5cc6369b14b036508c07cadce1d8bfcac04bc42ae20c08b40132d36c471fd2c1'
-            'bfed603d238da74634bb0eb3bfe82780809d23297a45c0a1605cda10e11c1756')
+            'bfed603d238da74634bb0eb3bfe82780809d23297a45c0a1605cda10e11c1756'
+            'eee3e89ba89d42e1d9b383c6c43bacdb1d1c4e25aa0d216f04a40784f4c5fd62')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
