@@ -216,6 +216,8 @@ _package() {
     WIREGUARD-MODULE
     ryzen_smu
     xone
+    xpad-noone
+    xpadneo
     $_nepbase
   )
   replaces=(
@@ -223,6 +225,8 @@ _package() {
     wireguard-arch
     ryzen_smu
     xone
+    xpad-noone
+    xpadneo
     $_nepbase
   )
   conflicts=(
