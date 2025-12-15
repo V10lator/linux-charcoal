@@ -94,7 +94,7 @@ source=(
   "https://github.com/zen-kernel/zen-kernel/commit/5a8fabcd4e7396500f2c0070f8b7ce9106eb9bfa.patch"
   "hwmon-k10temp-Add-AMD-Steam-Deck-APU-ID.patch::https://patchwork.ozlabs.org/project/linux-pci/patch/20251117.193725.1655587639439350088.rene@exactco.de/raw/"
   "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
-  "git+https://github.com/medusalix/xone.git#tag=v0.3"
+  "git+https://github.com/dlundqvist/xone.git#tag=v0.5.0"
   "git+https://github.com/medusalix/xpad-noone.git#tag=c3d1610"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v0.9.7"
 )
@@ -147,7 +147,7 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             'bfed603d238da74634bb0eb3bfe82780809d23297a45c0a1605cda10e11c1756'
             'eee3e89ba89d42e1d9b383c6c43bacdb1d1c4e25aa0d216f04a40784f4c5fd62'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
-            'd30b6b4c2b39efcc5bd46b5b51d89950b3f8918736f83b082a7e1364244b146a'
+            'ace071b54e9573430df6accbb7dc92e209e875b9b8126fbba0cfcb39f03ac2ca'
             '07c17c8b82de1f32a970dbc01a201ee904f7d965b35d73304507c90f6bca2f58'
             '5a07c1f6c94429766484e4e7fb64395fc5d42f44b401dda1b22aff4eb69d25c0')
 
