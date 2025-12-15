@@ -4,6 +4,7 @@ Architecture = auto
 CheckSpace
 ParallelDownloads = 6
 DownloadUser = alpm
+DisableSandbox
 SigLevel    = Required DatabaseOptional
 LocalFileSigLevel = Optional
 
