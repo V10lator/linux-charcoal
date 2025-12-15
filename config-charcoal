@@ -40,6 +40,9 @@ CONFIG_CPU_IDLE_GOV_MENU=n
 # Enable Zen kernel tuning
 CONFIG_ZEN_INTERACTIVE=y
 
+# Disable in favour of xpad-noone
+CONFIG_JOYSTICK_XPAD=n
+
 # LTO optimization: Build common things into the kernel
 CONFIG_TLS=y
 CONFIG_INPUT_UINPUT=y

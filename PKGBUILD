@@ -81,7 +81,6 @@ source=(
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
   "01-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-1-a180b4c0c1c4@kernel.org/raw"
   "02-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-2-a180b4c0c1c4@kernel.org/raw"
-  "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
   "https://github.com/zen-kernel/zen-kernel/commit/3d92c251c04b1b4c6363018220af42ec3a294d1e.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/67c446794b5fc16009bc1f31aee8846576796b11.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/032775267df11a87616d2ec7f09c0b1b12da5da7.patch"
@@ -94,11 +93,15 @@ source=(
   "https://github.com/zen-kernel/zen-kernel/commit/eb51c53e5ded1743830368815c550b871f950738.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/5a8fabcd4e7396500f2c0070f8b7ce9106eb9bfa.patch"
   "hwmon-k10temp-Add-AMD-Steam-Deck-APU-ID.patch::https://patchwork.ozlabs.org/project/linux-pci/patch/20251117.193725.1655587639439350088.rene@exactco.de/raw/"
+  "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
+  "git+https://github.com/medusalix/xone.git#tag=v0.3"
+  "git+https://github.com/medusalix/xpad-noone.git#tag=c3d1610"
+  "git+https://github.com/atar-axis/xpadneo.git#tag=v0.9.7"
 )
 sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
             'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
-            '012e5672f528b6da12bed1cbdc5bfc65392f9e485519e091727d3cd4620598e6'
+            'e479da48d801d0451981e95fb9e91e6ec38126c2064053305cad91ad0e0e8287'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
@@ -131,7 +134,6 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
             'e6fd7fbf249902cc87542af857c435251ff2e4c33c4707840277f0b2318e7f7b'
             'b0eca175a618950acfa8b8220bacff4da3092c7efd21fe3f552199b9279944aa'
-            '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
             '78aa8afdb4add1e54c1b11926f7cb99a8ac36d660fbba327f93e24dde1217e09'
             '2b8d553fc796affeaad3f9efab0c84fbf28618985fb7df70175f7a5fcec90a0d'
             'c7f627d499bdc2a915e9abc0af89c7a8d9875b315493172236d0705a4ce718bd'
@@ -143,7 +145,11 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             'ae1eab0810f22dcbcff090aefebef49d2bccac67a7df696a7edb218cbe940c24'
             '5cc6369b14b036508c07cadce1d8bfcac04bc42ae20c08b40132d36c471fd2c1'
             'bfed603d238da74634bb0eb3bfe82780809d23297a45c0a1605cda10e11c1756'
-            'eee3e89ba89d42e1d9b383c6c43bacdb1d1c4e25aa0d216f04a40784f4c5fd62')
+            'eee3e89ba89d42e1d9b383c6c43bacdb1d1c4e25aa0d216f04a40784f4c5fd62'
+            '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
+            'd30b6b4c2b39efcc5bd46b5b51d89950b3f8918736f83b082a7e1364244b146a'
+            '07c17c8b82de1f32a970dbc01a201ee904f7d965b35d73304507c90f6bca2f58'
+            '5a07c1f6c94429766484e4e7fb64395fc5d42f44b401dda1b22aff4eb69d25c0')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
@@ -186,8 +192,11 @@ build() {
   make LLVM=1 -C tools/bpf/bpftool vmlinux.h feature-clang-bpf-co-re=1
 #  make htmldocs # Jupiter: Don't build the docs
 
-  # Charcoal: Build ryzen_smu
+  # Charcoal: Build bundles DKMS modules
   make LLVM=1 M=../ryzen_smu modules
+  make LLVM=1 M=../xone modules
+  make LLVM=1 M=../xpad-noone modules
+  make LLVM=1 M=../xpadneo modules
 }
 
 _package() {
@@ -206,12 +215,14 @@ _package() {
     VIRTUALBOX-GUEST-MODULES
     WIREGUARD-MODULE
     ryzen_smu
+    xone
     $_nepbase
   )
   replaces=(
     virtualbox-guest-modules-arch
     wireguard-arch
     ryzen_smu
+    xone
     $_nepbase
   )
   conflicts=(
@@ -233,8 +244,11 @@ _package() {
   ZSTD_CLEVEL=19 make LLVM=1 INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
     DEPMOD=/doesnt/exist modules_install  # Suppress depmod
 
-  # Charcoal: Install ryzen_smu module
+  # Charcoal: Install bundles DKMS modules
   ZSTD_CLEVEL=19 make LLVM=1 M=../ryzen_smu INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
+  ZSTD_CLEVEL=19 make LLVM=1 M=../xone INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
+  ZSTD_CLEVEL=19 make LLVM=1 M=../xpad-noone INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
+  ZSTD_CLEVEL=19 make LLVM=1 M=../xpadneo INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
 
   # remove build link
   rm "$modulesdir"/build
