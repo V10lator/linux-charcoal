@@ -1,0 +1,57 @@
+diff -Nru xpad-noone.old/xpad.c xpad-noone/xpad.c
+--- xpad-noone.old/xpad.c	2025-12-16 12:43:06.342158062 +0100
++++ xpad-noone/xpad.c	2025-12-16 12:49:33.950135108 +0100
+@@ -433,10 +433,8 @@
+ 
+ #define XPAD_OUT_CMD_IDX	0
+ #define XPAD_OUT_FF_IDX		1
+-#define XPAD_OUT_LED_IDX	(1 + IS_ENABLED(CONFIG_JOYSTICK_XPAD_FF))
+-#define XPAD_NUM_OUT_PACKETS	(1 + \
+-				 IS_ENABLED(CONFIG_JOYSTICK_XPAD_FF) + \
+-				 IS_ENABLED(CONFIG_JOYSTICK_XPAD_LEDS))
++#define XPAD_OUT_LED_IDX	2
++#define XPAD_NUM_OUT_PACKETS	3
+ 
+ struct usb_xpad {
+ 	struct input_dev *dev;		/* input device interface */
+@@ -462,9 +460,7 @@
+ 	int last_out_packet;
+ 	int init_seq;
+ 
+-#if defined(CONFIG_JOYSTICK_XPAD_LEDS)
+ 	struct xpad_led *led;
+-#endif
+ 
+ 	char phys[64];			/* physical device path */
+ 
+@@ -947,7 +943,6 @@
+ 	return retval;
+ }
+ 
+-#ifdef CONFIG_JOYSTICK_XPAD_FF
+ static int xpad_play_effect(struct input_dev *dev, void *data, struct ff_effect *effect)
+ {
+ 	struct usb_xpad *xpad = input_get_drvdata(dev);
+@@ -1032,11 +1027,6 @@
+ 	return input_ff_create_memless(xpad->dev, NULL, xpad_play_effect);
+ }
+ 
+-#else
+-static int xpad_init_ff(struct usb_xpad *xpad) { return 0; }
+-#endif
+-
+-#if defined(CONFIG_JOYSTICK_XPAD_LEDS)
+ #include <linux/leds.h>
+ #include <linux/idr.h>
+ 
+@@ -1181,10 +1171,6 @@
+ 		kfree(xpad_led);
+ 	}
+ }
+-#else
+-static int xpad_led_probe(struct usb_xpad *xpad) { return 0; }
+-static void xpad_led_disconnect(struct usb_xpad *xpad) { }
+-#endif
+ 
+ static int xpad_start_input(struct usb_xpad *xpad)
+ {

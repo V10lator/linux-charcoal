@@ -53,6 +53,7 @@ source=(
   vangogh_higher_max_power_limit.patch
   drm_sched_rr_default.patch
   ryzen_smu.diff
+  xpad-noone.diff
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0002-clear-patches.patch"
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0007-v6.11-fsync1_via_futex_waitv.patch"
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0013-optimize_harder_O3.patch"
@@ -106,6 +107,7 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
             '4bcf61814a6daac8f72c46a425b9ce88c07f6bd95f6a0ac287d73dfd4d5da60b'
+            'ff3bbe78d6f072d57f567878e870956242ee78ccddd258b1ec2e4729621138fe'
             '3a6414ccd4a74fcea14b4327ad03473dd316559347ad748181b6ced3c184ddd3'
             '9df628fd530950e37d31da854cb314d536f33c83935adf5c47e71266a55f7004'
             '948298dff2552a7fa6f05b698bd7ab05a50b0af7516d2b9ac664d1ad38fda95f'
@@ -180,8 +182,11 @@ prepare() {
 
   make LLVM=1 -s kernelrelease > version
 
+  # Charcoal patches for DKMS modules
   cd ../ryzen_smu
   patch -Np1 < ../ryzen_smu.diff
+  cd ../xpad-noone
+  patch -Np1 < ../xpad-noone.diff
 
   echo "Prepared $pkgbase version $(<version)"
 }
