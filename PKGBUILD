@@ -196,7 +196,7 @@ build() {
   make LLVM=1 M=../ryzen_smu modules
   make LLVM=1 M=../xone modules
   make LLVM=1 M=../xpad-noone modules
-  make LLVM=1 M=../xpadneo/hid-xpadneo modules
+  make LLVM=1 M=../xpadneo/hid-xpadneo/src VERSION=0.9.7 modules
 }
 
 _package() {
@@ -252,7 +252,7 @@ _package() {
   ZSTD_CLEVEL=19 make LLVM=1 M=../ryzen_smu INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
   ZSTD_CLEVEL=19 make LLVM=1 M=../xone INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
   ZSTD_CLEVEL=19 make LLVM=1 M=../xpad-noone INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
-  ZSTD_CLEVEL=19 make LLVM=1 M=../xpadneo/hid-xpadneo INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
+  ZSTD_CLEVEL=19 make LLVM=1 M=../xpadneo/hid-xpadneo/src INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
   cd ../xpadneo/hid-xpadneo
   install -D -m 0644 -t "$pkgdir/etc/modprobe.d" etc-modprobe.d/xpadneo.conf
   install -D -m 0644 -t "$pkgdir/etc/udev/rules.d" etc-udev-rules.d/60-xpadneo.rules
