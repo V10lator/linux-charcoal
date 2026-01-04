@@ -254,7 +254,7 @@ _package() {
     DEPMOD=/doesnt/exist modules_install  # Suppress depmod
 
   # Charcoal: Install environment file (currently workaround for xpadneo)
-  install -D -m 0644 99-charcoal.sh "$pkgdir/etc/profile.d"
+  install -D -m 0644 -t "$pkgdir/etc/profile.d" ../99-charcoal.sh
 
   # Charcoal: Install bundles DKMS modules
   ZSTD_CLEVEL=19 make LLVM=1 M=../ryzen_smu INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
