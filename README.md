@@ -29,7 +29,6 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Fix dkms with LLVM clang (from CachyOS)
 - Add [ryzen_smu](https://gitlab.com/leogx9r/ryzen_smu)
 - Add [xone](https://github.com/medusalix/xone), [xpad-noone](https://github.com/medusalix/xpad-noone) and [xpadneo](https://github.com/atar-axis/xpadneo)
-- Add k10temp patch to support the Steam Deck
 
 # Install
 Download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run the following on your Steam Deck:
