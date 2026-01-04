@@ -1,0 +1,1 @@
+export SDL_JOYSTICK_HIDAPI=0
