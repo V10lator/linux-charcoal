@@ -49,6 +49,7 @@ source=(
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
   config-neptune  # Jupiter: the neptune kernel fragment file (overrides 'config' above)
   config-charcoal # Charcoal: The Charcoal kernel fragment file
+  65-adios.rules
   99-charcoal.sh
   vangogh_allow_higher_cpu_freq.patch
   vangogh_higher_max_power_limit.patch
@@ -103,6 +104,7 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
             'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
             'ed418819c61d6f96d0a83c6550693bf47e33b977b73e5daf192c14ddc46ac263'
+            '83075e8d67deba468962eb2839a62571d6ba5e2f76d0c02922fdeb01c97d3a4e'
             '0a6a7408ccc0c94b5cce50dabc7ee318abcc1b9eaaedd3d83fd7e7d5a73b4d4f'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
@@ -255,6 +257,8 @@ _package() {
 
   # Charcoal: Install environment file (currently workaround for xpadneo)
   install -D -m 0644 -t "$pkgdir/etc/profile.d" ../99-charcoal.sh
+  # Charcoal: Install udev rules
+  install -D -m 0644 -t "$pkgdir/etc/udev/rules.d" ../65-adios.rules
 
   # Charcoal: Install bundles DKMS modules
   ZSTD_CLEVEL=19 make LLVM=1 M=../ryzen_smu INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
