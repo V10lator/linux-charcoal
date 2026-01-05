@@ -96,7 +96,7 @@ source=(
   "https://github.com/zen-kernel/zen-kernel/commit/eb51c53e5ded1743830368815c550b871f950738.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/5a8fabcd4e7396500f2c0070f8b7ce9106eb9bfa.patch"
   "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
-  "git+https://github.com/dlundqvist/xone.git#tag=v0.5.0"
+  "git+https://github.com/dlundqvist/xone.git#tag=v0.5.1"
   "git+https://github.com/medusalix/xpad-noone.git#tag=c3d1610"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v0.9.7"
 )
@@ -151,7 +151,7 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '5cc6369b14b036508c07cadce1d8bfcac04bc42ae20c08b40132d36c471fd2c1'
             'bfed603d238da74634bb0eb3bfe82780809d23297a45c0a1605cda10e11c1756'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
-            'ace071b54e9573430df6accbb7dc92e209e875b9b8126fbba0cfcb39f03ac2ca'
+            '040526a8ce8cde566fcf2d94b0f3ababc5ad1c8506fc2f2fc5099469c59640f2'
             '07c17c8b82de1f32a970dbc01a201ee904f7d965b35d73304507c90f6bca2f58'
             '5a07c1f6c94429766484e4e7fb64395fc5d42f44b401dda1b22aff4eb69d25c0')
 
