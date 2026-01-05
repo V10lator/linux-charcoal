@@ -98,7 +98,7 @@ source=(
   "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
   "git+https://github.com/dlundqvist/xone.git#tag=v0.5.1"
   "git+https://github.com/medusalix/xpad-noone.git#tag=c3d1610"
-  "git+https://github.com/atar-axis/xpadneo.git#tag=v0.9.7"
+  "git+https://github.com/atar-axis/xpadneo.git#tag=v0.9.8"
 )
 sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
@@ -153,7 +153,7 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
             '040526a8ce8cde566fcf2d94b0f3ababc5ad1c8506fc2f2fc5099469c59640f2'
             '07c17c8b82de1f32a970dbc01a201ee904f7d965b35d73304507c90f6bca2f58'
-            '5a07c1f6c94429766484e4e7fb64395fc5d42f44b401dda1b22aff4eb69d25c0')
+            'fdf96dd387f257b060c42b3351851e552a3c6ada16a9404314e5d9bba14efa95')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
