@@ -44,6 +44,7 @@ options=(
   !strip
 )
 _srcname=archlinux-linux-charcoal
+_xpadneo_version=0.9.8
 source=(
   "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_tag"
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
@@ -99,7 +100,7 @@ source=(
   "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
   "git+https://github.com/dlundqvist/xone.git#tag=v0.5.1"
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
-  "git+https://github.com/atar-axis/xpadneo.git#tag=v0.9.8"
+  "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
 )
 sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
@@ -205,7 +206,7 @@ build() {
   make LLVM=1 M=../ryzen_smu modules
   make LLVM=1 M=../xone modules
   make LLVM=1 M=../xpad-noone modules
-  make LLVM=1 M=../xpadneo/hid-xpadneo/src VERSION=0.9.7 modules
+  make LLVM=1 M=../xpadneo/hid-xpadneo/src VERSION=$_xpadneo_version modules
 }
 
 _package() {
