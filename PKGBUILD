@@ -2,9 +2,9 @@
 # Maintainer: John Schoenick <johns@valvesoftware.com>
 # Maintainer: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
 
-pkgbase=linux-charcoal-611
-_nepbase=linux-neptune-611
-_tag=6.11.11-valve27
+pkgbase=linux-charcoal-616
+_nepbase=linux-neptune-616
+_tag=6.16.12-valve9
 pkgver=${_tag//-/.}
 pkgrel=1
 pkgdesc='Linux'
@@ -58,54 +58,39 @@ source=(
   drm_sched_rr_default.patch
   ryzen_smu.diff
   xpad-noone.diff
-  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0002-clear-patches.patch"
+  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.16/0002-clear-patches.patch"
   "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0007-v6.11-fsync1_via_futex_waitv.patch"
-  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0013-optimize_harder_O3.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2000_BT-Check-key-sizes-only-if-Secure-Simple-Pairing-enabled.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2901_tools-lib-subcmd-compile-fix.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2910_bfp-mark-get-entry-ip-as--maybe-unused.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2951_libbpf-Prevent-compiler-warnings-errors.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2990_libbpf-v2-workaround-Wmaybe-uninitialized-false-pos.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2991_libbpf-workaround-Wmaybe-uninitialized-false-pos.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2996_kbuild-bpf-jobs-val-pahole-fix.patch"
-  "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/5010_enable-cpu-optimizations-universal.patch"
-  "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0013-zstd.patch"
-  "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/misc/dkms-clang.patch"
+  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.16/0013-optimize_harder_O3.patch"
+  "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/2000_BT-Check-key-sizes-only-if-Secure-Simple-Pairing-enabled.patch"
+  "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/2990_libbpf-v2-workaround-Wmaybe-uninitialized-false-pos.patch"
+  "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/5010_enable-cpu-optimizations-universal.patch"
+  "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.16/misc/dkms-clang.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.16/misc/0001-clang-polly.patch"
   "0001-always-print-firmware-file-name.patch::https://732852.bugs.gentoo.org/attachment.cgi?id=649432"
-  "302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "017-v6.13-wifi-rtw88-Constify-some-arrays-and-structs.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/rtl/017-v6.13-wifi-rtw88-Constify-some-arrays-and-structs.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "022-v6.13-wifi-rtw88-Refactor-looping-in-rtw_phy_store_tx_powe.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/rtl/022-v6.13-wifi-rtw88-Refactor-looping-in-rtw_phy_store_tx_powe.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/001-wifi-ath11k-Fix-DMA-buffer-allocation-to-resolve-SWIOTLB-issues.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/002-wifi-ath11k-use-dma-alloc-noncoherent-for-rx-tid-buffer-allocation.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
-  "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
+  "302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
+  "303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
+  "304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
+  "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
   "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
-  "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/stable/0001-linux6.12.44-ADIOS-3.1.8.patch"
-  "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
-  "01-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-1-a180b4c0c1c4@kernel.org/raw"
-  "02-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-2-a180b4c0c1c4@kernel.org/raw"
-  "https://github.com/zen-kernel/zen-kernel/commit/3d92c251c04b1b4c6363018220af42ec3a294d1e.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/67c446794b5fc16009bc1f31aee8846576796b11.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/032775267df11a87616d2ec7f09c0b1b12da5da7.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/e2db8ce3c52c7bd37e93728d6c12a483f17634bc.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/f5b82cc382eaf3ddf5c26f60965037bde8733445.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/44a6d7ca11b601b34724dc41e086576499a096bd.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/4706a3fb5823c97dc6acc1e86958b71e2c048ec5.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/8146f220f871c4db77c8363c831784041a5bcf7b.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/5f16843397798d2c709e3b8af4b1a73539d13aa8.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/eb51c53e5ded1743830368815c550b871f950738.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/5a8fabcd4e7396500f2c0070f8b7ce9106eb9bfa.patch"
+  "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/stable/0001-linux6.16.12-ADIOS-3.1.8.patch"
+  "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/f6ed65cd7bda9cb6009c6a12efd7c4311df31936.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/cab7ea1a4ef6685a133ae121ca27098b9dd31287.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/fb5c79d96cc87e4778ac0f2a53bc7c0c23078c54.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/21dd0495958b7c1bd34f2d83537a4f3af5b804c3.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/413db39ffc2d95bf43fa5690cbf6300f5d5e45bd.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/b418708702f7927a7922b90871ab1cdf1df9bb94.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/92850f57d0d3dd0c55a6556f4c4a9afd38da7f8a.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/e3afdec765f5277bbd3b2196e0facb8b428fb9d2.patch"
   "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
   "git+https://github.com/dlundqvist/xone.git#tag=v0.5.1"
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
 )
-sha256sums=('624cd1bb400cb44d1b184b564ea2661e014e6af569331f302221d03c1ca172c5'
-            '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
-            '0ec4984620d1ec3b00ed2236e2f1b90ee7f5aa55806bc8b1e6bd051b3798e5a5'
-            'b0528cb0761670d1034174e094acf17bab1781bb46ca56cf31df510ebfd51a26'
+sha256sums=('187bcbbf948a600af3456faa745ffe132d0cf70616e9274a308c0737487c402c'
+            '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
+            'd27c70ded13cd5f477641b4d9031da512fd9bf56957d2f2f7b8107a056e4625e'
+            'a3c223b281dfcc8eb31a0fa3484b2d572540357ae71a117faff95027fe9e442b'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
             '52cbbf41450806d766260bc4f1ea055f6f9fdd55d37ad831840b16d505beb0cc'
             '0a6a7408ccc0c94b5cce50dabc7ee318abcc1b9eaaedd3d83fd7e7d5a73b4d4f'
@@ -114,45 +99,30 @@ sha256sums=('624cd1bb400cb44d1b184b564ea2661e014e6af569331f302221d03c1ca172c5'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
             '4bcf61814a6daac8f72c46a425b9ce88c07f6bd95f6a0ac287d73dfd4d5da60b'
             'ff3bbe78d6f072d57f567878e870956242ee78ccddd258b1ec2e4729621138fe'
-            '3a6414ccd4a74fcea14b4327ad03473dd316559347ad748181b6ced3c184ddd3'
+            '11fe52062dedc9c2016fafc98899f4afb4cbd5327bd985c8d813dc72461f503a'
             '9df628fd530950e37d31da854cb314d536f33c83935adf5c47e71266a55f7004'
             '948298dff2552a7fa6f05b698bd7ab05a50b0af7516d2b9ac664d1ad38fda95f'
             '882156f8dfb21b5b1a85e9aaa48280540b4d1348f1bde0c358b47678aea9065a'
-            'f9994175cfd0bf55f36ac8331b2402b502b49cccb4ada631b1a079d07e34d481'
-            '62a16f7d355343aec265a0485dc753370f1c9110f100dde0ec4f278f9b7df25a'
-            '199fe7e21cc0681803dbc9a9d3681bc93ab01c0da22c07bb6c05a52620c4bea3'
             'a08fa9d2e7a943399fec7fb08eead6308bb51642c4592a9f57d1b79b06d5495c'
-            'b93edc9dfc4911acacda6f85ca2649852fd1f30e9a366f650380525ea2156f13'
-            '77d828e019650e34f7cc3adfa63c9b49018c9a14e586749a1fe6c841949abea0'
-            '48e12a587e3a93e73ca2bba9f3b418d70c0a56592581d2705384a07243c70d61'
-            'ce7c5a0ddacb67ff756c0f198a2357131768526575cc98459865ef0dfa3238f7'
+            'ed36bcab65f959200c91991e3337fd716883ef0915fbec65d6252f09fd72c666'
             '65b5745c2e07d93495a5aa1ff7269c89e7aef42acff0d018ab05663560bdf8f7'
             '71e5926efc30833a6fd756b9358529ac695fa688ae71cd74e31dd274ae1ecf05'
             '6d5371c96444e87ef912f476ff0a34f961579f7adcacafa2aec151a951ad4e7e'
             'bf2186776d96122136019b7b11aea1f0f46914bf107aa83c949e654290f7eed3'
             '78da5c2c011b2679f1309366c3964a919607db5fa1b76a3e426c5af67eded5a1'
             '4929f7a8033f34715c2a19b606c45d0d711e7328452ed1b31a5bf52a0c1a7232'
-            '2e5c65a554578883ce956690b21db7b546bf574bfdfb2a0dba3ba9e1fefd08ee'
-            'b2f3bb786b3279f8e95ada9bb6c9643f8982f1a04b079513028f23950fb8e099'
-            '72e425a79fd722d5cb96116c94d3a2f43d10121d7ea06ba3b13ce1f813c4dd69'
-            '5777550680a9c3409406d5250db11b1655c06c6465dca17dc5d76908a36df81e'
-            'c93e3a86fabed21c00cc28b7281cf8fa9a027dec0447899eb22a1be04152290e'
+            'e261cfdf1d03f741ba111c812f3c1d0be2bf2d58e68efe2477a5bd542cd85f2e'
             '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf'
-            '294acdc1a122ed247262ec5209d76f438fc915bf54e36c9d4e14ab8c6d620a83'
+            'bd510cae8138460ea4d9356ff93ee06a4a703077365f3816a24709402e790470'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
-            'e6fd7fbf249902cc87542af857c435251ff2e4c33c4707840277f0b2318e7f7b'
-            'b0eca175a618950acfa8b8220bacff4da3092c7efd21fe3f552199b9279944aa'
-            '78aa8afdb4add1e54c1b11926f7cb99a8ac36d660fbba327f93e24dde1217e09'
-            '2b8d553fc796affeaad3f9efab0c84fbf28618985fb7df70175f7a5fcec90a0d'
-            'c7f627d499bdc2a915e9abc0af89c7a8d9875b315493172236d0705a4ce718bd'
-            'e3350a83b44cf2424e7e151db1a6d961478823b7df9d183476a49fb238900964'
-            '674917bb86ad0e7c0607734327ac0009ea660d05f60fb4bb95c01981c07546c3'
-            '984d3d04242485db5bebb684f5cdafe6453dfded1f57b90119393573f83120e9'
-            'a09b373f0149e7be8cbde449cae618c01665e9c62374d52cdc4822f8833a283e'
-            'cc3a6da71a1f091f458e8dac0754e7db83991db368b053c50ac2f5513248e002'
-            'ae1eab0810f22dcbcff090aefebef49d2bccac67a7df696a7edb218cbe940c24'
-            '5cc6369b14b036508c07cadce1d8bfcac04bc42ae20c08b40132d36c471fd2c1'
-            'bfed603d238da74634bb0eb3bfe82780809d23297a45c0a1605cda10e11c1756'
+            'bc647f73ec860a0fe7d074c2377588816a616dc2a651b30d7b9cd168863a17c6'
+            '5059762e54c8dbe4262d48eafb8d486a54244eec71da5d7b61fc0f5f1c5c2ea7'
+            'f22c6983d496d9038fa0f4288ee6cbb5b46837fee5f644f4759e4c26dcdff262'
+            'ad78cbbb686baf426f83368db3f7bd4e86051d373652868208e8ba5d18ce68dc'
+            '4dc2cbc726048b5511c01c6c3cbb1e1073309f9be4bdbdc45b285fd6504345b9'
+            '8791520229802e19a4f50fcf70422e20bcff63656e1acf0920d3ec2c0f35107f'
+            '281787a4aaed0cf098554964865892404ceb17bdd966db4dcaa5cddfce093c21'
+            '4efdfcea27b787f0c6d5fc46fb652b2bba7c994a3ab9a681184bca4fd10a234f'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
             '040526a8ce8cde566fcf2d94b0f3ababc5ad1c8506fc2f2fc5099469c59640f2'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
