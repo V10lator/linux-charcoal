@@ -80,12 +80,14 @@ CONFIG_DRM_AMD_COLOR_STEAMDECK=y
 CONFIG_LENOVO_WMI_GAMEZONE=m
 CONFIG_LENOVO_WMI_TUNING=m
 CONFIG_LENOVO_LEGOS_HID=m
+CONFIG_HID_LENOVO_GO=m
 
 CONFIG_ZOTAC_ZONE_HID=m
 CONFIG_ZOTAC_ZONE_PLATFORM=m
 
 CONFIG_HID_ASUS_ALLY=m
 CONFIG_ASUS_ARMOURY=m
+CONFIG_ASUS_WMI_DEPRECATED_ATTRS=y
 
 # PARAVIRT options have overhead, even on bare metal boots. They can cause
 # spinlocks to not be inlined as well. Either way, we don't intend to run this
@@ -112,6 +114,8 @@ CONFIG_ATH11K_TRACING=y
 
 # Disable simple-framebuffer to fix logo regression
 CONFIG_SYSFB_SIMPLEFB=n
+CONFIG_DRM_EFIDRM=n
+CONFIG_DRM_VESADRM=n
 
 # Enable Extensible Scheduling Class
 CONFIG_SCHED_CLASS_EXT=y
@@ -119,5 +123,13 @@ CONFIG_SCHED_CLASS_EXT=y
 # Disable call depth tracking speculative execution vulnerability mitigation
 CONFIG_CALL_DEPTH_TRACKING=n
 
-# Enable ntsync (proton11+)
-CONFIG_NTSYNC=m
+# Xbox GIP driver
+CONFIG_JOYSTICK_XBOX_GIP=m
+CONFIG_JOYSTICK_XBOX_GIP_FF=y
+CONFIG_JOYSTICK_XBOX_GIP_LEDS=y
+
+# Disable drm panic screen
+CONFIG_DRM_PANIC=n
+
+# Enable Valve LEDs driver
+CONFIG_LEDS_VALVE=m
