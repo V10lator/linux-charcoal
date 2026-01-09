@@ -72,8 +72,6 @@ source=(
   "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/stable/0001-linux6.16.12-ADIOS-3.1.8.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
-  "01-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-1-a180b4c0c1c4@kernel.org/raw"
-  "02-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-2-a180b4c0c1c4@kernel.org/raw"
   "https://github.com/zen-kernel/zen-kernel/commit/f6ed65cd7bda9cb6009c6a12efd7c4311df31936.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/cab7ea1a4ef6685a133ae121ca27098b9dd31287.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/fb5c79d96cc87e4778ac0f2a53bc7c0c23078c54.patch"
@@ -113,8 +111,6 @@ sha256sums=('7d50e1509c5e7b2c36145a0872a0817fe12b6b2d02af3094047ac3b6a5de49a5'
             '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf'
             '36917a59a86929aa39531c9f9edaaa38f93146064f2dc3c9e05938cf529c9c85'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
-            'e6fd7fbf249902cc87542af857c435251ff2e4c33c4707840277f0b2318e7f7b'
-            'b0eca175a618950acfa8b8220bacff4da3092c7efd21fe3f552199b9279944aa'
             'bc647f73ec860a0fe7d074c2377588816a616dc2a651b30d7b9cd168863a17c6'
             '5059762e54c8dbe4262d48eafb8d486a54244eec71da5d7b61fc0f5f1c5c2ea7'
             'f22c6983d496d9038fa0f4288ee6cbb5b46837fee5f644f4759e4c26dcdff262'
