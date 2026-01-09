@@ -74,17 +74,14 @@ source=(
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
   "01-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-1-a180b4c0c1c4@kernel.org/raw"
   "02-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-2-a180b4c0c1c4@kernel.org/raw"
-  "https://github.com/zen-kernel/zen-kernel/commit/3d92c251c04b1b4c6363018220af42ec3a294d1e.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/67c446794b5fc16009bc1f31aee8846576796b11.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/032775267df11a87616d2ec7f09c0b1b12da5da7.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/e2db8ce3c52c7bd37e93728d6c12a483f17634bc.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/f5b82cc382eaf3ddf5c26f60965037bde8733445.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/44a6d7ca11b601b34724dc41e086576499a096bd.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/4706a3fb5823c97dc6acc1e86958b71e2c048ec5.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/8146f220f871c4db77c8363c831784041a5bcf7b.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/5f16843397798d2c709e3b8af4b1a73539d13aa8.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/eb51c53e5ded1743830368815c550b871f950738.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/5a8fabcd4e7396500f2c0070f8b7ce9106eb9bfa.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/f6ed65cd7bda9cb6009c6a12efd7c4311df31936.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/cab7ea1a4ef6685a133ae121ca27098b9dd31287.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/fb5c79d96cc87e4778ac0f2a53bc7c0c23078c54.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/21dd0495958b7c1bd34f2d83537a4f3af5b804c3.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/413db39ffc2d95bf43fa5690cbf6300f5d5e45bd.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/b418708702f7927a7922b90871ab1cdf1df9bb94.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/92850f57d0d3dd0c55a6556f4c4a9afd38da7f8a.patch"
+  "https://github.com/zen-kernel/zen-kernel/commit/e3afdec765f5277bbd3b2196e0facb8b428fb9d2.patch"
   "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
   "git+https://github.com/dlundqvist/xone.git#tag=v0.5.1"
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
@@ -118,17 +115,14 @@ sha256sums=('7d50e1509c5e7b2c36145a0872a0817fe12b6b2d02af3094047ac3b6a5de49a5'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
             'e6fd7fbf249902cc87542af857c435251ff2e4c33c4707840277f0b2318e7f7b'
             'b0eca175a618950acfa8b8220bacff4da3092c7efd21fe3f552199b9279944aa'
-            '78aa8afdb4add1e54c1b11926f7cb99a8ac36d660fbba327f93e24dde1217e09'
-            '2b8d553fc796affeaad3f9efab0c84fbf28618985fb7df70175f7a5fcec90a0d'
-            'c7f627d499bdc2a915e9abc0af89c7a8d9875b315493172236d0705a4ce718bd'
-            'e3350a83b44cf2424e7e151db1a6d961478823b7df9d183476a49fb238900964'
-            '674917bb86ad0e7c0607734327ac0009ea660d05f60fb4bb95c01981c07546c3'
-            '984d3d04242485db5bebb684f5cdafe6453dfded1f57b90119393573f83120e9'
-            'a09b373f0149e7be8cbde449cae618c01665e9c62374d52cdc4822f8833a283e'
-            'cc3a6da71a1f091f458e8dac0754e7db83991db368b053c50ac2f5513248e002'
-            'ae1eab0810f22dcbcff090aefebef49d2bccac67a7df696a7edb218cbe940c24'
-            '5cc6369b14b036508c07cadce1d8bfcac04bc42ae20c08b40132d36c471fd2c1'
-            'bfed603d238da74634bb0eb3bfe82780809d23297a45c0a1605cda10e11c1756'
+            'bc647f73ec860a0fe7d074c2377588816a616dc2a651b30d7b9cd168863a17c6'
+            '5059762e54c8dbe4262d48eafb8d486a54244eec71da5d7b61fc0f5f1c5c2ea7'
+            'f22c6983d496d9038fa0f4288ee6cbb5b46837fee5f644f4759e4c26dcdff262'
+            'ad78cbbb686baf426f83368db3f7bd4e86051d373652868208e8ba5d18ce68dc'
+            '4dc2cbc726048b5511c01c6c3cbb1e1073309f9be4bdbdc45b285fd6504345b9'
+            '8791520229802e19a4f50fcf70422e20bcff63656e1acf0920d3ec2c0f35107f'
+            '281787a4aaed0cf098554964865892404ceb17bdd966db4dcaa5cddfce093c21'
+            '4efdfcea27b787f0c6d5fc46fb652b2bba7c994a3ab9a681184bca4fd10a234f'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
             '040526a8ce8cde566fcf2d94b0f3ababc5ad1c8506fc2f2fc5099469c59640f2'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
