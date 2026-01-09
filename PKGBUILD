@@ -70,7 +70,7 @@ source=(
   "304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
   "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
   "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
-  "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/stable/0001-linux6.18.3-ADIOS-3.1.8.patch"
+  "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/stable/0001-linux6.16.12-ADIOS-3.1.8.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/refs/heads/main/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
   "01-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-1-a180b4c0c1c4@kernel.org/raw"
   "02-wcslen.patch::https://lore.kernel.org/llvm/20250328-string-add-wcslen-for-llvm-opt-v3-2-a180b4c0c1c4@kernel.org/raw"
@@ -114,7 +114,7 @@ sha256sums=('7d50e1509c5e7b2c36145a0872a0817fe12b6b2d02af3094047ac3b6a5de49a5'
             '4929f7a8033f34715c2a19b606c45d0d711e7328452ed1b31a5bf52a0c1a7232'
             'e261cfdf1d03f741ba111c812f3c1d0be2bf2d58e68efe2477a5bd542cd85f2e'
             '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf'
-            '27bbde2089c88cd391ee6cb4ff777c9632b05a52b250be1a2e2f946159aadee4'
+            '36917a59a86929aa39531c9f9edaaa38f93146064f2dc3c9e05938cf529c9c85'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
             'e6fd7fbf249902cc87542af857c435251ff2e4c33c4707840277f0b2318e7f7b'
             'b0eca175a618950acfa8b8220bacff4da3092c7efd21fe3f552199b9279944aa'
