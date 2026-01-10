@@ -193,7 +193,7 @@ prepare() {
   cd ../xpad-noone
   patch -Np1 < ../xpad-noone.diff
 
-  echo "Prepared $pkgbase version $(<version)"
+  echo "Prepared $pkgbase version $(<../$_srcname/version)"
 }
 
 build() {
