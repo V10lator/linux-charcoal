@@ -64,6 +64,7 @@ source=(
   "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/2000_BT-Check-key-sizes-only-if-Secure-Simple-Pairing-enabled.patch"
   "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/2990_libbpf-v2-workaround-Wmaybe-uninitialized-false-pos.patch"
   "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/5010_enable-cpu-optimizations-universal.patch"
+  "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.16/misc/dkms-clang.patch"
   "0001-always-print-firmware-file-name.patch::https://732852.bugs.gentoo.org/attachment.cgi?id=649432"
   "302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
   "303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch;hb=0ff1553bd731c0db28043fc9caab90bdc32587f3"
@@ -103,6 +104,7 @@ sha256sums=('7d50e1509c5e7b2c36145a0872a0817fe12b6b2d02af3094047ac3b6a5de49a5'
             '882156f8dfb21b5b1a85e9aaa48280540b4d1348f1bde0c358b47678aea9065a'
             'a08fa9d2e7a943399fec7fb08eead6308bb51642c4592a9f57d1b79b06d5495c'
             'ed36bcab65f959200c91991e3337fd716883ef0915fbec65d6252f09fd72c666'
+            '65b5745c2e07d93495a5aa1ff7269c89e7aef42acff0d018ab05663560bdf8f7'
             '6d5371c96444e87ef912f476ff0a34f961579f7adcacafa2aec151a951ad4e7e'
             'bf2186776d96122136019b7b11aea1f0f46914bf107aa83c949e654290f7eed3'
             '78da5c2c011b2679f1309366c3964a919607db5fa1b76a3e426c5af67eded5a1'
