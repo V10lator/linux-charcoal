@@ -72,6 +72,7 @@ source=(
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0009-ntsync.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0013-zstd.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/misc/dkms-clang.patch"
+  "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.16/misc/0001-clang-polly.patch"
   "0001-always-print-firmware-file-name.patch::https://732852.bugs.gentoo.org/attachment.cgi?id=649432"
   "302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/302-mac80211-minstrel_ht-fix-MINSTREL_FRAC-macro.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
   "303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch::https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=package/kernel/mac80211/patches/subsys/303-mac80211-minstrel_ht-reduce-fluctuations-in-rate-pro.patch;hb=c8839fa6f4f32348543e3132639c241ed91a73ba"
@@ -105,7 +106,7 @@ source=(
 sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
             'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
-            '29a6db6a1c16cb257befc3f663e6ad6fcbe718a4585e70fc433ee190c85b28f5'
+            'b0528cb0761670d1034174e094acf17bab1781bb46ca56cf31df510ebfd51a26'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
             '83075e8d67deba468962eb2839a62571d6ba5e2f76d0c02922fdeb01c97d3a4e'
             '0a6a7408ccc0c94b5cce50dabc7ee318abcc1b9eaaedd3d83fd7e7d5a73b4d4f'
@@ -128,6 +129,7 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             '0e3f5ffe5c4d07d50df83f040ce9de91d00c1aa06cfe6b57a8a0fda81fd8ac1e'
             'ce7c5a0ddacb67ff756c0f198a2357131768526575cc98459865ef0dfa3238f7'
             '65b5745c2e07d93495a5aa1ff7269c89e7aef42acff0d018ab05663560bdf8f7'
+            '71e5926efc30833a6fd756b9358529ac695fa688ae71cd74e31dd274ae1ecf05'
             '6d5371c96444e87ef912f476ff0a34f961579f7adcacafa2aec151a951ad4e7e'
             'bf2186776d96122136019b7b11aea1f0f46914bf107aa83c949e654290f7eed3'
             '78da5c2c011b2679f1309366c3964a919607db5fa1b76a3e426c5af67eded5a1'
@@ -286,6 +288,7 @@ _package-headers() {
     llvm
     clang
     lld
+    polly
   )
 
   cd $_srcname

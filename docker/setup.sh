@@ -36,7 +36,7 @@ pushd /docker
   esac
 
   echo -en "y\ny\n" | pacman -Scc
-  pacman -Syu --noconfirm bc cpio pahole python llvm clang lld
+  pacman -Syu --noconfirm bc cpio pahole python llvm clang lld polly
   echo -en "y\ny\n" | pacman -Scc
 popd
 rm -rf /docker /usr/share/man /usr/share/info /usr/share/locale
