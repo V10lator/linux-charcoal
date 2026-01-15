@@ -118,3 +118,6 @@ CONFIG_SCHED_CLASS_EXT=y
 
 # Disable call depth tracking speculative execution vulnerability mitigation
 CONFIG_CALL_DEPTH_TRACKING=n
+
+# Enable ntsync (proton11+)
+CONFIG_NTSYNC=m

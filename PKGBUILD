@@ -4,9 +4,9 @@
 
 pkgbase=linux-charcoal-611
 _nepbase=linux-neptune-611
-_tag=6.11.11-valve26
+_tag=6.11.11-valve27
 pkgver=${_tag//-/.}
-pkgrel=6
+pkgrel=1
 pkgdesc='Linux'
 url="https://gitlab.steamos.cloud/jupiter/linux-integration/-/tree/$_tag"
 arch=(x86_64)
@@ -69,7 +69,6 @@ source=(
   "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2991_libbpf-workaround-Wmaybe-uninitialized-false-pos.patch"
   "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/2996_kbuild-bpf-jobs-val-pahole-fix.patch"
   "https://dev.gentoo.org/~mpagano/genpatches/trunk/6.11/5010_enable-cpu-optimizations-universal.patch"
-  "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0009-ntsync.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/0013-zstd.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.11/misc/dkms-clang.patch"
   "https://raw.githubusercontent.com/CachyOS/kernel-patches/refs/heads/master/6.16/misc/0001-clang-polly.patch"
@@ -103,9 +102,9 @@ source=(
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
 )
-sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
+sha256sums=('624cd1bb400cb44d1b184b564ea2661e014e6af569331f302221d03c1ca172c5'
             '8d105c501a1648e2752fe74c99a7c61e2a441156b3643dfa66f1d550d01957f3'
-            'b2677c5f37bcb15e7e871d24b90f6dae6e0b1be6813ee067111f468e170ea7e4'
+            '0ec4984620d1ec3b00ed2236e2f1b90ee7f5aa55806bc8b1e6bd051b3798e5a5'
             'b0528cb0761670d1034174e094acf17bab1781bb46ca56cf31df510ebfd51a26'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
             '83075e8d67deba468962eb2839a62571d6ba5e2f76d0c02922fdeb01c97d3a4e'
@@ -126,7 +125,6 @@ sha256sums=('57a028ca767e49d221659bc1ef03d7864d42b803b634a7de25a541b414003d34'
             'b93edc9dfc4911acacda6f85ca2649852fd1f30e9a366f650380525ea2156f13'
             '77d828e019650e34f7cc3adfa63c9b49018c9a14e586749a1fe6c841949abea0'
             '48e12a587e3a93e73ca2bba9f3b418d70c0a56592581d2705384a07243c70d61'
-            '0e3f5ffe5c4d07d50df83f040ce9de91d00c1aa06cfe6b57a8a0fda81fd8ac1e'
             'ce7c5a0ddacb67ff756c0f198a2357131768526575cc98459865ef0dfa3238f7'
             '65b5745c2e07d93495a5aa1ff7269c89e7aef42acff0d018ab05663560bdf8f7'
             '71e5926efc30833a6fd756b9358529ac695fa688ae71cd74e31dd274ae1ecf05'
