@@ -2,4 +2,4 @@
 # It sets the I/O scheduler to ADIOS for all storages.
 # We do this on priority 65 to overwrite /lib/udev/rules.d/64-btrfs-zoned.rules
 # as this is not needed on kernels > 6.10 and SteamDeck doesn't use zoned storage.
-ACTION=="add|change", KERNEL!="loop*", KERNEL!="zram*" ATTR{queue/scheduler}="adios"
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL!="loop*", KERNEL!="zram*" ATTR{queue/scheduler}="adios"
