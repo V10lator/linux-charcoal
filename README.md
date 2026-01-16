@@ -7,17 +7,13 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Add WiFi patches from OpenWRT
 - Change maximum allowed CPU frequency on Steam Deck from 3.5 to 4.2 GHz (as requested on Discord)
 - Change maximum PPT limit on Steam Deck from 30 to 50 watt (as requested at #5)
-- ~~Add NTSYNC (from CachyOS)~~ Valve added it to 6.11.11-valve27
 - Add wait on multiple futexes opcode for fsync (from tkg)
 - Add [ADIOS](https://github.com/firelzrd/adios)
-- Add Binder module (for Waydroid)
-- Switch sheduling frequency to 1000 Hz
 - Switch default DRM scheduling policy to round-robin
 - Optimize kernel with -O3 (from tkg)
 - Optimize for Zen 2 (from Gentoo)
 - Build with LLVM + LTO + polly
 - Build-in various always needed modules for LTO to shine even more
-- Update zstd (from CachyOS)
 - Disable a lot of debugging
 - Disable CPU mitigations
 - Disable sound input validation
@@ -29,6 +25,10 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Fix dkms with LLVM clang (from CachyOS)
 - Add [ryzen_smu](https://gitlab.com/leogx9r/ryzen_smu)
 - Add [xone](https://github.com/medusalix/xone), [xpad-noone](https://github.com/medusalix/xpad-noone) and [xpadneo](https://github.com/atar-axis/xpadneo)
+- ~~Add NTSYNC (from CachyOS)~~ Valve added it to 6.11.11-valve27
+- ~~Add Binder module (for Waydroid)~~ Arch Linux enabled it with 6.12.7
+- ~~Switch sheduling frequency to 1000 Hz~~ Arch Linux changed it with 6.13.1
+- ~~Update zstd (from CachyOS)~~ No longer needed for modern kernels
 
 # Install
 Download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run the following on your Steam Deck:
