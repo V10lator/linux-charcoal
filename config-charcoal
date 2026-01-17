@@ -39,6 +39,10 @@ CONFIG_ZEN_INTERACTIVE=y
 CONFIG_JOYSTICK_XPAD=n
 CONFIG_JOYSTICK_XBOX_GIP=n
 
+# Change IO delay type
+CONFIG_IO_DELAY_0X80=n
+CONFIG_IO_DELAY_NONE=y
+
 # LTO optimization: Build common things into the kernel
 CONFIG_TLS=y
 CONFIG_INPUT_UINPUT=y
