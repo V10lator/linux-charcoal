@@ -74,11 +74,12 @@ source=(
   "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/stable/0001-linux6.16.12-ADIOS-3.1.8.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
+  "https://raw.githubusercontent.com/firelzrd/bore-scheduler/5cfd8ed4f9c3a0e58b1667ccc37a928278656044/patches/stable/linux-6.16-bore/0001-linux6.16.0-bore-6.5.2.patch"
+  "https://raw.githubusercontent.com/firelzrd/bore-scheduler/69c9409354ad8be29280e97ceccb507d2c394be1/patches/additions/0002-sched-ext-coexistence-fix.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/f6ed65cd7bda9cb6009c6a12efd7c4311df31936.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/cab7ea1a4ef6685a133ae121ca27098b9dd31287.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/fb5c79d96cc87e4778ac0f2a53bc7c0c23078c54.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/21dd0495958b7c1bd34f2d83537a4f3af5b804c3.patch"
-  "https://github.com/zen-kernel/zen-kernel/commit/413db39ffc2d95bf43fa5690cbf6300f5d5e45bd.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/b418708702f7927a7922b90871ab1cdf1df9bb94.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/92850f57d0d3dd0c55a6556f4c4a9afd38da7f8a.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/e3afdec765f5277bbd3b2196e0facb8b428fb9d2.patch"
@@ -115,11 +116,12 @@ sha256sums=('187bcbbf948a600af3456faa745ffe132d0cf70616e9274a308c0737487c402c'
             '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf'
             'bd510cae8138460ea4d9356ff93ee06a4a703077365f3816a24709402e790470'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
+            '99a66ba41a7c40746f770b28430598c655f42e09e1ce196b1f28c9f4d89f247c'
+            'cdf138cdb94fcb4e2988bd7d2873a51522fdb7212ec314fde202facaf8210b5c'
             'bc647f73ec860a0fe7d074c2377588816a616dc2a651b30d7b9cd168863a17c6'
             '5059762e54c8dbe4262d48eafb8d486a54244eec71da5d7b61fc0f5f1c5c2ea7'
             'f22c6983d496d9038fa0f4288ee6cbb5b46837fee5f644f4759e4c26dcdff262'
             'ad78cbbb686baf426f83368db3f7bd4e86051d373652868208e8ba5d18ce68dc'
-            '4dc2cbc726048b5511c01c6c3cbb1e1073309f9be4bdbdc45b285fd6504345b9'
             '8791520229802e19a4f50fcf70422e20bcff63656e1acf0920d3ec2c0f35107f'
             '281787a4aaed0cf098554964865892404ceb17bdd966db4dcaa5cddfce093c21'
             '4efdfcea27b787f0c6d5fc46fb652b2bba7c994a3ab9a681184bca4fd10a234f'
