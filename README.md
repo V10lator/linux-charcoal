@@ -8,6 +8,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Change maximum allowed CPU frequency on Steam Deck from 3.5 to 4.2 GHz (as requested on Discord)
 - Change maximum PPT limit on Steam Deck from 30 to 50 watt (as requested at #5)
 - Add wait on multiple futexes opcode for fsync (from tkg)
+- Add [BORE](https://github.com/firelzrd/bore-scheduler)
 - Add [ADIOS](https://github.com/firelzrd/adios)
 - Switch default DRM scheduling policy to round-robin
 - Optimize kernel with -O3 (from tkg)
