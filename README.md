@@ -9,6 +9,7 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Change maximum PPT limit on Steam Deck from 30 to 50 watt (as requested at #5)
 - Add wait on multiple futexes opcode for fsync (from tkg)
 - Add [BORE](https://github.com/firelzrd/bore-scheduler)
+- Add [le9uo](https://github.com/firelzrd/le9uo)
 - Add [ADIOS](https://github.com/firelzrd/adios)
 - Switch default DRM scheduling policy to round-robin
 - Optimize kernel with -O3 (from tkg)

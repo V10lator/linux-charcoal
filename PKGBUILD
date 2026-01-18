@@ -76,6 +76,8 @@ source=(
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
   "https://raw.githubusercontent.com/firelzrd/bore-scheduler/5cfd8ed4f9c3a0e58b1667ccc37a928278656044/patches/stable/linux-6.16-bore/0001-linux6.16.0-bore-6.5.2.patch"
   "https://raw.githubusercontent.com/firelzrd/bore-scheduler/69c9409354ad8be29280e97ceccb507d2c394be1/patches/additions/0002-sched-ext-coexistence-fix.patch"
+  "https://raw.githubusercontent.com/firelzrd/le9uo/0d9b6ef31b391a9dfcabc9d91ff78c4bfe98266e/le9uo_patches/stable/preset-B/0001-linux6.16-le9uo-1.15b.patch"
+  "https://raw.githubusercontent.com/firelzrd/le9uo/0d9b6ef31b391a9dfcabc9d91ff78c4bfe98266e/le9uo_patches/0002-vm.workingset_protection-On-by-default.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/f6ed65cd7bda9cb6009c6a12efd7c4311df31936.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/cab7ea1a4ef6685a133ae121ca27098b9dd31287.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/fb5c79d96cc87e4778ac0f2a53bc7c0c23078c54.patch"
@@ -118,6 +120,8 @@ sha256sums=('187bcbbf948a600af3456faa745ffe132d0cf70616e9274a308c0737487c402c'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
             '99a66ba41a7c40746f770b28430598c655f42e09e1ce196b1f28c9f4d89f247c'
             'cdf138cdb94fcb4e2988bd7d2873a51522fdb7212ec314fde202facaf8210b5c'
+            '40e7df4ba34fe43c000ccd7ed0ec8ffa8838c3081815bd86f9436b99d775426c'
+            'e4b22a534a874a0b59dd1e883e28682436774c138bd9d98dce9aa577d767cfe3'
             'bc647f73ec860a0fe7d074c2377588816a616dc2a651b30d7b9cd168863a17c6'
             '5059762e54c8dbe4262d48eafb8d486a54244eec71da5d7b61fc0f5f1c5c2ea7'
             'f22c6983d496d9038fa0f4288ee6cbb5b46837fee5f644f4759e4c26dcdff262'
