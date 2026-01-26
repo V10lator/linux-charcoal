@@ -37,6 +37,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         run: docker build . -t charcoal
+      - name: Set up SWAP space
+        run: mkswap -s 16G -F /mnt/charcoal-swap.img && swapon /mnt/charcoal-swap.img
       - name: Build Kernel
         run: |
           docker run --rm -v ${PWD}:/project charcoal chown -R nobody /project
