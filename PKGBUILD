@@ -92,7 +92,7 @@ source=(
 sha256sums=('64a89c273cbc893312db35caec89f784cca7d878ab6b01fad4dd3ba4a8eedcd1'
             '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
             'd27c70ded13cd5f477641b4d9031da512fd9bf56957d2f2f7b8107a056e4625e'
-            'e4cadfd8aa7abe96c68eab52eeb94423c1ac723e47b5b6a3fc6d96fff97d10a6'
+            'efb91cc22c3ab10ebc5b1a3dcaae561b4f7cc90f02048ad34148f242eccbc83b'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
             '52cbbf41450806d766260bc4f1ea055f6f9fdd55d37ad831840b16d505beb0cc'
             '0a6a7408ccc0c94b5cce50dabc7ee318abcc1b9eaaedd3d83fd7e7d5a73b4d4f'

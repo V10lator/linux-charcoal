@@ -41,6 +41,7 @@ CONFIG_ZEN_INTERACTIVE=y
 # Disable in favour of xpad-noone
 CONFIG_JOYSTICK_XPAD=n
 CONFIG_JOYSTICK_XBOX_GIP=n
+CONFIG_MT76x2U=n
 
 # Change IO delay type
 CONFIG_IO_DELAY_0X80=n
