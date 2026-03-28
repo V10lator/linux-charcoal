@@ -44,7 +44,7 @@ options=(
   !strip
 )
 _srcname=archlinux-linux-charcoal
-_xpadneo_version=0.9.8
+_xpadneo_version=0.10.1
 source=(
   "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_tag"
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
@@ -85,7 +85,7 @@ source=(
   "https://github.com/zen-kernel/zen-kernel/commit/92850f57d0d3dd0c55a6556f4c4a9afd38da7f8a.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/e3afdec765f5277bbd3b2196e0facb8b428fb9d2.patch"
   "git+https://github.com/amkillam/ryzen_smu.git#commit=9f9569f889935f7c7294cc32c1467e5a4081701a"
-  "git+https://github.com/dlundqvist/xone.git#tag=v0.5.1"
+  "git+https://github.com/dlundqvist/xone.git#tag=v0.5.8"
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
 )
@@ -128,9 +128,9 @@ sha256sums=('ec6c7a6813e97512713c797f71bb57e55a59edc1d85e3925a45e223671118bc8'
             '281787a4aaed0cf098554964865892404ceb17bdd966db4dcaa5cddfce093c21'
             '4efdfcea27b787f0c6d5fc46fb652b2bba7c994a3ab9a681184bca4fd10a234f'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
-            '040526a8ce8cde566fcf2d94b0f3ababc5ad1c8506fc2f2fc5099469c59640f2'
+            '7ba61ccf2ddb508d6adb30906d3d57dc0ce1bc64a6d1a41796eb94a8584ea63b'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
-            'fdf96dd387f257b060c42b3351851e552a3c6ada16a9404314e5d9bba14efa95')
+            '296653a6a218abe7ccef7bdfa682d402b0d01525dbf7955f42f32b48615d9b1f')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
