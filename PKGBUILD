@@ -73,6 +73,7 @@ source=(
   "304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch::https://git.openwrt.org/openwrt/openwrt/plain/package/kernel/mac80211/patches/subsys/304-mac80211-minstrel_ht-rework-rate-downgrade-code-and-.patch?id=0ff1553bd731c0db28043fc9caab90bdc32587f3"
   "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/openwrt/openwrt/plain/package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch?id=0ff1553bd731c0db28043fc9caab90bdc32587f3"
   "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
+  "ath11k-upstream.patch::https://lore.kernel.org/all/20260319065608.2408179-1-reshma.rajkumar@oss.qualcomm.com/raw"
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/stable/0001-linux6.16.12-ADIOS-3.1.8.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
   "https://raw.githubusercontent.com/firelzrd/bore-scheduler/5cfd8ed4f9c3a0e58b1667ccc37a928278656044/patches/stable/linux-6.16-bore/0001-linux6.16.0-bore-6.5.2.patch"
@@ -116,6 +117,7 @@ sha256sums=('ec6c7a6813e97512713c797f71bb57e55a59edc1d85e3925a45e223671118bc8'
             '4929f7a8033f34715c2a19b606c45d0d711e7328452ed1b31a5bf52a0c1a7232'
             'e261cfdf1d03f741ba111c812f3c1d0be2bf2d58e68efe2477a5bd542cd85f2e'
             '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf'
+            '74db38cd3c353c295d2bd11159ccafc4396b8fb21735a536f5bb5ab71093a90f'
             'bd510cae8138460ea4d9356ff93ee06a4a703077365f3816a24709402e790470'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
             '99a66ba41a7c40746f770b28430598c655f42e09e1ce196b1f28c9f4d89f247c'
