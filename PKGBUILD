@@ -5,10 +5,11 @@
 pkgbase=linux-charcoal-616
 _nepbase=linux-neptune-616
 _tag=6.16.12-valve14
+_neptag=$_tag-frog1
 pkgver=${_tag//-/.}
 pkgrel=1
 pkgdesc='Linux'
-url="https://gitlab.steamos.cloud/jupiter/linux-integration/-/tree/$_tag"
+url="https://gitlab.steamos.cloud/jupiter/linux-integration/-/tree/$_neptag"
 arch=(x86_64)
 license=(GPL-2.0-only)
 makedepends=(
@@ -46,7 +47,7 @@ options=(
 _srcname=archlinux-linux-charcoal
 _xpadneo_version=0.10.1
 source=(
-  "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_tag"
+  "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_neptag"
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
   config-neptune  # Jupiter: the neptune kernel fragment file (overrides 'config' above)
   config-charcoal # Charcoal: The Charcoal kernel fragment file
@@ -90,7 +91,7 @@ source=(
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
 )
-sha256sums=('ec6c7a6813e97512713c797f71bb57e55a59edc1d85e3925a45e223671118bc8'
+sha256sums=('50210a8cf76e828feff3c129b3a4f8e8d54a8f433f98e5a8df691a603a9f98c4'
             '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
             '8fec943cf08cb8988da28b4829a4b192a71aef2887df48004ebb80f6e9597020'
             'efb91cc22c3ab10ebc5b1a3dcaae561b4f7cc90f02048ad34148f242eccbc83b'
