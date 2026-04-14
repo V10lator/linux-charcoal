@@ -4,12 +4,12 @@
 
 pkgbase=linux-charcoal-616
 _nepbase=linux-neptune-616
-_tag=6.16.12-valve14
-_neptag=$_tag-frog1
-pkgver=${_tag//-/.}
+_tag=6.16.12-valve14-frog1
+_ver=1
+pkgver=${_tag//-/.}.cc$_ver
 pkgrel=1
 pkgdesc='Linux'
-url="https://gitlab.steamos.cloud/jupiter/linux-integration/-/tree/$_neptag"
+url="https://gitlab.steamos.cloud/jupiter/linux-integration/-/tree/$_tag"
 arch=(x86_64)
 license=(GPL-2.0-only)
 makedepends=(
@@ -47,7 +47,7 @@ options=(
 _srcname=archlinux-linux-charcoal
 _xpadneo_version=0.10.1
 source=(
-  "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_neptag"
+  "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_tag"
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
   config-neptune  # Jupiter: the neptune kernel fragment file (overrides 'config' above)
   config-charcoal # Charcoal: The Charcoal kernel fragment file
