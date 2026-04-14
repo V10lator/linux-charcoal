@@ -24,8 +24,8 @@ Works on Steam Deck and possibly other AMD based handheld PCs.
 - Add some Zen Linux patches
 - Small fixes (from Gentoo)
 - Fix dkms with LLVM clang (from CachyOS)
-- Add [ryzen_smu](https://gitlab.com/leogx9r/ryzen_smu)
-- Add [xone](https://github.com/medusalix/xone), [xpad-noone](https://github.com/medusalix/xpad-noone) and [xpadneo](https://github.com/atar-axis/xpadneo)
+- Add [ryzen_smu](https://github.com/amkillam/ryzen_smu)
+- Add [xone](https://github.com/dlundqvist/xone), [xpad-noone](https://github.com/forkymcforkface/xpad-noone) and [xpadneo](https://github.com/atar-axis/xpadneo)
 - ~~Add NTSYNC (from CachyOS)~~ Valve added it to 6.11.11-valve27
 - ~~Add Binder module (for Waydroid)~~ Arch Linux enabled it with 6.12.7
 - ~~Switch sheduling frequency to 1000 Hz~~ Arch Linux changed it with 6.13.1
