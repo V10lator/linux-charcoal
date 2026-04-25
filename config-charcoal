@@ -589,3 +589,7 @@ CONFIG_ATH6KL_TRACING=n
 CONFIG_ATH10K_TRACING=n
 CONFIG_ATH12K_TRACING=n
 
+# Disable old network drivers removed from Linux 7.1 cause of bugs
+CONFIG_VORTEX=n
+# Go one step further: Completely remove PCMCIA support. ISA is disabled already, so this makes the above list of 7.1 removals really small
+CONFIG_PCMCIA=n
