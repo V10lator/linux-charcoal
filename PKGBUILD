@@ -60,9 +60,9 @@ source=(
   ryzen_smu.diff
   xpad-noone.diff
   "c23.patch::https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patch/?id=d70f79fef65810faf64dbae1f3a1b5623cdb2345"
-  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.16/0002-clear-patches.patch"
-  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.11/0007-v6.11-fsync1_via_futex_waitv.patch"
-  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/refs/heads/master/linux-tkg-patches/6.16/0013-optimize_harder_O3.patch"
+  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/d837d80398a62ea884caabad36530093f9711d49/linux-tkg-patches/6.16/0002-clear-patches.patch"
+  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/d837d80398a62ea884caabad36530093f9711d49/linux-tkg-patches/6.11/0007-v6.11-fsync1_via_futex_waitv.patch"
+  "https://raw.githubusercontent.com/Frogging-Family/linux-tkg/d837d80398a62ea884caabad36530093f9711d49/linux-tkg-patches/6.16/0013-optimize_harder_O3.patch"
   "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/2000_BT-Check-key-sizes-only-if-Secure-Simple-Pairing-enabled.patch"
   "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/2990_libbpf-v2-workaround-Wmaybe-uninitialized-false-pos.patch"
   "https://dev.gentoo.org/~alicef/genpatches/trunk/6.16/5010_enable-cpu-optimizations-universal.patch"
@@ -106,7 +106,7 @@ sha256sums=('84db1b9dd84936fdcdd4946c36e9d1eee3535c76b9bb8e0197ed7d96a610863d'
             'ab6b17b1f9cc4b322f0050d2e8cede75e44e069854e9bdc22068356530d628e8'
             '11fe52062dedc9c2016fafc98899f4afb4cbd5327bd985c8d813dc72461f503a'
             '9df628fd530950e37d31da854cb314d536f33c83935adf5c47e71266a55f7004'
-            '948298dff2552a7fa6f05b698bd7ab05a50b0af7516d2b9ac664d1ad38fda95f'
+            '9e7b20068cdfe6a00b64d7488bdc47966fa130a07a3eae02fa57caef5d35d4ec'
             '882156f8dfb21b5b1a85e9aaa48280540b4d1348f1bde0c358b47678aea9065a'
             'a08fa9d2e7a943399fec7fb08eead6308bb51642c4592a9f57d1b79b06d5495c'
             'ed36bcab65f959200c91991e3337fd716883ef0915fbec65d6252f09fd72c666'
