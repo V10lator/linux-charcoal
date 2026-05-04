@@ -57,6 +57,7 @@ source=(
   vangogh_allow_higher_cpu_freq.patch
   vangogh_higher_max_power_limit.patch
   drm_sched_rr_default.patch
+  re-swappiness-v1.2_backported.patch
   ryzen_smu.diff
   xpad-noone.diff
   "c23.patch::https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patch/?id=d70f79fef65810faf64dbae1f3a1b5623cdb2345"
@@ -101,6 +102,7 @@ sha256sums=('c5bf5f0ab7b0ed0ede6669502afd6b45ef53dc8ca33f07c3439f8fa943c878ec'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
+            '35dd98092d6900962dd98fa28fbccbdff07e67eafed5088fecac67b1cbfdfdd8'
             '4bcf61814a6daac8f72c46a425b9ce88c07f6bd95f6a0ac287d73dfd4d5da60b'
             'ff3bbe78d6f072d57f567878e870956242ee78ccddd258b1ec2e4729621138fe'
             'ab6b17b1f9cc4b322f0050d2e8cede75e44e069854e9bdc22068356530d628e8'
