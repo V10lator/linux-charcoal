@@ -45,7 +45,7 @@ options=(
   !strip
 )
 _srcname=archlinux-linux-charcoal
-_xpadneo_version=0.10.1
+_xpadneo_version=0.10.2
 source=(
   "$_srcname::git+https://github.com/evlaV/linux-integration.git#tag=$_tag"
   config          # Upstream Arch Linux kernel configuration file, DO NOT EDIT!!!
@@ -135,7 +135,7 @@ sha256sums=('c5bf5f0ab7b0ed0ede6669502afd6b45ef53dc8ca33f07c3439f8fa943c878ec'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
             '7ba61ccf2ddb508d6adb30906d3d57dc0ce1bc64a6d1a41796eb94a8584ea63b'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
-            '296653a6a218abe7ccef7bdfa682d402b0d01525dbf7955f42f32b48615d9b1f')
+            '26b3a811d38471a42229fa037cb6d2bb5ff78f19f45a17c7f263339ee67769a7')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
