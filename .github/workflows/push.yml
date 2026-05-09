@@ -13,6 +13,10 @@ jobs:
   build-kernel:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 16
       - name: Free up space (1)
         run: find /opt/ -maxdepth 1 -mindepth 1 '!' -path /opt/containerd '!' -path /opt/actionarchivecache '!' -path /opt/runner '!' -path /opt/runner-cache -exec echo Deleting '{}' ';' -exec rm -rf '{}' ';'
       - name: Free up space (2)
