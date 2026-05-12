@@ -93,6 +93,7 @@ source=(
   "git+https://github.com/dlundqvist/xone.git#tag=v0.5.8"
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
+   6.16-poc-selector-v2.6.1.patch 
 )
 sha256sums=('a69eea3b189ab64e65608140d6cd7c57823d1b39b361e876197eec1b4d1db957'
             '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
@@ -139,7 +140,8 @@ sha256sums=('a69eea3b189ab64e65608140d6cd7c57823d1b39b361e876197eec1b4d1db957'
             '26aed703ca1a74aa33bd76e632a63810840f7549849435c2a8e893985ff6e2c9'
             '7ba61ccf2ddb508d6adb30906d3d57dc0ce1bc64a6d1a41796eb94a8584ea63b'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
-            '26b3a811d38471a42229fa037cb6d2bb5ff78f19f45a17c7f263339ee67769a7')
+            '26b3a811d38471a42229fa037cb6d2bb5ff78f19f45a17c7f263339ee67769a7'
+            '14dabfb0452a3a817e8d809fb28eb7565512e95386d789c627b62baf136e001f')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
