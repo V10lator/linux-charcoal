@@ -4,7 +4,7 @@
 
 pkgbase=linux-charcoal-616
 _nepbase=linux-neptune-616
-_tag=6.16.12-valve18
+_tag=6.16.12-valve21
 _ver=1
 pkgver=${_tag//-/.}.cc$_ver
 pkgrel=1
@@ -94,9 +94,9 @@ source=(
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
 )
-sha256sums=('97be6589aa86f49aa901cd8ac950444125efa305d0dfecd1ce18afca6b074065'
+sha256sums=('a69eea3b189ab64e65608140d6cd7c57823d1b39b361e876197eec1b4d1db957'
             '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
-            '8fec943cf08cb8988da28b4829a4b192a71aef2887df48004ebb80f6e9597020'
+            'd88eaf0f94bae470040e4882f334c05b1bb2ab0a99e4b7299aa0b2337810ab8d'
             '7eb7e185a17757b39d44a8eaf134cf0f2aeacffb39d5f846bf0f4b4d438a63d9'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
             '52cbbf41450806d766260bc4f1ea055f6f9fdd55d37ad831840b16d505beb0cc'
