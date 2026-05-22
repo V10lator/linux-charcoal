@@ -72,6 +72,9 @@ CONFIG_BT=y
 CONFIG_BT_RFCOMM=y
 CONFIG_I2C_CHARDEV=y
 CONFIG_SND_AMD_ACP_CONFIG=y
+CONFIG_CRYPTO_LZ4=y
+CONFIG_CRYPTO_DEV_CCP_DD=y
+CONFIG_CRYPTO_DEV_CCP_CRYPTO=y
 
 # LTO optimization: Build Steam Deck specific things into the kernel
 # TODO: Need a lsmod of a steam deck lcd
