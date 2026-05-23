@@ -99,6 +99,7 @@ CONFIG_SOUNDWIRE=y
 CONFIG_SOUNDWIRE_AMD=y
 CONFIG_SND_SOC_NAU8821=y
 CONFIG_SND_SOC_SOF_PCI=y
+CONFIG_F2FS_FS=y
 
 # LTO optimization: Build Steam Machine specific things into the kernel
 # TODO: Needs a lsmod of steam machine
