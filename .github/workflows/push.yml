@@ -19,16 +19,16 @@ jobs:
           echo 90   | sudo tee /sys/module/zswap/parameters/max_pool_percent
           echo 1    | sudo tee /sys/module/zswap/parameters/shrinker_enabled
           echo 1    | sudo tee /sys/module/zswap/parameters/enabled
-      - name: Set Swap Space
-        uses: pierotofy/set-swap-space@master
-        with:
-          swap-size-gb: 16
       - name: Free up space (1)
         run: find /opt/ -maxdepth 1 -mindepth 1 '!' -path /opt/containerd '!' -path /opt/actionarchivecache '!' -path /opt/runner '!' -path /opt/runner-cache -exec echo Deleting '{}' ';' -exec rm -rf '{}' ';'
       - name: Free up space (2)
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
           tool-cache: true
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 16
       - name: Checkout
         uses: actions/checkout@v4
         with:
