@@ -13,6 +13,12 @@ jobs:
   build-kernel:
     runs-on: ubuntu-latest
     steps:
+      - name: Configure zswap
+        run: |
+          echo zstd | sudo tee /sys/module/zswap/parameters/compressor
+          echo 90   | sudo tee /sys/module/zswap/parameters/max_pool_percent
+          echo 1    | sudo tee /sys/module/zswap/parameters/shrinker_enabled
+          echo 1    | sudo tee /sys/module/zswap/parameters/enabled
       - name: Set Swap Space
         uses: pierotofy/set-swap-space@master
         with:
