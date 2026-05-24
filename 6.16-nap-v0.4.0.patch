@@ -100,7 +100,7 @@ index 0000000000..8c4a17d8e2
 +CFLAGS_nap_fpu.o       += $(CC_FLAGS_FPU)
 +CFLAGS_nap_nn_sse2.o   += $(CC_FLAGS_FPU)
 +CFLAGS_nap_nn_avx2.o   += $(CC_FLAGS_FPU) -mavx -mavx2 -mfma
-
++
 diff --git a/drivers/cpuidle/governors/nap/nap.c b/drivers/cpuidle/governors/nap/nap.c
 new file mode 100644
 index 0000000000..c72b67e9c3
