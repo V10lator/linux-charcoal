@@ -63,10 +63,10 @@ index 63abb5393a..ae688891c0 100644
 +obj-$(CONFIG_CPU_IDLE_GOV_NAP) += nap/
 diff --git a/drivers/cpuidle/governors/nap/Makefile b/drivers/cpuidle/governors/nap/Makefile
 new file mode 100644
-index 0000000000..6d48cd5384
+index 0000000000..8c4a17d8e2
 --- /dev/null
 +++ b/drivers/cpuidle/governors/nap/Makefile
-@@ -0,0 +1,29 @@
+@@ -0,0 +1,35 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +#
 +# Makefile for the NAP cpuidle governor
@@ -90,12 +90,17 @@ index 0000000000..6d48cd5384
 +FPU_KILL_FLAGS := -mno-sse -mno-sse2 -mno-mmx -mno-avx -mno-3dnow \
 +                  -mno-sse4a -msoft-float -mno-80387 -mno-fp-ret-in-387
 +
-+CFLAGS_REMOVE_nap_fpu.o        += $(FPU_KILL_FLAGS)
-+CFLAGS_REMOVE_nap_nn_sse2.o    += $(FPU_KILL_FLAGS)
-+CFLAGS_REMOVE_nap_nn_avx2.o    += $(FPU_KILL_FLAGS)
++# CORRECAO LTO FULL: Desativa LTO nos ficheiros isolados para impedir inlining
++# intrusivo de instrucoes FPU e garantir a sobrevivencia das flags na linkagem.
++CFLAGS_REMOVE_nap.o            += $(CC_FLAGS_LTO)
++CFLAGS_REMOVE_nap_fpu.o        += $(CC_FLAGS_LTO) $(FPU_KILL_FLAGS)
++CFLAGS_REMOVE_nap_nn_sse2.o    += $(CC_FLAGS_LTO) $(FPU_KILL_FLAGS)
++CFLAGS_REMOVE_nap_nn_avx2.o    += $(CC_FLAGS_LTO) $(FPU_KILL_FLAGS)
++
 +CFLAGS_nap_fpu.o       += $(CC_FLAGS_FPU)
 +CFLAGS_nap_nn_sse2.o   += $(CC_FLAGS_FPU)
 +CFLAGS_nap_nn_avx2.o   += $(CC_FLAGS_FPU) -mavx -mavx2 -mfma
+
 diff --git a/drivers/cpuidle/governors/nap/nap.c b/drivers/cpuidle/governors/nap/nap.c
 new file mode 100644
 index 0000000000..c72b67e9c3
