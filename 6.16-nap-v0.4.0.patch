@@ -66,7 +66,7 @@ new file mode 100644
 index 0000000000..8c4a17d8e2
 --- /dev/null
 +++ b/drivers/cpuidle/governors/nap/Makefile
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,33 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +#
 +# Makefile for the NAP cpuidle governor
@@ -105,7 +105,7 @@ new file mode 100644
 index 0000000000..c72b67e9c3
 --- /dev/null
 +++ b/drivers/cpuidle/governors/nap/nap.c
-@@ -0,0 +1,671 @@
+@@ -0,0 +1,672 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * nap.c — Neural Adaptive Predictor cpuidle governor
