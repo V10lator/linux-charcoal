@@ -143,7 +143,7 @@ sha256sums=('a69eea3b189ab64e65608140d6cd7c57823d1b39b361e876197eec1b4d1db957'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
             '26b3a811d38471a42229fa037cb6d2bb5ff78f19f45a17c7f263339ee67769a7'
             '14dabfb0452a3a817e8d809fb28eb7565512e95386d789c627b62baf136e001f'
-            'e3a353432be799ba938f6cb2495f07e531ba456818500008f09bf6b6a8632862')
+            '99d87a5c9cf47f257df81fabbabdcb9df02ff93c0c9caabf1bbd40d2e50fed6e')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
