@@ -104,7 +104,7 @@ Or manually:
 
 ```bash
 sudo steamos-devmode enable --no-prompt
-_neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | awk '/^Replaces/{print $3}')
+_neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | grep '^Replaces' | tr ' ' '\n' | grep '^linux-neptune' | head -1)
 sudo pacman -Rsn $(pacman -Qq | grep '^linux-charcoal')
 sudo pacman -S "$_neptune"
 sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
