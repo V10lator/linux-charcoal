@@ -21,11 +21,11 @@ curl -L "$PKG_URL" -o /tmp/linux-charcoal.pkg.tar.zst
 echo "Downloading headers..."
 curl -L "$HEADERS_URL" -o /tmp/linux-charcoal-headers.pkg.tar.zst
 
-echo "Disabling read-only filesystem..."
-sudo steamos-readonly disable
+echo "Enabling dev mode (disables read-only filesystem and initialises keyring)..."
+sudo steamos-devmode enable
 
 echo "Removing existing Neptune kernel..."
-pacman -Qq 'linux-neptune*' 2>/dev/null | xargs -r sudo pacman -Rns --noconfirm
+pacman -Qq 2>/dev/null | grep '^linux-neptune' | xargs -r sudo pacman -Rns --noconfirm
 
 echo "Installing Charcoal kernel..."
 sudo pacman -U --noconfirm /tmp/linux-charcoal.pkg.tar.zst /tmp/linux-charcoal-headers.pkg.tar.zst
@@ -33,8 +33,8 @@ sudo pacman -U --noconfirm /tmp/linux-charcoal.pkg.tar.zst /tmp/linux-charcoal-h
 echo "Updating GRUB..."
 sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 
-echo "Re-enabling read-only filesystem..."
-sudo steamos-readonly enable
+echo "Disabling dev mode..."
+sudo steamos-devmode disable
 
 echo "Cleaning up..."
 rm -f /tmp/linux-charcoal*.pkg.tar.zst
