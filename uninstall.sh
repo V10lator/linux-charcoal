@@ -21,7 +21,7 @@ fi
 echo "Will reinstall: $_neptune"
 
 echo "Enabling dev mode (disables read-only filesystem and initialises keyring)..."
-sudo steamos-devmode enable
+sudo steamos-devmode enable --no-prompt
 
 echo "Removing Charcoal kernel..."
 sudo pacman -Rsn --noconfirm $(pacman -Qq | grep '^linux-charcoal')
@@ -32,8 +32,8 @@ sudo pacman -S --noconfirm "$_neptune"
 echo "Updating GRUB..."
 sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 
-echo "Disabling dev mode..."
-sudo steamos-devmode disable
+echo "Re-enabling read-only filesystem..."
+sudo steamos-readonly enable
 
 echo ""
 echo "Done! Reboot to return to the Neptune kernel."
