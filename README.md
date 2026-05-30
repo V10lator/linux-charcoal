@@ -71,9 +71,10 @@ Or manually download the [latest release](https://github.com/V10lator/linux-char
 
 ```bash
 cd ~/Downloads
-sudo steamos-readonly disable
-sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst  # Confirm when asked to remove linux-neptune-*
-sudo steamos-readonly enable
+sudo steamos-devmode enable --no-prompt
+pacman -Qq | grep '^linux-neptune' | xargs -r sudo pacman -Rns --noconfirm
+sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst
+sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 rm linux-charcoal*
 ```
 
@@ -102,11 +103,11 @@ curl -L https://github.com/V10lator/linux-charcoal/raw/master/uninstall.sh | bas
 Or manually:
 
 ```bash
-sudo steamos-readonly disable
-_neptune=$(pacman -Qi $(pacman -Qq 'linux-charcoal*') | awk '/^Replaces/{print $3}')
-sudo pacman -Rsn $(pacman -Qq 'linux-charcoal*')
+sudo steamos-devmode enable --no-prompt
+_neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | awk '/^Replaces/{print $3}')
+sudo pacman -Rsn $(pacman -Qq | grep '^linux-charcoal')
 sudo pacman -S "$_neptune"
-sudo steamos-readonly enable
+sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 ```
 
 Then reboot.
