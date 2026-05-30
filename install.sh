@@ -25,10 +25,19 @@ echo "Enabling dev mode (disables read-only filesystem and initialises keyring).
 sudo steamos-devmode enable --no-prompt
 
 echo "Removing existing Neptune kernel..."
-pacman -Qq 2>/dev/null | grep '^linux-neptune' | xargs -r sudo pacman -Rns --noconfirm
+_original_neptune=$(pacman -Qq | grep '^linux-neptune' | grep -v headers | head -1)
+pacman -Qq | grep '^linux-neptune' | xargs -r sudo pacman -Rns --noconfirm
 
 echo "Installing Charcoal kernel..."
-sudo pacman -U --noconfirm /tmp/linux-charcoal.pkg.tar.zst /tmp/linux-charcoal-headers.pkg.tar.zst
+if ! sudo pacman -U --noconfirm /tmp/linux-charcoal.pkg.tar.zst /tmp/linux-charcoal-headers.pkg.tar.zst; then
+  echo "Install failed — restoring original Neptune kernel..."
+  sudo pacman -S --noconfirm "$_original_neptune"
+  rm -f /tmp/linux-charcoal*.pkg.tar.zst
+  exit 1
+fi
+
+# Save original neptune for uninstall script to restore correctly
+echo "$_original_neptune" | sudo tee /etc/charcoal-original-neptune > /dev/null
 
 echo "Updating GRUB..."
 sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg

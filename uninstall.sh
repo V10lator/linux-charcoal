@@ -10,15 +10,20 @@ if ! pacman -Qq | grep -q '^linux-charcoal'; then
   exit 1
 fi
 
-echo "Detecting matching Neptune kernel..."
-_neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | awk '/^Replaces/{print $3}')
-
-if [ -z "$_neptune" ]; then
-  echo "Failed to detect matching Neptune kernel"
-  exit 1
+# Use the originally installed neptune saved during install if available,
+# otherwise fall back to the series from Charcoal's Replaces field
+if [ -f /etc/charcoal-original-neptune ]; then
+  _neptune=$(cat /etc/charcoal-original-neptune)
+  echo "Restoring originally installed Neptune kernel: $_neptune"
+else
+  _neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | awk '/^Replaces/{print $3}')
+  echo "Will reinstall: $_neptune (original not recorded, using Charcoal's Replaces field)"
 fi
 
-echo "Will reinstall: $_neptune"
+if [ -z "$_neptune" ]; then
+  echo "Failed to detect Neptune kernel to restore"
+  exit 1
+fi
 
 echo "Enabling dev mode (disables read-only filesystem and initialises keyring)..."
 sudo steamos-devmode enable --no-prompt
@@ -32,8 +37,7 @@ sudo pacman -S --noconfirm "$_neptune"
 echo "Updating GRUB..."
 sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 
-echo "Re-enabling read-only filesystem..."
-sudo steamos-readonly enable
+sudo rm -f /etc/charcoal-original-neptune
 
 echo ""
 echo "Done! Reboot to return to the Neptune kernel."
