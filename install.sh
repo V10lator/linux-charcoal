@@ -33,9 +33,6 @@ sudo pacman -U --noconfirm /tmp/linux-charcoal.pkg.tar.zst /tmp/linux-charcoal-h
 echo "Updating GRUB..."
 sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 
-echo "Re-enabling read-only filesystem..."
-sudo steamos-readonly enable
-
 echo "Cleaning up..."
 rm -f /tmp/linux-charcoal*.pkg.tar.zst
 
