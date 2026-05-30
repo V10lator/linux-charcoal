@@ -16,7 +16,7 @@ if [ -f /etc/charcoal-original-neptune ]; then
   _neptune=$(cat /etc/charcoal-original-neptune)
   echo "Restoring originally installed Neptune kernel: $_neptune"
 else
-  _neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | awk '/^Replaces/{print $3}')
+  _neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | grep '^Replaces' | tr ' ' '\n' | grep '^linux-neptune' | head -1)
   echo "Will reinstall: $_neptune (original not recorded, using Charcoal's Replaces field)"
 fi
 
