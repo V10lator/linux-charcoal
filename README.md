@@ -93,7 +93,13 @@ You can also verify in Gaming Mode under **Settings → System**, where the kern
 
 ## Uninstall
 
-To remove Charcoal and return to the stock Neptune kernel:
+Run the following to automatically remove Charcoal and restore the Neptune kernel:
+
+```bash
+curl -L https://github.com/V10lator/linux-charcoal/raw/master/uninstall.sh | bash
+```
+
+Or manually:
 
 ```bash
 sudo steamos-readonly disable
