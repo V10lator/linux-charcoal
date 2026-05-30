@@ -54,6 +54,7 @@ source=(
   charcoal.conf
   65-adios.rules
   99-charcoal.sh
+  99-charcoal-sysctl.conf
   vangogh_allow_higher_cpu_freq.patch
   vangogh_higher_max_power_limit.patch
   drm_sched_rr_default.patch
@@ -103,6 +104,7 @@ sha256sums=('4011d16fef57b8f04cbcddc0937819f7fd32225f65d63698afbd5dc6629d0ff0'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
             '52cbbf41450806d766260bc4f1ea055f6f9fdd55d37ad831840b16d505beb0cc'
             '0a6a7408ccc0c94b5cce50dabc7ee318abcc1b9eaaedd3d83fd7e7d5a73b4d4f'
+            'SKIP' 
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
@@ -251,6 +253,8 @@ _package() {
   install -D -m 0644 -t "$pkgdir/etc/profile.d" ../99-charcoal.sh
   # Charcoal: Install udev rules
   install -D -m 0644 -t "$pkgdir/etc/udev/rules.d" ../65-adios.rules
+  # sysctl parameters to fix trashing under heavy memory pressure 
+  install -D -m 0644 -t "$pkgdir/etc/sysctl.d" ../99-charcoal-sysctl.conf
 
   # Charcoal: Install bundles DKMS modules
   ZSTD_CLEVEL=19 make LLVM=1 M=../ryzen_smu INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
