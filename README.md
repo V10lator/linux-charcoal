@@ -61,7 +61,13 @@ Charcoal is an optimized Linux kernel for Steam Deck, Asus ROG Ally, and other A
 
 ## Install
 
-Download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run the following on your device:
+Run the following on your device to automatically download and install the latest release:
+
+```bash
+curl -L https://github.com/V10lator/linux-charcoal/raw/master/install.sh | bash
+```
+
+Or manually download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run:
 
 ```bash
 cd ~/Downloads
