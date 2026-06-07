@@ -95,7 +95,7 @@ source=(
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
    6.16-poc-selector-v2.6.1.patch 
-   6.16-nap-v0.4.0.patch
+   6.16-nap-v0.5.0.patch
 )
 sha256sums=('4011d16fef57b8f04cbcddc0937819f7fd32225f65d63698afbd5dc6629d0ff0'
             '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
@@ -145,7 +145,7 @@ sha256sums=('4011d16fef57b8f04cbcddc0937819f7fd32225f65d63698afbd5dc6629d0ff0'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
             '26b3a811d38471a42229fa037cb6d2bb5ff78f19f45a17c7f263339ee67769a7'
             '14dabfb0452a3a817e8d809fb28eb7565512e95386d789c627b62baf136e001f'
-            '99d87a5c9cf47f257df81fabbabdcb9df02ff93c0c9caabf1bbd40d2e50fed6e')
+            'f665d6ba6fc18579083bf8ec7ec741d43495f16f9dcbc482a5bd928b1778b2d3)
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
