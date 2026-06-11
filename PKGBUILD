@@ -4,8 +4,8 @@
 
 pkgbase=linux-charcoal-616
 _nepbase=linux-neptune-616
-_tag=6.16.12-valve23
-_ver=3
+_tag=6.16.12-valve24
+_ver=1
 pkgver=${_tag//-/.}.cc$_ver
 pkgrel=1
 pkgdesc='Linux'
@@ -54,6 +54,7 @@ source=(
   charcoal.conf
   65-adios.rules
   99-charcoal.sh
+  99-charcoal-sysctl.conf
   vangogh_allow_higher_cpu_freq.patch
   vangogh_higher_max_power_limit.patch
   drm_sched_rr_default.patch
@@ -94,15 +95,16 @@ source=(
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
    6.16-poc-selector-v2.6.1.patch 
-   6.16-nap-v0.4.0.patch
+   6.16-nap-v0.5.0.patch
 )
-sha256sums=('4011d16fef57b8f04cbcddc0937819f7fd32225f65d63698afbd5dc6629d0ff0'
+sha256sums=('SKIP'
             '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
             'd88eaf0f94bae470040e4882f334c05b1bb2ab0a99e4b7299aa0b2337810ab8d'
             'fd57213c524e24cd9c72e2fecd9b2005934b6099e209864e5a93eb03406fca21'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
             '52cbbf41450806d766260bc4f1ea055f6f9fdd55d37ad831840b16d505beb0cc'
             '0a6a7408ccc0c94b5cce50dabc7ee318abcc1b9eaaedd3d83fd7e7d5a73b4d4f'
+            '7b0a1d962dfbcc1cbec195a8abb5ad1ff1872fde0a2249bd5704367c023c6573' 
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
@@ -143,7 +145,7 @@ sha256sums=('4011d16fef57b8f04cbcddc0937819f7fd32225f65d63698afbd5dc6629d0ff0'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
             '26b3a811d38471a42229fa037cb6d2bb5ff78f19f45a17c7f263339ee67769a7'
             '14dabfb0452a3a817e8d809fb28eb7565512e95386d789c627b62baf136e001f'
-            '99d87a5c9cf47f257df81fabbabdcb9df02ff93c0c9caabf1bbd40d2e50fed6e')
+            'f665d6ba6fc18579083bf8ec7ec741d43495f16f9dcbc482a5bd928b1778b2d3')
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
@@ -251,6 +253,8 @@ _package() {
   install -D -m 0644 -t "$pkgdir/etc/profile.d" ../99-charcoal.sh
   # Charcoal: Install udev rules
   install -D -m 0644 -t "$pkgdir/etc/udev/rules.d" ../65-adios.rules
+  # sysctl parameters to fix trashing under heavy memory pressure 
+  install -D -m 0644 -t "$pkgdir/etc/sysctl.d" ../99-charcoal-sysctl.conf
 
   # Charcoal: Install bundles DKMS modules
   ZSTD_CLEVEL=19 make LLVM=1 M=../ryzen_smu INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install
