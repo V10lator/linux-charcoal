@@ -59,6 +59,7 @@ source=(
   drm_sched_rr_default.patch
   re-swappiness-v1.2_backported.patch
   0001-linux6.16.12-zram-ir-1.2.patch
+  0001-infinity-scheduler.patch
   ryzen_smu.diff
   xpad-noone.diff
   "c23.patch::https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patch/?id=d70f79fef65810faf64dbae1f3a1b5623cdb2345"
@@ -79,8 +80,6 @@ source=(
   "ath11k-upstream.patch::https://lore.kernel.org/all/20260319065608.2408179-1-reshma.rajkumar@oss.qualcomm.com/raw"
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/stable/0001-linux6.16.12-ADIOS-3.1.8.patch"
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
-  "https://raw.githubusercontent.com/firelzrd/bore-scheduler/5cfd8ed4f9c3a0e58b1667ccc37a928278656044/patches/stable/linux-6.16-bore/0001-linux6.16.0-bore-6.5.2.patch"
-  "https://raw.githubusercontent.com/firelzrd/bore-scheduler/69c9409354ad8be29280e97ceccb507d2c394be1/patches/additions/0002-sched-ext-coexistence-fix.patch"
   "https://raw.githubusercontent.com/firelzrd/kcompressd-unofficial/1409979d5e7156a880395c374b812f1012bc216f/patches/stable/0001-linux6.16-kcompressd-unofficial-0.5.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/f6ed65cd7bda9cb6009c6a12efd7c4311df31936.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/cab7ea1a4ef6685a133ae121ca27098b9dd31287.patch"
@@ -108,6 +107,7 @@ sha256sums=('11c34cda75eb4c65369757e71f8230ab5e2285031d366683c9cc96f698d2ac92'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
             '35dd98092d6900962dd98fa28fbccbdff07e67eafed5088fecac67b1cbfdfdd8'
             'e58e21581a509d0617591311b1d9ab8669f46046f2949e42d6149b0bb11ead87'
+            'ef54c922b0e691b1c5480e3124a5334269711bc4f7c8a0b91e5d8240bea5c2e4'
             '4bcf61814a6daac8f72c46a425b9ce88c07f6bd95f6a0ac287d73dfd4d5da60b'
             'ff3bbe78d6f072d57f567878e870956242ee78ccddd258b1ec2e4729621138fe'
             'ab6b17b1f9cc4b322f0050d2e8cede75e44e069854e9bdc22068356530d628e8'
@@ -128,8 +128,6 @@ sha256sums=('11c34cda75eb4c65369757e71f8230ab5e2285031d366683c9cc96f698d2ac92'
             '74db38cd3c353c295d2bd11159ccafc4396b8fb21735a536f5bb5ab71093a90f'
             'bd510cae8138460ea4d9356ff93ee06a4a703077365f3816a24709402e790470'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
-            '99a66ba41a7c40746f770b28430598c655f42e09e1ce196b1f28c9f4d89f247c'
-            'cdf138cdb94fcb4e2988bd7d2873a51522fdb7212ec314fde202facaf8210b5c'
             '8064ca3dade0432476d372096e10fef523381d0c1fda8e07032062efd1045a57'
             'bc647f73ec860a0fe7d074c2377588816a616dc2a651b30d7b9cd168863a17c6'
             '5059762e54c8dbe4262d48eafb8d486a54244eec71da5d7b61fc0f5f1c5c2ea7'
