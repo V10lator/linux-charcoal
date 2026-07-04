@@ -61,13 +61,20 @@ Charcoal is an optimized Linux kernel for Steam Deck, Asus ROG Ally, and other A
 
 ## Install
 
-Download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run the following on your device:
+Run the following on your device to automatically download and install the latest release:
+
+```bash
+curl -L https://github.com/V10lator/linux-charcoal/raw/master/install.sh | bash
+```
+
+Or manually download the [latest release](https://github.com/V10lator/linux-charcoal/releases/latest) and run:
 
 ```bash
 cd ~/Downloads
-sudo steamos-readonly disable
-sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst  # Confirm when asked to remove linux-neptune-*
-sudo steamos-readonly enable
+sudo steamos-devmode enable --no-prompt
+pacman -Qq | grep '^linux-neptune' | xargs -r sudo pacman -Rns --noconfirm
+sudo pacman -U linux-charcoal-*-x86_64.pkg.tar.zst
+sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 rm linux-charcoal*
 ```
 
@@ -87,14 +94,20 @@ You can also verify in Gaming Mode under **Settings → System**, where the kern
 
 ## Uninstall
 
-To remove Charcoal and return to the stock Neptune kernel:
+Run the following to automatically remove Charcoal and restore the Neptune kernel:
 
 ```bash
-sudo steamos-readonly disable
-_neptune=$(pacman -Qi $(pacman -Qq 'linux-charcoal*') | awk '/^Replaces/{print $3}')
-sudo pacman -Rsn $(pacman -Qq 'linux-charcoal*')
+curl -L https://github.com/V10lator/linux-charcoal/raw/master/uninstall.sh | bash
+```
+
+Or manually:
+
+```bash
+sudo steamos-devmode enable --no-prompt
+_neptune=$(pacman -Qi $(pacman -Qq | grep '^linux-charcoal' | grep -v headers | head -1) | grep '^Replaces' | tr ' ' '\n' | grep '^linux-neptune' | head -1)
+sudo pacman -Rsn $(pacman -Qq | grep '^linux-charcoal')
 sudo pacman -S "$_neptune"
-sudo steamos-readonly enable
+sudo grub-mkconfig -o /efi/EFI/steamos/grub.cfg
 ```
 
 Then reboot.
