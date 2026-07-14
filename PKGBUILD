@@ -52,12 +52,13 @@ source=(
   config-neptune  # Jupiter: the neptune kernel fragment file (overrides 'config' above)
   config-charcoal # Charcoal: The Charcoal kernel fragment file
   charcoal.conf
+  99-charcoal-sysctl.conf
   65-adios.rules
   99-charcoal.sh
   vangogh_allow_higher_cpu_freq.patch
   vangogh_higher_max_power_limit.patch
   drm_sched_rr_default.patch
-  re-swappiness-v1.2_backported.patch
+  6.16.12-lru_marie-0.6.7.patch
   0001-linux6.16.12-zram-ir-1.2.patch
   ryzen_smu.diff
   xpad-noone.diff
@@ -77,11 +78,10 @@ source=(
   "910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch::https://git.openwrt.org/openwrt/openwrt/plain/package/kernel/mac80211/patches/ath11k/910-ath11k-fix-remapped-ce-accessing-issue-on-64bit-OS.patch?id=0ff1553bd731c0db28043fc9caab90bdc32587f3"
   "https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/raw/win.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-keys-properly-when-DISABLE_K.patch"
   "ath11k-upstream.patch::https://lore.kernel.org/all/20260319065608.2408179-1-reshma.rajkumar@oss.qualcomm.com/raw"
-  "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/stable/0001-linux6.16.12-ADIOS-3.1.8.patch"
+  6.16.12-ADIOS-3.2.0.patch
   "https://raw.githubusercontent.com/firelzrd/adios/d90faa7c84be86cd89a54acc610ed4cdf88347ac/patches/0002-Make-ADIOS-the-Default-I-O-scheduler.patch"
-  "https://raw.githubusercontent.com/firelzrd/bore-scheduler/5cfd8ed4f9c3a0e58b1667ccc37a928278656044/patches/stable/linux-6.16-bore/0001-linux6.16.0-bore-6.5.2.patch"
+  6.16.12-bore-6.6.3.patch
   "https://raw.githubusercontent.com/firelzrd/bore-scheduler/69c9409354ad8be29280e97ceccb507d2c394be1/patches/additions/0002-sched-ext-coexistence-fix.patch"
-  "https://raw.githubusercontent.com/firelzrd/kcompressd-unofficial/1409979d5e7156a880395c374b812f1012bc216f/patches/stable/0001-linux6.16-kcompressd-unofficial-0.5.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/f6ed65cd7bda9cb6009c6a12efd7c4311df31936.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/cab7ea1a4ef6685a133ae121ca27098b9dd31287.patch"
   "https://github.com/zen-kernel/zen-kernel/commit/fb5c79d96cc87e4778ac0f2a53bc7c0c23078c54.patch"
@@ -94,19 +94,20 @@ source=(
   "git+https://github.com/forkymcforkface/xpad-noone.git#commit=8e903676dd9514c07ce5e06e43c5f7d8cc51cb7d"
   "git+https://github.com/atar-axis/xpadneo.git#tag=v$_xpadneo_version"
    6.16-poc-selector-v2.6.1.patch 
-   6.16-nap-v0.4.0.patch
+   6.16-nap-v0.5.0.patch
 )
 sha256sums=('b7772a6fad499c81ced4a34e1aca3ed73a0d13f849950f4980dc250577f007cd'
             '37452b4d09e5e42134ae24a61f2f656790837c327268074cf79d7dab3558b972'
             'd88eaf0f94bae470040e4882f334c05b1bb2ab0a99e4b7299aa0b2337810ab8d'
             'f15615180ef04cec50aee50353c9156d04eb4dccb6102cf1a0717b12de0e8e2c'
             'b831de1b98a2f77f636f4780e37ebfcb3a6829f94f5423eb04c4b26e64ac43b8'
+            '161d8bfa735b1c7143207e8ae900438e41bd9f9e2f0a55463d4c04fc70c57f39' 
             '52cbbf41450806d766260bc4f1ea055f6f9fdd55d37ad831840b16d505beb0cc'
             '0a6a7408ccc0c94b5cce50dabc7ee318abcc1b9eaaedd3d83fd7e7d5a73b4d4f'
             '375c8e17daf9e60bc6c211dd73f0c67ec241bd40a83d812a08eeb42aab6128d9'
             '1c49146dc5878bfab32b331d11cb66d493670bbe590ff07c2050305911c281c3'
             '6e510d8b74798944b5cb84ac775156831410c853c8a03c2a3f79e9bc7be9c2e2'
-            '35dd98092d6900962dd98fa28fbccbdff07e67eafed5088fecac67b1cbfdfdd8'
+            '57420d0609b59ea7d9fc30da201fcf3c0ce13a601068a543acc073d85c369bc4' 
             'e58e21581a509d0617591311b1d9ab8669f46046f2949e42d6149b0bb11ead87'
             '4bcf61814a6daac8f72c46a425b9ce88c07f6bd95f6a0ac287d73dfd4d5da60b'
             'ff3bbe78d6f072d57f567878e870956242ee78ccddd258b1ec2e4729621138fe'
@@ -126,11 +127,10 @@ sha256sums=('b7772a6fad499c81ced4a34e1aca3ed73a0d13f849950f4980dc250577f007cd'
             'e261cfdf1d03f741ba111c812f3c1d0be2bf2d58e68efe2477a5bd542cd85f2e'
             '49931b2d29f2501bb7d11f0f0cc978d98c90b5556e9ecfe11ca82672445d4cbf'
             '74db38cd3c353c295d2bd11159ccafc4396b8fb21735a536f5bb5ab71093a90f'
-            'bd510cae8138460ea4d9356ff93ee06a4a703077365f3816a24709402e790470'
+            'b7104fc9af642fa20e0a6cb8ab6dfba634132737948d5843dec76e7abd3a3530'
             '5ef2f14326a5fab8980d1ebb6734ece576f930c173b4980eb026513aa3b1b9d0'
-            '99a66ba41a7c40746f770b28430598c655f42e09e1ce196b1f28c9f4d89f247c'
-            'cdf138cdb94fcb4e2988bd7d2873a51522fdb7212ec314fde202facaf8210b5c'
-            '8064ca3dade0432476d372096e10fef523381d0c1fda8e07032062efd1045a57'
+            '6706aaf378f5706eade9f9da40885056832475c6a10eeb407312c69fee306d73'
+            'SKIP'
             'bc647f73ec860a0fe7d074c2377588816a616dc2a651b30d7b9cd168863a17c6'
             '5059762e54c8dbe4262d48eafb8d486a54244eec71da5d7b61fc0f5f1c5c2ea7'
             'f22c6983d496d9038fa0f4288ee6cbb5b46837fee5f644f4759e4c26dcdff262'
@@ -143,7 +143,8 @@ sha256sums=('b7772a6fad499c81ced4a34e1aca3ed73a0d13f849950f4980dc250577f007cd'
             '1055bbbd32985017f4501d375648873bd598db084177d302aeeade56b47920e1'
             '26b3a811d38471a42229fa037cb6d2bb5ff78f19f45a17c7f263339ee67769a7'
             '14dabfb0452a3a817e8d809fb28eb7565512e95386d789c627b62baf136e001f'
-            '99d87a5c9cf47f257df81fabbabdcb9df02ff93c0c9caabf1bbd40d2e50fed6e')
+            'f665d6ba6fc18579083bf8ec7ec741d43495f16f9dcbc482a5bd928b1778b2d3'
+            )
 
 export KBUILD_BUILD_HOST=archlinux
 export KBUILD_BUILD_USER=$pkgbase
