@@ -228,6 +228,10 @@ prepare() {
     drivers/gpu/drm/gud/gud_connector.c
   git diff --check -- drivers/gpu/drm/gud/gud_connector.c
 
+  python3 "$startdir/automation/fix-nap-compat.py" \
+    drivers/cpuidle/governors/nap/nap.c
+  git diff --check -- drivers/cpuidle/governors/nap/nap.c
+
   python3 "$startdir/automation/configure-zen-interactive.py" "$PWD"
 
   echo "Setting config..."
