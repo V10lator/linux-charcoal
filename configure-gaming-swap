@@ -260,6 +260,9 @@ class Migration:
                 raise MigrationError(f"zswap.{key}: expected {expected}, got {actual}")
 
     def persist(self, target, files, units, file_units):
+        target_unit = self.run("systemd-escape", "--path", "--suffix=swap", target).stdout.strip()
+        if not target_unit.endswith(".swap") or "/" in target_unit or len(target_unit.split()) != 1:
+            raise MigrationError(f"Cannot determine the systemd swap unit for {target}")
         fstab = self.path("/etc/fstab").read_text()
         if not self.path("/etc/fstab.gaming-swap.bak").exists():
             self.write("/etc/fstab.gaming-swap.bak", fstab, 0o600)
@@ -291,6 +294,9 @@ class Migration:
             tmpfiles_mask.symlink_to("/dev/null")
         disabled = ZRAM_UNITS | {u for u in units if "zram" in u.lower()}
         disabled |= {u for u, name in file_units.items() if name != target and name in files}
+        # A loaded or masked unit may have stale What= metadata. Its canonical
+        # name must never be retired when it belongs to the replacement file.
+        disabled.discard(target_unit)
         for unit in sorted(disabled):
             # Stop only after all old swap has been drained successfully.
             self.run("systemctl", "stop", unit, check=False)
@@ -312,11 +318,16 @@ class Migration:
         # kernel-install users consume this on future image installations.
         if cmdline.exists():
             self.write("/etc/kernel/cmdline", filter_cmdline(cmdline.read_text()) + "\n")
+        # swapon works even when the matching systemd unit is masked. Clear
+        # both persistent and runtime masks so fstab can activate it next boot.
+        self.run("systemctl", "unmask", target_unit)
+        self.run("systemctl", "unmask", "--runtime", target_unit)
         self.run("systemctl", "daemon-reload")
         self.run("systemctl", "enable", SERVICE)
+        self.run("systemctl", "start", target_unit)
 
     def install(self):
-        for command in ("swapon", "swapoff", "blkid", "mkswap", "dd", "findmnt", "systemctl"):
+        for command in ("swapon", "swapoff", "blkid", "mkswap", "dd", "findmnt", "systemctl", "systemd-escape"):
             if shutil.which(command) is None:
                 raise MigrationError(f"Required command missing: {command}")
         if not self.path("/home").is_dir():
@@ -344,6 +355,8 @@ class Migration:
             if name != target and (kind == "file" or name.startswith("/dev/zram")):
                 self.run("swapoff", name)
         self.persist(target, files, units, file_units)
+        if self.active().get(target) != "file":
+            raise MigrationError(f"Managed swap is not active after systemd activation: {target}; old files are preserved")
         for name in sorted(files - {target}):
             if name in self.active():
                 raise MigrationError(f"Swap reactivated during migration; preserving {name}")

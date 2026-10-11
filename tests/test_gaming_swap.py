@@ -28,6 +28,7 @@ class FakeMigration(policy.Migration):
         self.filesystem = "ext4"
         self.fail_command = None
         self.unit_names = {"steamos-zram-swap.service", "systemd-zram-setup@zram0.service", "dev-zram0.swap", "home-swapfile.swap"}
+        self.unit_paths = {"home-swapfile.swap": "/home/swapfile"}
         for directory in ("/proc", "/home", "/etc/default", "/sys/module/zswap/parameters"):
             self.path(directory).mkdir(parents=True, exist_ok=True)
         self.refresh_swaps()
@@ -95,7 +96,23 @@ class FakeMigration(policy.Migration):
         elif args[:2] in {("systemctl", "list-unit-files"), ("systemctl", "list-units")}:
             output = "\n".join(name + " enabled" for name in self.unit_names)
         elif args[:2] == ("systemctl", "show"):
-            output = "/home/swapfile\n" if args[-1] == "home-swapfile.swap" else ""
+            output = self.unit_paths.get(args[-1], "")
+        elif args[0] == "systemd-escape":
+            output = subprocess.run(args, check=True, capture_output=True, text=True).stdout
+            self.unit_paths[output.strip()] = args[-1]
+        elif args[:2] == ("systemctl", "unmask"):
+            directory = "/run/systemd/system/" if "--runtime" in args else "/etc/systemd/system/"
+            mask = self.path(directory + args[-1])
+            if mask.is_symlink() and mask.readlink() == Path("/dev/null"):
+                mask.unlink()
+        elif args[:2] == ("systemctl", "start") and args[-1].endswith(".swap"):
+            for directory in ("/etc/systemd/system/", "/run/systemd/system/"):
+                mask = self.path(directory + args[-1])
+                if mask.is_symlink() and mask.readlink() == Path("/dev/null"):
+                    raise subprocess.CalledProcessError(1, args, stderr="Unit is masked")
+            name = self.unit_paths[args[-1]]
+            self.swaps[name] = "file"
+            self.refresh_swaps()
         return subprocess.CompletedProcess(args, status, output, "")
 
 
@@ -216,6 +233,66 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.m.path("/etc/fstab").read_text(), original)
         self.assertFalse(any(c[0] in {"dd", "mkswap", "swapoff"} for c in self.m.calls))
         self.assertEqual(self.m.path("/etc/default/grub").read_text().count(policy.BEGIN), 1)
+
+    def test_reinstall_recovers_masked_inactive_managed_swap_without_recreating_it(self):
+        self.install()
+        target = "/home/.gaming-swap/swapfile"
+        unit = r"home-.gaming\x2dswap-swapfile.swap"
+        self.m.unit_names.add(unit)
+        self.m.swaps.clear()
+        self.m.refresh_swaps()
+        inode = self.m.path(target).stat().st_ino
+        for directory in ("/etc/systemd/system/", "/run/systemd/system/"):
+            mask = self.m.path(directory + unit)
+            mask.parent.mkdir(parents=True, exist_ok=True)
+            mask.symlink_to("/dev/null")
+        self.m.calls.clear()
+        self.install()
+        self.assertEqual(self.m.path(target).stat().st_ino, inode)
+        self.assertEqual(self.m.active(), {target: "file"})
+        self.assertFalse(any(c[0] in {"dd", "mkswap", "swapoff"} for c in self.m.calls))
+        for directory in ("/etc/systemd/system/", "/run/systemd/system/"):
+            self.assertFalse(self.m.path(directory + unit).is_symlink())
+        self.assertIn(("systemctl", "unmask", unit), self.m.calls)
+        self.assertIn(("systemctl", "unmask", "--runtime", unit), self.m.calls)
+        self.assertLess(self.m.calls.index(("systemctl", "daemon-reload")),
+                        self.m.calls.index(("systemctl", "start", unit)))
+        self.assertEqual(self.m.path("/etc/fstab").read_text().count(target + " none swap"), 1)
+
+    def test_reinstall_does_not_retire_managed_unit_with_stale_what_metadata(self):
+        self.install()
+        unit = r"home-.gaming\x2dswap-swapfile.swap"
+        old = "/home/swapfile"
+        self.m.make_swap(old, 1024**2)
+        self.m.unit_names.add(unit)
+        self.m.unit_paths[unit] = old
+        self.m.calls.clear()
+        self.install()
+        self.assertNotIn(("systemctl", "stop", unit), self.m.calls)
+        self.assertNotIn(("systemctl", "disable", unit), self.m.calls)
+        self.assertFalse(self.m.path("/etc/systemd/system/" + unit).is_symlink())
+        self.assertFalse(self.m.path(old).exists())
+
+    def test_systemd_start_failure_preserves_old_swapfile(self):
+        unit = r"home-.gaming\x2dswap-swapfile.swap"
+        self.m.fail_command = lambda a: a == ("systemctl", "start", unit)
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.install()
+        self.assertTrue(self.m.path("/home/swapfile").exists())
+        self.assertIn("/home/.gaming-swap/swapfile", self.m.active())
+
+    def test_missing_active_backend_after_systemd_start_is_reported_before_deletion(self):
+        original_run = self.m.run
+        def run(*args, **kwargs):
+            result = original_run(*args, **kwargs)
+            if args[:2] == ("systemctl", "start"):
+                self.m.swaps.clear()
+                self.m.refresh_swaps()
+            return result
+        self.m.run = run
+        with self.assertRaisesRegex(policy.MigrationError, "not active after systemd activation"):
+            self.install()
+        self.assertTrue(self.m.path("/home/swapfile").exists())
 
     def test_ram_upgrade_does_not_rename_an_active_file(self):
         self.install()
