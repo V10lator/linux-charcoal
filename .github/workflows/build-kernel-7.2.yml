@@ -57,6 +57,8 @@ jobs:
             automation/audit-latest-patch-versions.py \
             automation/port-poc-selector.py \
             automation/port-adios-7.2.py \
+            automation/fix-gud-tv-mode-fortify.py \
+            tests/test_patch_gud_fortify.py \
             automation/normalize-diff-whitespace.py \
             tests/test-prepare-steamos-7.2.py \
             tests/test-prepare-pkgbuild-7.2.py \
@@ -64,6 +66,7 @@ jobs:
             tests/test-normalize-diff-whitespace.py \
             tests/test-install-release-policy-7.2.py \
             tests/test-unused-6.16-patches-7.2.py
+          python3 tests/test_patch_gud_fortify.py -v
           python3 tests/test-prepare-steamos-7.2.py -v
           python3 tests/test-prepare-pkgbuild-7.2.py -v
           python3 tests/test-resolve-latest-patches-7.2.py -v
