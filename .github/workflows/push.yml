@@ -147,7 +147,7 @@ jobs:
                   assert item["path"] and item["url"]
               elif item["origin"] == "adaptive-port":
                   assert item["repository"] == expected_repositories[name]
-                  assert item["adapter"] == "poc-selector-valve"
+                  assert item["adapter"] == {"poc_selector": "poc-selector-valve", "nap": "nap-direct-apply-6.18"}.get(name)
                   assert item["commit"] and item["commit"] != "repository-local"
                   assert item["path"] and item["url"]
               else:
