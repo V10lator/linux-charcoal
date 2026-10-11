@@ -188,18 +188,61 @@ class ResolvedPatchApplicationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             tree = root / "tree"
-            tree.mkdir()
-            (tree / "nap.c").write_text("old\\n".replace("\\n", "\n"), encoding="utf-8")
+            (tree / "drivers/cpuidle/governors").mkdir(parents=True)
+            (tree / "drivers/cpuidle/governors/Makefile").write_text(
+                "obj-$(CONFIG_CPU_IDLE_GOV_HALTPOLL) += haltpoll.o\n",
+                encoding="utf-8",
+            )
+            (root / "automation").mkdir()
+            (root / "automation/fix-nap-compat.py").write_text(
+                (ROOT / "automation/fix-nap-compat.py").read_text(encoding="utf-8"),
+                encoding="utf-8",
+            )
+            subprocess.run(["git", "init", "-q", str(tree)], check=True)
             patch_path = root / "latest-nap.patch"
-            patch_path.write_bytes(patch("nap.c", "old", "new"))
+            patch_path.write_text(
+                "diff --git a/drivers/cpuidle/governors/Makefile "
+                "b/drivers/cpuidle/governors/Makefile\n"
+                "index 1111111..2222222 100644\n"
+                "--- a/drivers/cpuidle/governors/Makefile\n"
+                "+++ b/drivers/cpuidle/governors/Makefile\n"
+                "@@ -1,2 +1,3 @@\n"
+                " context absent from the Valve target\n"
+                " obj-$(CONFIG_CPU_IDLE_GOV_HALTPOLL) += haltpoll.o\n"
+                "+obj-$(CONFIG_CPU_IDLE_GOV_NAP) += nap/\n"
+                "diff --git a/drivers/cpuidle/governors/nap/nap.c "
+                "b/drivers/cpuidle/governors/nap/nap.c\n"
+                "new file mode 100644\n"
+                "index 0000000..2222222\n"
+                "--- /dev/null\n"
+                "+++ b/drivers/cpuidle/governors/nap/nap.c\n"
+                "@@ -0,0 +1,10 @@\n"
+                "+static ssize_t weights_read(struct file *file, struct kobject *kobj,\n"
+                "+                            struct bin_attribute *attr, char *buf,\n"
+                "+                            loff_t off, size_t count) { }\n"
+                "+static ssize_t weights_write(struct file *file, struct kobject *kobj,\n"
+                "+                             struct bin_attribute *attr, char *buf,\n"
+                "+                             loff_t off, size_t count) { }\n"
+                "+static struct bin_attribute *nap_bin_attrs[] = {\n"
+                "+        &bin_attr_weights,\n"
+                "+        NULL,\n"
+                "+};\n",
+                encoding="utf-8",
+            )
             applicator.apply_adaptive_port(
                 root, tree, patch_path, "nap", "nap-direct-apply-6.18"
             )
-            self.assertEqual((tree / "nap.c").read_text(), "new\n")
-            with self.assertRaisesRegex(applicator.ApplyError, "cannot be applied"):
-                applicator.apply_adaptive_port(
-                    root, tree, patch_path, "nap", "nap-direct-apply-6.18"
-                )
+            source = (
+                tree / "drivers/cpuidle/governors/nap/nap.c"
+            ).read_text(encoding="utf-8")
+            self.assertEqual(source.count("const struct bin_attribute *attr"), 2)
+            self.assertIn(
+                "static const struct bin_attribute * const nap_bin_attrs[]", source
+            )
+            self.assertIn(
+                "obj-$(CONFIG_CPU_IDLE_GOV_NAP) += nap/",
+                (tree / "drivers/cpuidle/governors/Makefile").read_text(encoding="utf-8"),
+            )
             with self.assertRaisesRegex(applicator.ApplyError, "another component"):
                 applicator.apply_adaptive_port(
                     root, tree, patch_path, "poc_selector", "nap-direct-apply-6.18"

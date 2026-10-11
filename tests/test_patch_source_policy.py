@@ -262,8 +262,14 @@ class PatchSourcePolicyTests(unittest.TestCase):
             '"nap": "nap-direct-apply-6.18"}.get(name)',
             workflow,
         )
+        effective = {
+            str(item["name"]): dict(item)
+            for item in MANIFEST["components"]
+        }
+        for component, values in overrides["components"].items():
+            effective[component].update(values)
         for component, adapter in expected.items():
-            self.assertEqual(overrides["components"][component]["adaptive_port"], adapter)
+            self.assertEqual(effective[component]["adaptive_port"], adapter)
 
 
 

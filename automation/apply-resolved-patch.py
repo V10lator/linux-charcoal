@@ -252,12 +252,76 @@ def apply_adaptive_port(
     if adapter == "nap-direct-apply-6.18":
         if name != "nap":
             raise ApplyError("NAP 6.18 adapter cannot apply another component")
-        # NAP 0.6.0 is chosen and checksum-locked by the resolver. Its
-        # additive cpuidle files can be carried unchanged if the Valve 6.18
-        # source passes the full upstream git apply --check preflight.
-        applied, details = apply_checked(tree, patch)
+        # The newest exact upstream bytes remain checksum-locked. Carry every
+        # upstream hunk unchanged except the one-line governor Makefile hook,
+        # whose surrounding EOF context differs in Valve 6.18.
+        data = patch.read_text(encoding="utf-8")
+        section_pattern = re.compile(
+            r"(?ms)^diff --git a/drivers/cpuidle/governors/Makefile "
+            r"b/drivers/cpuidle/governors/Makefile\n"
+            r".*?(?=^diff --git |\Z)"
+        )
+        sections = section_pattern.findall(data)
+        if len(sections) != 1:
+            raise ApplyError("nap: expected exactly one governors/Makefile upstream hunk")
+        section = sections[0]
+        added = [
+            line
+            for line in section.splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+        removed = [
+            line
+            for line in section.splitlines()
+            if line.startswith("-") and not line.startswith("---")
+        ]
+        if added != ["+obj-$(CONFIG_CPU_IDLE_GOV_NAP) += nap/"] or removed:
+            raise ApplyError("nap: governors/Makefile upstream hunk changed shape")
+
+        with tempfile.TemporaryDirectory(prefix="charcoal-nap-") as directory:
+            filtered = Path(directory) / "nap-without-makefile.patch"
+            filtered.write_text(section_pattern.sub("", data, count=1), encoding="utf-8")
+            applied, details = apply_checked(tree, filtered)
         if not applied:
-            raise ApplyError(f"{name}: newest NAP upstream patch cannot be applied: {details}")
+            raise ApplyError(
+                "nap: newest upstream patch excluding the reviewed Makefile "
+                f"context cannot be applied: {details}"
+            )
+
+        makefile = tree / "drivers/cpuidle/governors/Makefile"
+        makefile_text = makefile.read_text(encoding="utf-8")
+        anchor = "obj-$(CONFIG_CPU_IDLE_GOV_HALTPOLL) += haltpoll.o\n"
+        addition = "obj-$(CONFIG_CPU_IDLE_GOV_NAP) += nap/\n"
+        if makefile_text.count(addition) == 0 and makefile_text.count(anchor) == 1:
+            makefile.write_text(
+                makefile_text.replace(anchor, anchor + addition, 1),
+                encoding="utf-8",
+            )
+        elif makefile_text.count(addition) != 1:
+            raise ApplyError("nap: expected one HALTPOLL anchor and zero or one NAP entries")
+
+        source = tree / "drivers/cpuidle/governors/nap/nap.c"
+        adapter_script = root / "automation/fix-nap-compat.py"
+        command = [sys.executable, str(adapter_script), str(source)]
+        for attempt in range(2):
+            result = subprocess.run(command, check=False, text=True, capture_output=True)
+            if result.returncode:
+                raise ApplyError(
+                    f"nap: compatibility pass {attempt + 1} failed: "
+                    f"{result.stderr.strip() or result.stdout.strip()}"
+                )
+        checked = subprocess.run(
+            ["git", "diff", "--check", "--", str(makefile), str(source)],
+            cwd=tree,
+            check=False,
+            text=True,
+            capture_output=True,
+        )
+        if checked.returncode:
+            raise ApplyError(
+                "nap: adaptive port introduced whitespace errors: "
+                f"{checked.stderr.strip() or checked.stdout.strip()}"
+            )
         return
     if adapter != "poc-selector-valve":
         raise ApplyError(f"{name}: unsupported adaptive port adapter {adapter!r}")
