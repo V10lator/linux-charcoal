@@ -184,5 +184,34 @@ class ResolvedPatchApplicationTests(unittest.TestCase):
         )
 
 
+    def test_nap_060_adaptive_port_requires_clean_upstream_application(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            tree = root / "tree"
+            tree.mkdir()
+            (tree / "nap.c").write_text("old\\n".replace("\\n", "\n"), encoding="utf-8")
+            patch_path = root / "latest-nap.patch"
+            patch_path.write_bytes(patch("nap.c", "old", "new"))
+            applicator.apply_adaptive_port(
+                root, tree, patch_path, "nap", "nap-direct-apply-6.18"
+            )
+            self.assertEqual((tree / "nap.c").read_text(), "new\n")
+            with self.assertRaisesRegex(applicator.ApplyError, "cannot be applied"):
+                applicator.apply_adaptive_port(
+                    root, tree, patch_path, "nap", "nap-direct-apply-6.18"
+                )
+            with self.assertRaisesRegex(applicator.ApplyError, "another component"):
+                applicator.apply_adaptive_port(
+                    root, tree, patch_path, "poc_selector", "nap-direct-apply-6.18"
+                )
+
+    def test_nap_port_policy_tracks_newest_upstream_for_618(self) -> None:
+        overrides = json.loads(
+            (ROOT / "automation/patch-source-overrides.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(overrides["components"]["nap"]["adaptive_port"], "nap-direct-apply-6.18")
+        self.assertEqual(overrides["components"]["nap"]["port_for_kernel"], "6.18")
+
+
 if __name__ == "__main__":
     unittest.main()

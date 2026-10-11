@@ -249,6 +249,16 @@ def apply_adaptive_port(
     name: str,
     adapter: str,
 ) -> None:
+    if adapter == "nap-direct-apply-6.18":
+        if name != "nap":
+            raise ApplyError("NAP 6.18 adapter cannot apply another component")
+        # NAP 0.6.0 is chosen and checksum-locked by the resolver. Its
+        # additive cpuidle files can be carried unchanged if the Valve 6.18
+        # source passes the full upstream git apply --check preflight.
+        applied, details = apply_checked(tree, patch)
+        if not applied:
+            raise ApplyError(f"{name}: newest NAP upstream patch cannot be applied: {details}")
+        return
     if adapter != "poc-selector-valve":
         raise ApplyError(f"{name}: unsupported adaptive port adapter {adapter!r}")
     adapter_script = root / "automation/port-poc-selector.py"

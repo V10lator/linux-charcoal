@@ -33,6 +33,11 @@
       "local_port": "6.18-adios-3.3.0r2.port.patch",
       "local_port_project_version": "3.3.0r2",
       "local_port_upstream_sha256": "4f186fa06bfb0e0e08320cb53a38afebe6d9eaa5c820396015c59f993bf8e1b6"
+    },
+    "nap": {
+      "port_for_kernel": "6.18",
+      "port_when_incompatible": true,
+      "adaptive_port": "nap-direct-apply-6.18"
     }
   },
   "auxiliary_components": {
