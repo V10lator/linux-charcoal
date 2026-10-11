@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-SCRIPT = Path(__file__).with_name("fix-nap-compat.py")
+SCRIPT = Path(__file__).resolve().parents[1] / "automation/fix-nap-compat.py"
 
 FIXTURE = """static ssize_t weights_read(struct file *file, struct kobject *kobj,
                             struct bin_attribute *attr, char *buf,
