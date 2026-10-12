@@ -76,6 +76,53 @@ class RefreshTests(unittest.TestCase):
                                 check=True, text=True, capture_output=True)
         self.assertIn("restore", result.stdout)
 
+    def test_current_nap_065_cli_contract_is_ported_without_downgrade(self):
+        command = self.repository / "tools/napctl"
+        code = command.read_text()
+        self.assertEqual(code.count(refresh.NAPCTL_LEGACY_ERROR), 1)
+        self.assertEqual(code.count(refresh.NAPCTL_LEGACY_IMPORT), 1)
+        code = code.replace(
+            refresh.NAPCTL_LEGACY_ERROR, refresh.NAPCTL_065_ERROR, 1
+        ).replace(refresh.NAPCTL_LEGACY_IMPORT, refresh.NAPCTL_065_IMPORT, 1)
+        command.write_text(code)
+        latest = self.commit("upstream NAP 0.6.5 CLI extension")
+        metadata = self.resolve()
+        self.assertEqual(metadata["commit"], latest)
+        self.assertNotEqual(
+            metadata["integration_sha256"], metadata["reviewed_integration_sha256"]
+        )
+        self.assertEqual(
+            hashlib.sha256((self.output / "integration.patch").read_bytes()).hexdigest(),
+            metadata["integration_sha256"],
+        )
+        adapted = (self.output / "napctl").read_text()
+        self.assertIn("the kernel accepted only part of the weight blob", adapted)
+        self.assertIn("blob from a nap with another network shape", adapted)
+        self.assertIn(
+            "if not apply_state(a.file, a.force, a.cpu):\n            return",
+            adapted,
+        )
+        subprocess.run(
+            ["git", "apply", "--reverse", "--check", str(self.output / "integration.patch")],
+            cwd=self.output, check=True, capture_output=True,
+        )
+
+    def test_partial_unreviewed_nap_cli_change_fails_closed(self):
+        baseline = self.resolve()
+        command = self.repository / "tools/napctl"
+        command.write_text(
+            command.read_text().replace(
+                refresh.NAPCTL_LEGACY_ERROR, refresh.NAPCTL_065_ERROR, 1
+            )
+        )
+        self.commit("incompatible partial CLI change")
+        with self.assertRaisesRegex(ValueError, "unreviewed NAP"):
+            self.resolve()
+        self.assertEqual(
+            json.loads((self.output / "UPSTREAM.json").read_text())["commit"],
+            baseline["commit"],
+        )
+
     def test_resolution_is_isolated_from_parent_repository(self):
         parent = self.root / "parent"
         parent.mkdir()
