@@ -282,7 +282,22 @@ def validate_record(
             validate_port_lineage(name, spec, upstream, upstream.get("sha256"))
             validate_local_port_overlays(name, spec, record)
         else:
-            validate_fallback(name, spec, record, kernel_version)
+            reviewed_version = spec.get("local_port_project_version")
+            selected_version = record.get("project_version")
+            stale_revision = (
+                kind == "github_tree"
+                and origin == "upstream-native"
+                and isinstance(selected_version, str)
+                and isinstance(reviewed_version, str)
+                and selected_version != reviewed_version
+            )
+            if stale_revision and record.get("fallback") is None:
+                # A source-specific fallback for an older/newer rN revision
+                # must never be attached to the selected native source.
+                # Its absence is safe: a failed native apply will stop the build.
+                pass
+            else:
+                validate_fallback(name, spec, record, kernel_version)
 
 
 def validate(manifest: dict[str, Any], lock: dict[str, Any]) -> None:

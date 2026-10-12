@@ -246,7 +246,8 @@ def native_series_candidates(candidates: list[Candidate]) -> list[Candidate]:
 
 
 def fallback_metadata(
-    spec: dict[str, Any], kernel_version: str
+    spec: dict[str, Any], kernel_version: str,
+    selected_project_version: str | None = None,
 ) -> dict[str, Any] | None:
     """Describe the reviewed port that may be used after a real apply failure.
 
@@ -262,6 +263,16 @@ def fallback_metadata(
             f"{spec['name']}: local_port and adaptive_port are mutually exclusive"
         )
     if local_port:
+        reviewed_version = spec.get("local_port_project_version")
+        if (
+            selected_project_version is not None
+            and reviewed_version is not None
+            and str(reviewed_version) != selected_project_version
+        ):
+            # The locked historical port belongs to another upstream revision.
+            # Do not offer it for a native patch of a different revision.
+            # If that native patch fails to apply, application fails closed.
+            return None
         result: dict[str, Any] = {
             "kind": "local-port",
             "path": str(local_port),
@@ -608,7 +619,7 @@ def resolve_github_component(
             **upstream,
             "origin": "upstream-native" if native else "upstream-kernel-agnostic",
         }
-        fallback = fallback_metadata(spec, kernel_version)
+        fallback = fallback_metadata(spec, kernel_version, candidate.project_version)
         if fallback:
             result["fallback"] = fallback
         return result

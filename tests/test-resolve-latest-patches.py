@@ -433,6 +433,21 @@ class NapLatestUpstreamTests(unittest.TestCase):
 
 
 class SameReleaseKernelPriorityTests(unittest.TestCase):
+    def test_stale_reviewed_revision_is_never_used_as_native_fallback(self) -> None:
+        spec = {
+            "name": "adios",
+            "local_port": "6.18-adios-3.3.0r2.port.patch",
+            "local_port_project_version": "3.3.0r2",
+            "local_port_upstream_sha256": "a" * 64,
+        }
+        self.assertIsNone(
+            MODULE.fallback_metadata(spec, "6.18.53", "3.3.0")
+        )
+        fallback = MODULE.fallback_metadata(spec, "6.18.53", "3.3.0r2")
+        self.assertIsNotNone(fallback)
+        self.assertEqual(fallback["project_version"], "3.3.0r2")
+        self.assertEqual(fallback["kernel_version"], "6.18.53")
+
     def test_version_11_prefers_matching_kernel_618_or_72_not_73(self) -> None:
         for kernel, native_suffix, native_version in (
             ("6.18.53", "6.18.22", (6, 18, 22)),

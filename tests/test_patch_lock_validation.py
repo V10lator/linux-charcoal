@@ -217,6 +217,53 @@ class PatchLockValidationTests(unittest.TestCase):
         }
         validator.validate(current_manifest, current_lock)
 
+    def test_native_revision_does_not_accept_different_revision_port_fallback(self) -> None:
+        m = manifest("3.3.0r2")
+        locked = lock("3.3.0")
+        locked["components"]["static_port"] = {
+            "origin": "upstream-native",
+            "selection": "latest-native-series",
+            "repository": "example/static-port",
+            "path": "patches/testing/0001-linux6.18.22-static-v3.3.0.patch",
+            "commit": "b" * 40,
+            "url": "https://example.invalid/native.patch",
+            "kernel_version": "6.18.22",
+            "project_version": "3.3.0",
+            "latest_upstream_project_version": "3.3.0r2",
+            "target": "latest-static-port.patch",
+            "sha256": "c" * 64,
+            "size": 1,
+        }
+        validator.validate(m, locked)
+        # A mismatched local port must not be accepted as a fallback.
+        locked["components"]["static_port"]["fallback"] = {
+            "kind": "local-port", "path": "static-port.patch",
+            "kernel_version": "6.18.45",
+            "project_version": "3.3.0r2",
+            "upstream_sha256": "c" * 64,
+        }
+        with self.assertRaisesRegex(validator.ValidationError, "stale"):
+            validator.validate(m, locked)
+
+    def test_native_with_same_reviewed_version_still_requires_a_fallback(self) -> None:
+        m = manifest("3.3.0")
+        locked = lock("3.3.0")
+        locked["components"]["static_port"] = {
+            "origin": "upstream-native",
+            "selection": "latest-native-series",
+            "repository": "example/static-port",
+            "path": "patches/testing/0001-linux6.18.22-static-v3.3.0.patch",
+            "commit": "b" * 40,
+            "url": "https://example.invalid/native.patch",
+            "kernel_version": "6.18.22",
+            "project_version": "3.3.0",
+            "target": "latest-static-port.patch",
+            "sha256": "c" * 64,
+            "size": 1,
+        }
+        with self.assertRaisesRegex(validator.ValidationError, "missing its reviewed port fallback"):
+            validator.validate(m, locked)
+
     def test_native_selection_rejects_a_port_as_the_primary_source(self) -> None:
         current_lock = lock()
         current_lock["components"]["static_port"]["selection"] = "latest-native-series"
