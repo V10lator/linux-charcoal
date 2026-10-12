@@ -228,3 +228,10 @@ asynchronous RCU reclamation and removal of forced P-State schedutil selects.
 No additional Zen memory or scheduler defaults are imported.
 The legacy fsync opcode-31 patch and already-upstream C23/libbpf, Bluetooth
 SSP and Qualcomm ath11k patches are not fetched or applied.
+
+## NAP tools
+
+Installation automatically preserves NAP learning across boots and saves
+weights every 30 minutes. It includes `napctl` and the offline viewer
+`/usr/share/nap/napviz.html`, generated from the compiled kernel model. See
+[NAP-TOOLS.md](NAP-TOOLS.md) for compatibility, commands and verification.

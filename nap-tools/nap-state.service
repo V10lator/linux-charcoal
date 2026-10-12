@@ -1,0 +1,17 @@
+[Unit]
+Description=Restore and keep the learned weights of the nap cpuidle governor
+ConditionPathExists=/sys/devices/system/cpu/nap/weights
+After=sysinit.target
+RequiresMountsFor=/var/lib/nap
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+StateDirectory=nap
+StateDirectoryMode=0700
+UMask=0077
+ExecStart=/usr/bin/napctl restore
+ExecStop=/usr/bin/napctl save
+
+[Install]
+WantedBy=multi-user.target

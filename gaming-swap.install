@@ -1,7 +1,12 @@
 post_install() {
+  /usr/lib/nap/configure-services install || return
   /usr/lib/gaming-swap/configure
 }
 
 post_upgrade() {
   post_install
+}
+
+pre_remove() {
+  /usr/lib/nap/configure-services remove
 }

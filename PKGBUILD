@@ -80,6 +80,7 @@ source=(
   configure-gaming-swap
   gaming-zswap.service
   gaming-swap.install
+  nap-tools.tar.gz
   90-charcoal-zram.conf
   90-charcoal-zram-ir.conf
   99-charcoal.sh
@@ -132,7 +133,8 @@ sha256sums=(
   '3e200a7ad9661f59be2dfd442fd993fd130da8a6f5df7d8b4ec40d86351b1dcd'
   '46956917ad33d967e998dc4c81192cedd2cb1f45b2397f6746f650d090e478a4'
   '1ea2406b537d45d3b0b5cb178c15c23cb3270f3d76a7509b8b0fbc77e95bd517'
-  'd1be225c979faa26a009bda43cd3b274b002350258da91dc6a5b4c81ca335632'
+  '8e4738f3aaa22832b3e45dca7b226460702e88bcdcd026ea5d5062e5aa0444de'
+  '17bdb35639eb26c6d5cf2ab229b41ecba6225634a4dfe7a809e187eccb8a0f01'
   'b59543c9aac43412e8b90b050380f482214ab33c4703d621ff0ea91ea39c6761'
   '07068c432fd7e80689f44a28346f1909de9ee77aa3e72dfaa6a4ea89d9921afd'
   '1f7df01db0bcd7c18230878003466ac3f651f8f21e74323b7e8178871d824f74'
@@ -346,6 +348,10 @@ _package() {
     "$pkgdir/usr/lib/gaming-swap/configure"
   install -D -m 0644 ../gaming-zswap.service \
     "$pkgdir/usr/lib/systemd/system/gaming-zswap.service"
+
+  # Preserve NAP learning and build the offline viewer from this kernel's model.
+  python3 ../nap-tools/install-tools.py \
+    --destdir "$pkgdir" --kernel-dir "$PWD/drivers/cpuidle/governors/nap"
 
   # Charcoal: Install bundles DKMS modules
   ZSTD_CLEVEL=19 _make_llvm M=../ryzen_smu INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 DEPMOD=/doesnt/exist modules_install

@@ -248,3 +248,10 @@ liberação assíncrona de clientes evdev por RCU e remoção dos selects obriga
 de schedutil nos drivers P-State. Nenhum default adicional de memória ou scheduler
 Zen é importado. O fsync legado opcode 31 e os patches já upstream de C23/libbpf,
 Bluetooth SSP e Qualcomm ath11k não são baixados nem aplicados.
+
+## Ferramentas NAP
+
+A instalação preserva automaticamente o aprendizado do NAP entre boots e salva
+os pesos a cada 30 minutos. Inclui `napctl` e o visualizador offline
+`/usr/share/nap/napviz.html`, gerado com o modelo do kernel compilado. Consulte
+[NAP-TOOLS.md](NAP-TOOLS.md) para compatibilidade, comandos e verificação.

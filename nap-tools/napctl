@@ -1,0 +1,331 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-2.0
+"""napctl -- dump, load, average and persist the weights of the nap cpuidle governor.
+
+The kernel exposes the weights of one CPU (or, when written, of all CPUs) through
+/sys/devices/system/cpu/nap/weights, selected with .../weights_cpu.
+"""
+import argparse
+import array
+import fcntl
+import hashlib
+import math
+import os
+import struct
+import sys
+import tempfile
+import zlib
+
+SYSFS = os.environ.get("NAPCTL_SYSFS", "/sys/devices/system/cpu/nap")
+STATE_DIR = os.environ.get("NAPCTL_STATE_DIR", "/var/lib/nap")
+CPU_DIR = os.environ.get("NAPCTL_CPU_DIR", "/sys/devices/system/cpu")   # tests only
+LOCK = os.environ.get("NAPCTL_LOCK", "/run/lock/napctl.lock")
+HDR = struct.Struct("<8s12I")          # magic, fmt, nt, nk, nd, nhid, nout, first, tail_rep, payload_bytes, crc, input_sig, reserved
+MAGIC = b"NAPWGT01"
+STATE_MAGIC = b"NAPSTAT1"
+STATE_HDR = struct.Struct("<8sI32s")   # magic, number of records, machine signature
+
+
+def die(msg):
+    sys.exit("napctl: " + msg)
+
+
+def kcrc(data):
+    """Kernel crc32_le(~0, data): zlib's crc32 without the final inversion."""
+    return zlib.crc32(data) ^ 0xFFFFFFFF
+
+
+def check_blob(blob):
+    if len(blob) < HDR.size:
+        die("blob too short")
+    f = HDR.unpack_from(blob)
+    if f[0] != MAGIC:
+        die("not a nap weight blob")
+    if f[1] != 1 or f[12] != 0:
+        die("unsupported blob format")
+    if len(blob) != HDR.size + f[9]:
+        die("blob size does not match its header")
+    nw = (f[2] * f[3] + f[4]) * f[5] + f[5] + f[5] * f[6] + f[6]
+    if f[9] != 4 * nw or not nw:
+        die("weight count does not match the network shape")
+    if f[10] != kcrc(blob[HDR.size:]):
+        die("checksum mismatch")
+    if any(not math.isfinite(w) or abs(w) >= 1024 for w in array.array("f", blob[HDR.size:])):
+        die("invalid weight value")
+    return f
+
+
+def dims(blob):
+    f = check_blob(blob)
+    return dict(zip(("fmt", "nt", "nk", "nd", "nhid", "nout", "first", "tail_rep"), f[1:9]))
+
+
+def machine_signature():
+    """What the weights are tied to: CPU model and the cpuidle state table."""
+    parts = []
+    try:
+        with open("/proc/cpuinfo") as fh:
+            for line in fh:
+                if line.startswith(("vendor_id", "cpu family", "model\t", "model name", "stepping")):
+                    parts.append(line.strip())
+                if line.strip() == "":
+                    break
+    except OSError:
+        pass
+    base = f"{CPU_DIR}/cpu0/cpuidle"
+    try:
+        for st in sorted(os.listdir(base)):
+            rec = []
+            for name in ("name", "latency", "residency"):
+                with open(f"{base}/{st}/{name}") as fh:
+                    rec.append(fh.read().strip())
+            parts.append(" ".join(rec))
+    except OSError:
+        pass
+    return hashlib.sha256("\n".join(parts).encode()).digest()
+
+
+def write_attr(name, value):
+    with open(f"{SYSFS}/{name}", "w") as fh:
+        fh.write(str(value))
+
+
+def online_cpus():
+    with open(f"{CPU_DIR}/online") as fh:
+        spec = fh.read().strip()
+    cpus = []
+    for part in spec.split(","):
+        a, _, b = part.partition("-")
+        cpus.extend(range(int(a), int(b or a) + 1))
+    return cpus
+
+
+def dump_cpu(cpu):
+    write_attr("weights_cpu", cpu)
+    with open(f"{SYSFS}/weights", "rb") as fh:
+        blob = fh.read()
+    check_blob(blob)
+    return blob
+
+
+def load_blob(blob, cpu="all"):
+    check_blob(blob)
+    write_attr("weights_cpu", cpu)
+    fd = os.open(f"{SYSFS}/weights", os.O_WRONLY)
+    try:
+        if os.write(fd, blob) != len(blob):
+            die("the kernel accepted only part of the weight blob")
+    except OSError as e:
+        die(f"the kernel rejected the weights: {os.strerror(e.errno)}")
+    finally:
+        os.close(fd)
+
+
+def average(blobs):
+    first = blobs[0]
+    check_blob(first)
+    acc = array.array("f", first[HDR.size:])
+    for b in blobs[1:]:
+        header = check_blob(b)
+        original = HDR.unpack_from(first)
+        if header[1:10] != original[1:10] or header[11:13] != original[11:13]:
+            die("blobs of different shapes")
+        w = array.array("f", b[HDR.size:])
+        for i in range(len(acc)):
+            acc[i] += w[i]
+    n = float(len(blobs))
+    for i in range(len(acc)):
+        acc[i] /= n
+    payload = acc.tobytes()
+    f = list(HDR.unpack_from(first))
+    f[10] = kcrc(payload)
+    return HDR.pack(*f) + payload
+
+
+def write_state(path, records, previous=None):
+    """records: list of (cpu, blob)"""
+    directory = os.path.dirname(os.path.abspath(path))
+    fd, tmp = tempfile.mkstemp(prefix=".nap-state-", dir=directory)
+    try:
+        with os.fdopen(fd, "wb") as fh:
+            fh.write(STATE_HDR.pack(STATE_MAGIC, len(records), machine_signature()))
+            for cpu, blob in records:
+                check_blob(blob)
+                fh.write(struct.pack("<II", cpu, len(blob)))
+                fh.write(blob)
+            fh.flush()
+            os.fsync(fh.fileno())
+        # Keep both old files intact until the new snapshot is fully written.
+        if previous is not None and os.path.exists(path):
+            os.replace(path, previous)
+        os.replace(tmp, path)
+        directory_fd = os.open(directory, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+
+
+def read_state(path):
+    with open(path, "rb") as fh:
+        data = fh.read()
+    if len(data) < STATE_HDR.size:
+        die(f"{path}: truncated state header")
+    magic, n, sig = STATE_HDR.unpack_from(data)
+    if magic != STATE_MAGIC:
+        die(f"{path}: not a nap state file")
+    if not n or n > (len(data) - STATE_HDR.size) // (8 + HDR.size):
+        die(f"{path}: invalid record count")
+    pos, recs = STATE_HDR.size, []
+    seen = set()
+    for _ in range(n):
+        if pos + 8 > len(data):
+            die(f"{path}: truncated CPU record")
+        cpu, ln = struct.unpack_from("<II", data, pos)
+        pos += 8
+        if cpu in seen or ln < HDR.size or pos + ln > len(data):
+            die(f"{path}: invalid CPU record")
+        seen.add(cpu)
+        blob = data[pos:pos + ln]
+        check_blob(blob)
+        recs.append((cpu, blob))
+        pos += ln
+    if pos != len(data):
+        die(f"{path}: unexpected trailing data")
+    return sig, recs
+
+
+def cmd_export(a):
+    recs = [(c, dump_cpu(c)) for c in online_cpus()]
+    write_state(a.file, recs)
+    print(f"exported {len(recs)} CPUs to {a.file}")
+
+
+def apply_state(path, force=False, cpu=None):
+    sig, recs = read_state(path)
+    if sig != machine_signature() and not force:
+        print(f"napctl: {path} belongs to another machine or idle-state table; ignored (--force to load anyway)",
+              file=sys.stderr)
+        return False
+    have = dict(recs)
+    mean = average([b for _, b in recs]) if recs else None
+    for c in ([cpu] if cpu is not None else online_cpus()):
+        blob = have.get(c, mean)
+        if blob is not None:
+            load_blob(blob, c)
+    return True
+
+
+def cmd_import(a):
+    with open(a.file, "rb") as fh:
+        head = fh.read(8)
+    if head == STATE_MAGIC:
+        if not apply_state(a.file, a.force, a.cpu):
+            return
+    else:
+        with open(a.file, "rb") as fh:
+            load_blob(fh.read(), "all" if a.cpu is None else a.cpu)
+    print("loaded")
+
+
+def cmd_info(a):
+    with open(a.file, "rb") as fh:
+        data = fh.read()
+    if data[:8] == STATE_MAGIC:
+        sig, recs = read_state(a.file)
+        print(f"state file: {len(recs)} CPUs, signature {sig.hex()[:16]}..., "
+              f"{'matches' if sig == machine_signature() else 'DIFFERS from'} this machine")
+        blobs = [b for _, b in recs]
+    else:
+        blobs = [data]
+    for i, b in enumerate(blobs[:1]):
+        print("dims:", dims(b))
+    for i, b in enumerate(blobs):
+        w = array.array("f", b[HDR.size:])
+        print(f"  blob {i}: {len(w)} weights, max |w| {max(abs(x) for x in w):.3f}, "
+              f"mean |w| {sum(abs(x) for x in w) / len(w):.4f}")
+
+
+def cmd_average(a):
+    blobs = []
+    for p in a.inputs:
+        with open(p, "rb") as fh:
+            blobs.append(fh.read())
+    with open(a.out, "wb") as fh:
+        fh.write(average(blobs))
+    print(f"averaged {len(blobs)} blobs into {a.out}")
+
+
+def cmd_save(a):
+    os.makedirs(STATE_DIR, mode=0o700, exist_ok=True)
+    cur, prev = f"{STATE_DIR}/state", f"{STATE_DIR}/state.prev"
+    recs = []
+    for c in online_cpus():
+        blob = try_dump(c)
+        if blob is not None:
+            recs.append((c, blob))
+    if not recs:
+        print("napctl: nothing learned yet, nothing saved")
+        return
+    write_state(cur, recs, previous=prev)
+    print(f"saved {len(recs)} CPUs to {cur}")
+
+
+def try_dump(c):
+    """None for a CPU that has not learned anything yet (it never ran the governor)."""
+    try:
+        return dump_cpu(c)
+    except OSError:
+        return None
+
+
+def cmd_restore(a):
+    for name in ("state", "state.prev"):
+        path = f"{STATE_DIR}/{name}"
+        if os.path.exists(path):
+            try:
+                if apply_state(path, a.force):
+                    print(f"restored from {path}")
+                    return
+            except (SystemExit, OSError, struct.error) as e:
+                print(f"napctl: {path} unusable ({e})", file=sys.stderr)
+    print("no saved weights; the built-in default stays")
+
+
+def cmd_reset(a):
+    write_attr("reset_weights", "all")
+    print("weights reset to the built-in default")
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    sub = p.add_subparsers(dest="cmd", required=True)
+    s = sub.add_parser("export", help="dump all CPUs into a state file"); s.add_argument("file"); s.set_defaults(f=cmd_export)
+    s = sub.add_parser("import", help="load a state file or a single blob"); s.add_argument("file")
+    s.add_argument("--cpu", type=int); s.add_argument("--force", action="store_true"); s.set_defaults(f=cmd_import)
+    s = sub.add_parser("info", help="describe a state file or blob"); s.add_argument("file"); s.set_defaults(f=cmd_info)
+    s = sub.add_parser("average", help="average blobs into one"); s.add_argument("out"); s.add_argument("inputs", nargs="+"); s.set_defaults(f=cmd_average)
+    s = sub.add_parser("save", help="keep the learned weights in /var/lib/nap (the previous state is kept as state.prev)"); s.set_defaults(f=cmd_save)
+    s = sub.add_parser("restore", help="load the saved weights"); s.add_argument("--force", action="store_true"); s.set_defaults(f=cmd_restore)
+    s = sub.add_parser("reset", help="back to the built-in default"); s.set_defaults(f=cmd_reset)
+    a = p.parse_args()
+    if a.cmd in {"export", "import", "save", "restore", "reset"}:
+        # weights_cpu is shared by all processes, so selecting and reading or
+        # writing a CPU must be one operation across the timer and manual CLI.
+        os.makedirs(os.path.dirname(os.path.abspath(LOCK)), exist_ok=True)
+        fd = os.open(LOCK, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+        with os.fdopen(fd, "r+") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            a.f(a)
+    else:
+        a.f(a)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (OSError, struct.error, ValueError) as e:
+        die(str(e))

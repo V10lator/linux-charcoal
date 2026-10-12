@@ -1,0 +1,29 @@
+#!/bin/sh
+# Enable persistence even when the currently running kernel predates the weight ABI.
+set -eu
+run_directory=${NAP_SYSTEMD_RUN_DIR:-/run/systemd/system}
+
+case "${1:-install}" in
+  install)
+    if [ -d "$run_directory" ]; then
+      systemctl daemon-reload
+    fi
+    systemctl enable nap-state.service nap-state-save.timer
+    if [ -d "$run_directory" ]; then
+      # start, not restart: upgrading tools must not overwrite current learning.
+      systemctl start nap-state.service nap-state-save.timer
+    fi
+    ;;
+  remove)
+    if [ -d "$run_directory" ]; then
+      # Stop the timer before the final save in nap-state.service's ExecStop.
+      systemctl stop nap-state-save.timer nap-state-save.service
+      systemctl stop nap-state.service
+    fi
+    systemctl disable nap-state.service nap-state-save.timer
+    ;;
+  *)
+    echo "Usage: $0 install|remove" >&2
+    exit 2
+    ;;
+esac

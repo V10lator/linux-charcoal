@@ -1,0 +1,12 @@
+[Unit]
+Description=Save the learned weights of the nap cpuidle governor
+ConditionPathExists=/sys/devices/system/cpu/nap/weights
+After=nap-state.service
+RequiresMountsFor=/var/lib/nap
+
+[Service]
+Type=oneshot
+StateDirectory=nap
+StateDirectoryMode=0700
+UMask=0077
+ExecStart=/usr/bin/napctl save

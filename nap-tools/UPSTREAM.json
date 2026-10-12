@@ -1,0 +1,23 @@
+{
+  "repository": "https://github.com/firelzrd/nap",
+  "commit": "57eccac27547244459582bde893c65a5fe2f1b04",
+  "sha256": {
+    "tools/README": "20f620d684f64f53a6b4020813ba0a79b545ff8a616ee3a27500caecd86039e7",
+    "tools/napctl": "d3ecc347e3b0bcba0b75f6c81af6d025a414d8038f2d2a3c53eaabef0570f8bc",
+    "tools/nap-state-save.timer": "603bae27909f8c50da8a925db1d398d0a67907952ffbd35ff31ad60a7a9dff14",
+    "tools/nap-state.service": "44273e7e023d91cf29008790a58ff51cd8e7dac3251e9e18f38af4f00404bc6d",
+    "tools/nap-state-save.service": "ca91466aaa544f5741e1f11adc1863023ef173a00aa62209aa00a263d628b1db",
+    "tools/napviz.html": "a916d04e1e3a9e49e18b570d8568603075b29c4f03c6464b2fa4289c4ff4a500",
+    "tools/napviz/test_core.js": "bed157aa95a6d7930bd04c1717587acfa7d87cecb661965ced40e602492d3242",
+    "tools/napviz/build.py": "ef80478e9ef5c385ace1c532d9e52769778a1f89fd0775c12ea8d5cf3a094a89",
+    "tools/napviz/template.html": "cddfba42867a85d8609c651c4181afcbb42cdc892d8a28a2c84af440b5a88c43",
+    "tools/napviz/core.js": "7ac8675f7d04a28891abcf0c9e4c16583648e787b77ddd851bd2408994b250ee",
+    "tools/napviz/ui.js": "f779329fac3fa6e5bd7c71123e25110ae0d3f2a66730f0b3c2d59422e951eb53"
+  },
+  "adaptations": [
+    "Package executables under /usr/bin and units under /usr/lib/systemd/system.",
+    "Serialize sysfs operations; validate complete state files and atomically save before rotating backups.",
+    "Use a private state directory and skip units if the NAP weight ABI is unavailable.",
+    "Regenerate the viewer from the NAP model actually compiled into production kernels."
+  ]
+}
