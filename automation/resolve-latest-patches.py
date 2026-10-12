@@ -173,8 +173,9 @@ def latest_project_candidates(candidates: list[Candidate]) -> list[Candidate]:
     """Keep every kernel variant of the newest project release.
 
     Kernel compatibility must never make an older project release win. Once the
-    newest project release is known, the closest kernel variant is selected and
-    ported when the target kernel has no native patch.
+    newest project release is known, prefer a matching kernel variant FROM
+    THAT RELEASE. Port the nearest kernel variant only if that release has
+    no native variant. Never replace newer functional code with an older native patch.
     """
     versioned = [item for item in candidates if item.project_version]
     if not versioned:
@@ -215,7 +216,7 @@ def native_series_candidates(candidates: list[Candidate]) -> list[Candidate]:
     ``upstream_candidates()`` assigns compatibility 2 to same-major/minor
     variants and 3 to an exact patch-level match.  Keeping this decision in a
     named helper makes the policy explicit: the newest upstream project
-    release is selected first, then its native 6.18 variant is preferred over
+    release is selected first, then its native kernel-series variant is preferred over
     every local port.
     """
     return [item for item in candidates if item.compatibility >= 2]
@@ -508,15 +509,12 @@ def resolve_github_component(
     if not all_candidates:
         raise ResolveError(f"no official upstream patch found for {spec['name']}")
 
-    # Per-component exception: prefer an official kernel-native release where
-    # explicitly requested (LRU Marie on SteamOS). NAP and all other sources
-    # still prioritize the globally newest release before kernel proximity.
-    prioritized_native = (
-        native_series_candidates(all_candidates)
-        if spec.get("prefer_native_kernel")
-        else []
-    )
-    candidates = latest_project_candidates(prioritized_native or all_candidates)
+    # Discover the newest upstream project version across stable/testing/RC/rN.
+    # Within that SAME project release, prefer the variant for this kernel
+    # series. Only if no native variant exists choose the nearest upstream
+    # kernel variant and require a checked port. Never downgrade for a native
+    # patch from an older upstream project release.
+    candidates = latest_project_candidates(all_candidates)
     native = native_series_candidates(candidates)
     compatibility_reference = native_series_candidates(all_candidates)
     local_port = spec.get("local_port")
@@ -527,7 +525,7 @@ def resolve_github_component(
     if native:
         # This is deliberately ahead of every port branch. A port is a
         # fallback for an unavailable or non-applying 6.18 variant, never a
-        # substitute for an official latest-release 6.18 patch.
+        # substitute for an official native variant of the latest project release.
         candidate = max(native, key=compatible_key)
         selection = "latest-native-series"
     elif not any(item.kernel_version for item in candidates):
@@ -564,6 +562,7 @@ def resolve_github_component(
         upstream["kernel_version"] = ".".join(map(str, candidate.kernel_version))
     if candidate.project_version:
         upstream["project_version"] = candidate.project_version
+        upstream["latest_upstream_project_version"] = candidate.project_version
 
     # Keep the best direct-compatible baseline visible in the lock for audit
     # purposes when a newer release is being sourced from another kernel base.

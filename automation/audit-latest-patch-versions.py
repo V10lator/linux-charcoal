@@ -84,12 +84,9 @@ def audit_component(
     if not candidates:
         return [f"{name}: upstream exposes no candidate patches"]
 
-    prioritized_native = (
-        resolver.native_series_candidates(candidates)
-        if spec.get("prefer_native_kernel")
-        else []
-    )
-    latest = resolver.latest_project_candidates(prioritized_native or candidates)
+    # Always discover the latest upstream project version first; compare only
+    # its kernel variants, selecting the native one ahead of any port.
+    latest = resolver.latest_project_candidates(candidates)
     upstream = upstream_record(record)
     versioned = [candidate for candidate in latest if candidate.project_version]
     if versioned:
@@ -103,6 +100,14 @@ def audit_component(
                 f"release is {latest_version}"
             )
 
+    if versioned:
+        locked_latest = upstream.get("latest_upstream_project_version")
+        if locked_latest != latest_version:
+            failures.append(
+                f"{name}: upstream latest version metadata {locked_latest!r} "
+                f"does not match {latest_version!r}"
+            )
+
     native = resolver.native_series_candidates(latest)
     if native:
         expected = max(native, key=resolver.compatible_key)
@@ -111,7 +116,7 @@ def audit_component(
             or record.get("origin") != "upstream-native"
         ):
             failures.append(
-                f"{name}: newest release has native {kernel_version.rsplit('.', 1)[0]} "
+                f"{name}: newest project release has native {kernel_version.rsplit('.', 1)[0]} "
                 "patches, but the lock does not select the native source first"
             )
         elif upstream.get("path") != expected.path or upstream.get("commit") != expected.sha:
@@ -120,7 +125,7 @@ def audit_component(
                 f"candidate {expected.path}"
             )
         else:
-            print(f"{name}: newest release selected with native source {expected.path}")
+            print(f"{name}: newest project release selected with native kernel variant {expected.path}")
         return failures
 
     if any(candidate.kernel_version for candidate in latest):
@@ -128,7 +133,7 @@ def audit_component(
         policy = expected_port_selection(spec)
         if expected is None or policy is None:
             failures.append(
-                f"{name}: newest release has no native {kernel_version.rsplit('.', 1)[0]} "
+                f"{name}: newest project release has no native {kernel_version.rsplit('.', 1)[0]} "
                 "patch and no reviewed port policy"
             )
             return failures

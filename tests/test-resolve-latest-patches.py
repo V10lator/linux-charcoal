@@ -432,63 +432,105 @@ class NapLatestUpstreamTests(unittest.TestCase):
 
 
 
-class MarieKernelNativePriorityTests(unittest.TestCase):
-    def test_native_0120_preferred_over_73_revision_only_for_marie(self) -> None:
-        for kernel, kernel_parts, path in (
-            ("6.18.53", (6, 18, 22), "patches/testing/0001-linux6.18.22-lru_marie-0.12.0.patch"),
-            ("7.2", (7, 2), "patches/testing/0001-linux7.2-rc1-lru_marie-0.12.0.patch"),
+class SameReleaseKernelPriorityTests(unittest.TestCase):
+    def test_version_11_prefers_matching_kernel_618_or_72_not_73(self) -> None:
+        for kernel, native_suffix, native_version in (
+            ("6.18.53", "6.18.22", (6, 18, 22)),
+            ("7.2", "7.2-rc1", (7, 2)),
         ):
             with self.subTest(kernel=kernel):
                 native = MODULE.Candidate(
-                    path, "a" * 40, "https://example.invalid/native.patch",
-                    2, kernel_parts, "0.12.0",
+                    f"patches/testing/0001-linux{native_suffix}-demo-1.1.patch",
+                    "a" * 40, "https://example.invalid/native.patch",
+                    2, native_version, "1.1",
                 )
-                newer = MODULE.Candidate(
-                    "patches/testing/0001-linux7.3-rc1-lru_marie-0.12.0r2.patch",
-                    "b" * 40, "https://example.invalid/newer.patch",
-                    0, (7, 3), "0.12.0r2",
+                foreign = MODULE.Candidate(
+                    "patches/testing/0001-linux7.3-rc1-demo-1.1.patch",
+                    "b" * 40, "https://example.invalid/foreign.patch",
+                    0, (7, 3), "1.1",
                 )
-                spec = {
-                    "name": "lru_marie",
-                    "repository": "firelzrd/lru_marie",
-                    "prefer_native_kernel": True,
-                }
                 with mock.patch.object(
-                    MODULE, "upstream_candidates", return_value=[native, newer],
+                    MODULE, "upstream_candidates", return_value=[foreign, native],
                 ):
-                    resolved = MODULE.resolve_github_component(spec, kernel, None, ROOT)
-                self.assertEqual(resolved["origin"], "upstream-native")
-                self.assertEqual(resolved["selection"], "latest-native-series")
-                self.assertEqual(resolved["path"], path)
-                self.assertEqual(resolved["project_version"], "0.12.0")
+                    selected = MODULE.resolve_github_component(
+                        {"name": "demo", "repository": "example/demo"},
+                        kernel, None, ROOT,
+                    )
+                self.assertEqual(selected["path"], native.path)
+                self.assertEqual(selected["origin"], "upstream-native")
+                self.assertEqual(selected["selection"], "latest-native-series")
+                self.assertEqual(selected["latest_upstream_project_version"], "1.1")
 
-    def test_latest_global_upstream_still_wins_without_explicit_priority(self) -> None:
+    def test_newer_release_without_native_uses_reviewed_port_not_old_native(self) -> None:
         old_native = MODULE.Candidate(
             "patches/stable/0001-6.18.3-nap-v0.5.1.patch",
             "a" * 40, "https://example.invalid/old.patch",
             2, (6, 18, 3), "0.5.1",
         )
-        new_testing = MODULE.Candidate(
+        newer_far = MODULE.Candidate(
             "patches/testing/0001-6.12-nap-v0.6.5.patch",
-            "b" * 40, "https://example.invalid/new.patch",
+            "b" * 40, "https://example.invalid/far.patch",
             0, (6, 12), "0.6.5",
+        )
+        newer_near = MODULE.Candidate(
+            "patches/testing/0001-6.16-nap-v0.6.5.patch",
+            "c" * 40, "https://example.invalid/near.patch",
+            0, (6, 16), "0.6.5",
         )
         spec = {
             "name": "nap",
             "repository": "firelzrd/nap",
-            "port_for_kernel": "6.18",
             "adaptive_port": "nap-direct-apply-6.18",
+            "port_when_incompatible": True,
         }
         with (
             mock.patch.object(
-                MODULE, "upstream_candidates", return_value=[old_native, new_testing],
+                MODULE, "upstream_candidates",
+                return_value=[old_native, newer_far, newer_near],
             ),
             mock.patch.object(MODULE, "request_bytes", return_value=PATCH),
         ):
             selected = MODULE.resolve_github_component(spec, "6.18.53", None, ROOT)
-        self.assertEqual(selected["path"], new_testing.path)
-        self.assertEqual(selected["origin"], "adaptive-port")
+        self.assertEqual(selected["path"], newer_near.path)
         self.assertEqual(selected["project_version"], "0.6.5")
+        self.assertEqual(selected["latest_upstream_project_version"], "0.6.5")
+        self.assertEqual(selected["origin"], "adaptive-port")
+        self.assertEqual(selected["selection"], "latest-release-adaptive-port")
+
+    def test_newer_native_version_wins_over_older_native_version(self) -> None:
+        older = MODULE.Candidate(
+            "patches/stable/0001-linux6.18.3-demo-1.0.patch",
+            "a" * 40, "https://example.invalid/old.patch",
+            3, (6, 18, 3), "1.0",
+        )
+        latest = MODULE.Candidate(
+            "patches/testing/0001-linux6.18.22-demo-1.1.patch",
+            "b" * 40, "https://example.invalid/new.patch",
+            2, (6, 18, 22), "1.1",
+        )
+        with mock.patch.object(
+            MODULE, "upstream_candidates", return_value=[older, latest],
+        ):
+            selected = MODULE.resolve_github_component(
+                {"name": "demo", "repository": "example/demo"},
+                "6.18.3", None, ROOT,
+            )
+        self.assertEqual(selected["path"], latest.path)
+        self.assertEqual(selected["project_version"], "1.1")
+
+    def test_missing_native_version_and_port_policy_fails_closed(self) -> None:
+        foreign = MODULE.Candidate(
+            "patches/testing/0001-linux7.3-demo-1.1.patch",
+            "a" * 40, "https://example.invalid/foreign.patch",
+            0, (7, 3), "1.1",
+        )
+        with mock.patch.object(MODULE, "upstream_candidates", return_value=[foreign]):
+            with self.assertRaisesRegex(MODULE.ResolveError, "tracked port is required"):
+                MODULE.resolve_github_component(
+                    {"name": "demo", "repository": "example/demo"},
+                    "6.18.53", None, ROOT,
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

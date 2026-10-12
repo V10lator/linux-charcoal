@@ -21,7 +21,6 @@
       "port_for_kernel": "6.18"
     },
     "lru_marie": {
-      "prefer_native_kernel": true,
       "port_for_kernel": "6.18",
       "port_when_incompatible": true,
       "local_port": null,
