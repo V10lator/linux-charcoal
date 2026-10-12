@@ -84,7 +84,12 @@ def audit_component(
     if not candidates:
         return [f"{name}: upstream exposes no candidate patches"]
 
-    latest = resolver.latest_project_candidates(candidates)
+    prioritized_native = (
+        resolver.native_series_candidates(candidates)
+        if spec.get("prefer_native_kernel")
+        else []
+    )
+    latest = resolver.latest_project_candidates(prioritized_native or candidates)
     upstream = upstream_record(record)
     versioned = [candidate for candidate in latest if candidate.project_version]
     if versioned:
