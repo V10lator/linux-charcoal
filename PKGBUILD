@@ -241,6 +241,20 @@ prepare() {
 
   python3 "$startdir/automation/configure-zen-interactive.py" "$PWD"
 
+  # Upstream patch context can leave an extra blank EOF line in this Makefile.
+  # Normalize only terminal newlines, retaining the strict git diff --check.
+  python3 - <<'PY'
+from pathlib import Path
+path = Path("block/Makefile")
+contents = path.read_bytes()
+if not contents or b"\0" in contents or not contents.endswith(b"\n"):
+    raise SystemExit("unexpected block/Makefile formatting")
+normalized = contents.rstrip(b"\n") + b"\n"
+if contents != normalized:
+    path.write_bytes(normalized)
+PY
+  git diff --check -- block/Makefile
+
   echo "Setting config..."
   cp ../config .config
   scripts/kconfig/merge_config.sh -m ../config ../config-neptune ../config-charcoal # Charcoal: merge the extra fragment
