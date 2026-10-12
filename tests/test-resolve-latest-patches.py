@@ -198,21 +198,15 @@ class LocalPortTrackingTests(unittest.TestCase):
         self.assertEqual(selected["origin"], "upstream-native")
         self.assertEqual(selected["selection"], "latest-native-series")
         self.assertEqual(selected["kernel_version"], "6.18.22")
-        self.assertEqual(
-            selected["fallback"],
-            {
-                "kind": "local-port",
-                "path": "demo.patch",
-                "kernel_version": "6.18.45",
-                "project_version": "1.0",
-                "upstream_sha256": hashlib.sha256(PATCH).hexdigest(),
-            },
-        )
+        # A local port for 1.0 cannot be attached to the selected native 2.0.
+        # If the native patch fails to apply, that mismatch must fail closed.
+        self.assertNotIn("fallback", selected)
 
     def test_series_port_locks_the_exact_resolved_valve_patchlevel(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             spec = self.base_spec()
             spec["port_for_kernel"] = "6.18"
+            spec["local_port_project_version"] = "2.0"
             with mock.patch.object(
                 MODULE,
                 "upstream_candidates",
