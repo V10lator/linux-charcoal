@@ -388,5 +388,48 @@ class OfficialKernelSourceTests(unittest.TestCase):
                 MODULE.resolve_kernel_tag(self.config(), None)
 
 
+
+class NapLatestUpstreamTests(unittest.TestCase):
+    def test_testing_065_outweighs_older_native_051_on_both_kernel_series(self) -> None:
+        for kernel, compatibility in (("6.18.53", 2), ("7.2", 0)):
+            with self.subTest(kernel=kernel):
+                spec = {
+                    "name": "nap",
+                    "repository": "firelzrd/nap",
+                    "port_for_kernel": ".".join(kernel.split(".")[:2]),
+                    "port_when_incompatible": True,
+                    "adaptive_port": "nap-direct-apply-" + ".".join(kernel.split(".")[:2]),
+                }
+                native_old = MODULE.Candidate(
+                    "patches/stable/0001-6.18.3-nap-v0.5.1.patch",
+                    "a" * 40,
+                    "https://example.invalid/nap-old.patch",
+                    compatibility,
+                    (6, 18, 3),
+                    "0.5.1",
+                )
+                testing_new = MODULE.Candidate(
+                    "patches/testing/0001-6.12-nap-v0.6.5.patch",
+                    "b" * 40,
+                    "https://example.invalid/nap-new.patch",
+                    0,
+                    (6, 12),
+                    "0.6.5",
+                )
+                with (
+                    mock.patch.object(
+                        MODULE, "upstream_candidates", return_value=[native_old, testing_new]
+                    ),
+                    mock.patch.object(MODULE, "request_bytes", return_value=PATCH),
+                ):
+                    record = MODULE.resolve_github_component(spec, kernel, None, ROOT)
+                self.assertEqual(record["path"], testing_new.path)
+                self.assertEqual(record["project_version"], "0.6.5")
+                self.assertEqual(record["origin"], "adaptive-port")
+                self.assertEqual(record["selection"], "latest-release-adaptive-port")
+                self.assertEqual(record["adapter"], spec["adaptive_port"])
+                self.assertEqual(record["content_bytes"], PATCH)
+
+
 if __name__ == "__main__":
     unittest.main()

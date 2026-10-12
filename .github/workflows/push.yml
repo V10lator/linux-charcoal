@@ -93,6 +93,7 @@ jobs:
           python3 tests/test_patch_gud_fortify.py
           python3 tests/test_lru_marie_whitespace.py
           python3 tests/test_nap_compat.py
+          python3 tests/test-resolve-latest-patches.py -v
           python3 tests/test_patch_cpu_optimizations_port.py
           python3 tests/test_release_latest_verification.py
           bash -n PKGBUILD
