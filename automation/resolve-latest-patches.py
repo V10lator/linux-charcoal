@@ -188,6 +188,29 @@ def latest_project_candidates(candidates: list[Candidate]) -> list[Candidate]:
     ]
 
 
+def project_base_version_key(value: str | None) -> tuple[int, ...]:
+    """Compare numeric upstream versions separately from their rN/RC variants."""
+    match = re.match(r"^v?(\d+(?:\.\d+)*)", (value or "").strip().lower())
+    if match is None:
+        return ()
+    parts = [int(part) for part in match.group(1).split(".")]
+    return tuple((parts + [0] * 8)[:8])
+
+
+def latest_base_release_candidates(candidates: list[Candidate]) -> list[Candidate]:
+    """Collect every kernel variant of the latest numeric upstream release.
+
+    A newer numeric release (NAP 0.6.5 vs 0.5.1) always wins. A suffix rN
+    revises that release; when the same base is available natively, prefer its
+    kernel-specific source before attempting to port the foreign rN revision.
+    """
+    versioned = [item for item in candidates if item.project_version]
+    if not versioned:
+        return candidates
+    newest = max(project_base_version_key(item.project_version) for item in versioned)
+    return [item for item in versioned if project_base_version_key(item.project_version) == newest]
+
+
 def nearest_candidate(candidates: list[Candidate], kernel_version: str) -> Candidate | None:
     target = parse_kernel_version(kernel_version)
     if target is None:
@@ -509,12 +532,14 @@ def resolve_github_component(
     if not all_candidates:
         raise ResolveError(f"no official upstream patch found for {spec['name']}")
 
-    # Discover the newest upstream project version across stable/testing/RC/rN.
-    # Within that SAME project release, prefer the variant for this kernel
-    # series. Only if no native variant exists choose the nearest upstream
-    # kernel variant and require a checked port. Never downgrade for a native
-    # patch from an older upstream project release.
-    candidates = latest_project_candidates(all_candidates)
+    # 1. Discover newest numeric project release across stable/testing/RC/rN.
+    # 2. Within that release prefer the latest native kernel-series variant.
+    # 3. Otherwise choose latest suffix/revision and nearest porting base.
+    # A 0.12.0r2 7.3 patch must not hide an existing 0.12.0 6.18 patch;
+    # but a native 0.5.1 cannot replace a newer numeric NAP 0.6.5.
+    latest_family = latest_base_release_candidates(all_candidates)
+    native_family = native_series_candidates(latest_family)
+    candidates = latest_project_candidates(native_family or latest_family)
     native = native_series_candidates(candidates)
     compatibility_reference = native_series_candidates(all_candidates)
     local_port = spec.get("local_port")
@@ -562,7 +587,10 @@ def resolve_github_component(
         upstream["kernel_version"] = ".".join(map(str, candidate.kernel_version))
     if candidate.project_version:
         upstream["project_version"] = candidate.project_version
-        upstream["latest_upstream_project_version"] = candidate.project_version
+        newest_upstream = latest_project_candidates(all_candidates)
+        latest_version = max(newest_upstream, key=latest_key).project_version
+        if latest_version:
+            upstream["latest_upstream_project_version"] = latest_version
 
     # Keep the best direct-compatible baseline visible in the lock for audit
     # purposes when a newer release is being sourced from another kernel base.

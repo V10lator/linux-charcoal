@@ -84,9 +84,13 @@ def audit_component(
     if not candidates:
         return [f"{name}: upstream exposes no candidate patches"]
 
-    # Always discover the latest upstream project version first; compare only
-    # its kernel variants, selecting the native one ahead of any port.
-    latest = resolver.latest_project_candidates(candidates)
+    # Resolve the newest numeric upstream release, prefer its matching
+    # kernel-series variant (including pre/post-release equivalents), and
+    # audit the globally highest revision separately for provenance.
+    latest_family = resolver.latest_base_release_candidates(candidates)
+    native_family = resolver.native_series_candidates(latest_family)
+    latest = resolver.latest_project_candidates(native_family or latest_family)
+    global_latest = resolver.latest_project_candidates(candidates)
     upstream = upstream_record(record)
     versioned = [candidate for candidate in latest if candidate.project_version]
     if versioned:
@@ -100,12 +104,14 @@ def audit_component(
                 f"release is {latest_version}"
             )
 
-    if versioned:
+    global_versions = [item for item in global_latest if item.project_version]
+    if global_versions:
+        global_version = max(global_versions, key=resolver.latest_key).project_version
         locked_latest = upstream.get("latest_upstream_project_version")
-        if locked_latest != latest_version:
+        if locked_latest != global_version:
             failures.append(
                 f"{name}: upstream latest version metadata {locked_latest!r} "
-                f"does not match {latest_version!r}"
+                f"does not match {global_version!r}"
             )
 
     native = resolver.native_series_candidates(latest)

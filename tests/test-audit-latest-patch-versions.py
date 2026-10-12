@@ -104,6 +104,36 @@ class LatestReleaseNativeSeriesAuditTests(unittest.TestCase):
                 MODULE.audit_component("demo", spec, record, "6.18.53", None), [],
             )
 
+    def test_native_marie_0120_can_be_selected_over_73_only_r2_revision(self) -> None:
+        native = MODULE.resolver.Candidate(
+            "patches/testing/0001-linux6.18.22-lru_marie-0.12.0.patch",
+            "a" * 40, "https://example.invalid/native.patch",
+            2, (6, 18, 22), "0.12.0",
+        )
+        foreign = MODULE.resolver.Candidate(
+            "patches/testing/0001-linux7.3-rc1-lru_marie-0.12.0r2.patch",
+            "b" * 40, "https://example.invalid/foreign.patch",
+            0, (7, 3), "0.12.0r2",
+        )
+        record = {
+            "origin": "upstream-native",
+            "selection": "latest-native-series",
+            "path": native.path,
+            "commit": native.sha,
+            "project_version": "0.12.0",
+            "latest_upstream_project_version": "0.12.0r2",
+        }
+        with mock.patch.object(
+            MODULE.resolver, "upstream_candidates", return_value=[foreign, native],
+        ):
+            self.assertEqual(
+                MODULE.audit_component(
+                    "lru_marie", {"name": "lru_marie", "repository": "firelzrd/lru_marie"},
+                    record, "6.18.53", None,
+                ),
+                [],
+            )
+
     def test_missing_latest_upstream_metadata_fails_closed(self) -> None:
         record = self.native_record()
         record.pop("latest_upstream_project_version")

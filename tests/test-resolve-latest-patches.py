@@ -461,6 +461,29 @@ class SameReleaseKernelPriorityTests(unittest.TestCase):
                 self.assertEqual(selected["selection"], "latest-native-series")
                 self.assertEqual(selected["latest_upstream_project_version"], "1.1")
 
+    def test_revision_r2_of_same_base_prefers_618_specific_upstream_patch(self) -> None:
+        native = MODULE.Candidate(
+            "patches/testing/0001-linux6.18.22-lru_marie-0.12.0.patch",
+            "a" * 40, "https://example.invalid/marie-native.patch",
+            2, (6, 18, 22), "0.12.0",
+        )
+        foreign_revision = MODULE.Candidate(
+            "patches/testing/0001-linux7.3-rc1-lru_marie-0.12.0r2.patch",
+            "b" * 40, "https://example.invalid/marie-r2.patch",
+            0, (7, 3), "0.12.0r2",
+        )
+        with mock.patch.object(
+            MODULE, "upstream_candidates", return_value=[foreign_revision, native],
+        ):
+            selected = MODULE.resolve_github_component(
+                {"name": "lru_marie", "repository": "firelzrd/lru_marie"},
+                "6.18.53", None, ROOT,
+            )
+        self.assertEqual(selected["path"], native.path)
+        self.assertEqual(selected["project_version"], "0.12.0")
+        self.assertEqual(selected["latest_upstream_project_version"], "0.12.0r2")
+        self.assertEqual(selected["selection"], "latest-native-series")
+
     def test_newer_release_without_native_uses_reviewed_port_not_old_native(self) -> None:
         old_native = MODULE.Candidate(
             "patches/stable/0001-6.18.3-nap-v0.5.1.patch",
