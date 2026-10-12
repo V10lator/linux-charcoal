@@ -1,0 +1,285 @@
+--- a/napctl
++++ b/napctl
+@@ -7,15 +7,19 @@
+ """
+ import argparse
+ import array
++import fcntl
+ import hashlib
++import math
+ import os
+ import struct
+ import sys
++import tempfile
+ import zlib
+ 
+ SYSFS = os.environ.get("NAPCTL_SYSFS", "/sys/devices/system/cpu/nap")
+ STATE_DIR = os.environ.get("NAPCTL_STATE_DIR", "/var/lib/nap")
+ CPU_DIR = os.environ.get("NAPCTL_CPU_DIR", "/sys/devices/system/cpu")   # tests only
++LOCK = os.environ.get("NAPCTL_LOCK", "/run/lock/napctl.lock")
+ HDR = struct.Struct("<8s12I")          # magic, fmt, nt, nk, nd, nhid, nout, first, tail_rep, payload_bytes, crc, input_sig, reserved
+ MAGIC = b"NAPWGT01"
+ STATE_MAGIC = b"NAPSTAT1"
+@@ -37,10 +41,17 @@
+     f = HDR.unpack_from(blob)
+     if f[0] != MAGIC:
+         die("not a nap weight blob")
++    if f[1] != 1 or f[12] != 0:
++        die("unsupported blob format")
+     if len(blob) != HDR.size + f[9]:
+         die("blob size does not match its header")
++    nw = (f[2] * f[3] + f[4]) * f[5] + f[5] + f[5] * f[6] + f[6]
++    if f[9] != 4 * nw or not nw:
++        die("weight count does not match the network shape")
+     if f[10] != kcrc(blob[HDR.size:]):
+         die("checksum mismatch")
++    if any(not math.isfinite(w) or abs(w) >= 1024 for w in array.array("f", blob[HDR.size:])):
++        die("invalid weight value")
+     return f
+ 
+ 
+@@ -102,7 +113,8 @@
+     write_attr("weights_cpu", cpu)
+     fd = os.open(f"{SYSFS}/weights", os.O_WRONLY)
+     try:
+-        os.write(fd, blob)
++        if os.write(fd, blob) != len(blob):
++            die("the kernel accepted only part of the weight blob")
+     except OSError as e:
+         die(f"the kernel rejected the weights: {os.strerror(e.errno)}")
+     finally:
+@@ -114,8 +126,9 @@
+     check_blob(first)
+     acc = array.array("f", first[HDR.size:])
+     for b in blobs[1:]:
+-        check_blob(b)
+-        if len(b) != len(first):
++        header = check_blob(b)
++        original = HDR.unpack_from(first)
++        if header[1:10] != original[1:10] or header[11:13] != original[11:13]:
+             die("blobs of different shapes")
+         w = array.array("f", b[HDR.size:])
+         for i in range(len(acc)):
+@@ -129,31 +142,59 @@
+     return HDR.pack(*f) + payload
+ 
+ 
+-def write_state(path, records):
++def write_state(path, records, previous=None):
+     """records: list of (cpu, blob)"""
+-    tmp = path + ".tmp"
+-    with open(tmp, "wb") as fh:
+-        fh.write(STATE_HDR.pack(STATE_MAGIC, len(records), machine_signature()))
+-        for cpu, blob in records:
+-            fh.write(struct.pack("<II", cpu, len(blob)))
+-            fh.write(blob)
+-        fh.flush()
+-        os.fsync(fh.fileno())
+-    os.replace(tmp, path)
++    directory = os.path.dirname(os.path.abspath(path))
++    fd, tmp = tempfile.mkstemp(prefix=".nap-state-", dir=directory)
++    try:
++        with os.fdopen(fd, "wb") as fh:
++            fh.write(STATE_HDR.pack(STATE_MAGIC, len(records), machine_signature()))
++            for cpu, blob in records:
++                check_blob(blob)
++                fh.write(struct.pack("<II", cpu, len(blob)))
++                fh.write(blob)
++            fh.flush()
++            os.fsync(fh.fileno())
++        # Keep both old files intact until the new snapshot is fully written.
++        if previous is not None and os.path.exists(path):
++            os.replace(path, previous)
++        os.replace(tmp, path)
++        directory_fd = os.open(directory, os.O_RDONLY | os.O_DIRECTORY)
++        try:
++            os.fsync(directory_fd)
++        finally:
++            os.close(directory_fd)
++    finally:
++        if os.path.exists(tmp):
++            os.unlink(tmp)
+ 
+ 
+ def read_state(path):
+     with open(path, "rb") as fh:
+         data = fh.read()
++    if len(data) < STATE_HDR.size:
++        die(f"{path}: truncated state header")
+     magic, n, sig = STATE_HDR.unpack_from(data)
+     if magic != STATE_MAGIC:
+         die(f"{path}: not a nap state file")
++    if not n or n > (len(data) - STATE_HDR.size) // (8 + HDR.size):
++        die(f"{path}: invalid record count")
+     pos, recs = STATE_HDR.size, []
++    seen = set()
+     for _ in range(n):
++        if pos + 8 > len(data):
++            die(f"{path}: truncated CPU record")
+         cpu, ln = struct.unpack_from("<II", data, pos)
+         pos += 8
+-        recs.append((cpu, data[pos:pos + ln]))
++        if cpu in seen or ln < HDR.size or pos + ln > len(data):
++            die(f"{path}: invalid CPU record")
++        seen.add(cpu)
++        blob = data[pos:pos + ln]
++        check_blob(blob)
++        recs.append((cpu, blob))
+         pos += ln
++    if pos != len(data):
++        die(f"{path}: unexpected trailing data")
+     return sig, recs
+ 
+ 
+@@ -182,7 +223,8 @@
+     with open(a.file, "rb") as fh:
+         head = fh.read(8)
+     if head == STATE_MAGIC:
+-        apply_state(a.file, a.force, a.cpu)
++        if not apply_state(a.file, a.force, a.cpu):
++            return
+     else:
+         with open(a.file, "rb") as fh:
+             load_blob(fh.read(), "all" if a.cpu is None else a.cpu)
+@@ -218,7 +260,7 @@
+ 
+ 
+ def cmd_save(a):
+-    os.makedirs(STATE_DIR, exist_ok=True)
++    os.makedirs(STATE_DIR, mode=0o700, exist_ok=True)
+     cur, prev = f"{STATE_DIR}/state", f"{STATE_DIR}/state.prev"
+     recs = []
+     for c in online_cpus():
+@@ -228,9 +270,7 @@
+     if not recs:
+         print("napctl: nothing learned yet, nothing saved")
+         return
+-    if os.path.exists(cur):
+-        os.replace(cur, prev)
+-    write_state(cur, recs)
++    write_state(cur, recs, previous=prev)
+     print(f"saved {len(recs)} CPUs to {cur}")
+ 
+ 
+@@ -272,8 +312,20 @@
+     s = sub.add_parser("restore", help="load the saved weights"); s.add_argument("--force", action="store_true"); s.set_defaults(f=cmd_restore)
+     s = sub.add_parser("reset", help="back to the built-in default"); s.set_defaults(f=cmd_reset)
+     a = p.parse_args()
+-    a.f(a)
++    if a.cmd in {"export", "import", "save", "restore", "reset"}:
++        # weights_cpu is shared by all processes, so selecting and reading or
++        # writing a CPU must be one operation across the timer and manual CLI.
++        os.makedirs(os.path.dirname(os.path.abspath(LOCK)), exist_ok=True)
++        fd = os.open(LOCK, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
++        with os.fdopen(fd, "r+") as lock:
++            fcntl.flock(lock, fcntl.LOCK_EX)
++            a.f(a)
++    else:
++        a.f(a)
+ 
+ 
+ if __name__ == "__main__":
+-    main()
++    try:
++        main()
++    except (OSError, struct.error, ValueError) as e:
++        die(str(e))
+--- a/README
++++ b/README
+@@ -7,9 +7,9 @@
+   napctl save / restore     keep / load /var/lib/nap/state (the previous state stays as state.prev)
+   napctl reset              back to the built-in default model
+ 
+-Install:
+-  install -m 755 napctl /usr/local/sbin/napctl
+-  install -m 644 nap-state.service nap-state-save.service nap-state-save.timer /etc/systemd/system/
++Manual install (the kernel packages already perform these steps):
++  install -D -m 755 napctl /usr/bin/napctl
++  install -D -m 644 -t /usr/lib/systemd/system/ nap-state.service nap-state-save.service nap-state-save.timer
+   systemctl enable --now nap-state.service nap-state-save.timer
+ 
+ nap-state.service restores the weights when the system comes up and saves them when it
+@@ -30,3 +30,37 @@
+   Rebuild after changing the network: python3 napviz/build.py <kernel>/drivers/cpuidle/governors/nap
+   Check the viewer's forward pass against the kernel's self-test vectors:
+   node napviz/test_core.js <kernel>/drivers/cpuidle/governors/nap
++
++
++Kernel package integration
++==========================
++The kernel packages install napctl in /usr/bin and the units in
++/usr/lib/systemd/system. Installation enables nap-state.service and
++nap-state-save.timer. They restore at boot, save at shutdown, and save every
++30 minutes. Units skip kernels without /sys/devices/system/cpu/nap/weights;
++enabling them before the first reboot is expected and does not change the
++governor, its learning settings, sysctl, LRU Marie, zswap, or swapfiles.
++
++State lives in /var/lib/nap (root-only, persistent on SteamOS). Compatible
++records restore per CPU; damaged, incompatible or foreign-machine state is
++ignored and the previous snapshot is tried. Manual commands and timer saves
++share a lock so they cannot race on the kernel's weights_cpu selector. A new
++snapshot is fully written before rotating the previous one. Tool upgrades
++start existing units without restarting and reloading an older snapshot.
++
++Check after booting the new kernel:
++  cat /sys/devices/system/cpu/nap/version
++  systemctl status nap-state.service nap-state-save.timer
++  systemctl list-timers nap-state-save.timer
++  sudo napctl save
++  sudo napctl info /var/lib/nap/state
++
++Open /usr/share/nap/napviz.html in a browser. The production build regenerates
++it from the exact kernel model; it works offline and runs no background server.
++To compare learned models, export to an ordinary file and drop it on the page:
++  sudo napctl export /tmp/nap-state
++  sudo chown "$(id -un):$(id -gn)" /tmp/nap-state
++
++This preserves learning and provides diagnostics; it does not establish an FPS
++gain. No additional training is run outside the existing governor.
++Source commit and original file hashes are recorded in UPSTREAM.json.
+--- a/nap-state.service
++++ b/nap-state.service
+@@ -2,12 +2,16 @@
+ Description=Restore and keep the learned weights of the nap cpuidle governor
+ ConditionPathExists=/sys/devices/system/cpu/nap/weights
+ After=sysinit.target
++RequiresMountsFor=/var/lib/nap
+ 
+ [Service]
+ Type=oneshot
+ RemainAfterExit=yes
+-ExecStart=/usr/local/sbin/napctl restore
+-ExecStop=/usr/local/sbin/napctl save
++StateDirectory=nap
++StateDirectoryMode=0700
++UMask=0077
++ExecStart=/usr/bin/napctl restore
++ExecStop=/usr/bin/napctl save
+ 
+ [Install]
+ WantedBy=multi-user.target
+--- a/nap-state-save.service
++++ b/nap-state-save.service
+@@ -1,7 +1,12 @@
+ [Unit]
+ Description=Save the learned weights of the nap cpuidle governor
+ ConditionPathExists=/sys/devices/system/cpu/nap/weights
++After=nap-state.service
++RequiresMountsFor=/var/lib/nap
+ 
+ [Service]
+ Type=oneshot
+-ExecStart=/usr/local/sbin/napctl save
++StateDirectory=nap
++StateDirectoryMode=0700
++UMask=0077
++ExecStart=/usr/bin/napctl save
+--- a/nap-state-save.timer
++++ b/nap-state-save.timer
+@@ -1,5 +1,6 @@
+ [Unit]
+ Description=Save the learned nap weights every 30 minutes
++ConditionPathExists=/sys/devices/system/cpu/nap/weights
+ 
+ [Timer]
+ OnBootSec=30min

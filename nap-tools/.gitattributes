@@ -1,0 +1,2 @@
+# Unified diff context uses a single space to represent an empty source line.
+integration.patch -whitespace

@@ -134,7 +134,7 @@ sha256sums=(
   '46956917ad33d967e998dc4c81192cedd2cb1f45b2397f6746f650d090e478a4'
   '1ea2406b537d45d3b0b5cb178c15c23cb3270f3d76a7509b8b0fbc77e95bd517'
   '8e4738f3aaa22832b3e45dca7b226460702e88bcdcd026ea5d5062e5aa0444de'
-  '17bdb35639eb26c6d5cf2ab229b41ecba6225634a4dfe7a809e187eccb8a0f01'
+  '9452bc78ee4f7c4136225d476590190e745b1350f205455383ca83a8003ce438'
   'b59543c9aac43412e8b90b050380f482214ab33c4703d621ff0ea91ea39c6761'
   '07068c432fd7e80689f44a28346f1909de9ee77aa3e72dfaa6a4ea89d9921afd'
   '1f7df01db0bcd7c18230878003466ac3f651f8f21e74323b7e8178871d824f74'
@@ -197,6 +197,11 @@ _validate_kernel_config() {
 }
 
 prepare() {
+  # Always resolve current upstream tools, including local makepkg builds.
+  python3 "$startdir/nap-tools/refresh-tools.py" \
+    --output "$srcdir/nap-tools-latest" --record "$startdir/logs/nap-tools-upstream.json"
+  NAP_TOOLS_TEST_SOURCE_DIR="$srcdir/nap-tools-latest" \
+    python3 "$startdir/tests/test_nap_tools.py"
   cd $_srcname
 
   echo "Setting version..."
@@ -350,7 +355,8 @@ _package() {
     "$pkgdir/usr/lib/systemd/system/gaming-zswap.service"
 
   # Preserve NAP learning and build the offline viewer from this kernel's model.
-  python3 ../nap-tools/install-tools.py \
+  python3 "$srcdir/nap-tools-latest/install-tools.py" \
+    --source-dir "$srcdir/nap-tools-latest" --require-resolved \
     --destdir "$pkgdir" --kernel-dir "$PWD/drivers/cpuidle/governors/nap"
 
   # Charcoal: Install bundles DKMS modules

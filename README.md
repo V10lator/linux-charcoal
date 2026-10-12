@@ -231,6 +231,9 @@ SSP and Qualcomm ath11k patches are not fetched or applied.
 
 ## NAP tools
 
+Every build fetches the latest tools from NAP main and records the exact
+commit and file hashes used in the package.
+
 Installation automatically preserves NAP learning across boots and saves
 weights every 30 minutes. It includes `napctl` and the offline viewer
 `/usr/share/nap/napviz.html`, generated from the compiled kernel model. See

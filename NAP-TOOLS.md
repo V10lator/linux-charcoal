@@ -1,8 +1,18 @@
 # Ferramentas NAP e persistência do aprendizado
 
-Os pacotes instalam as ferramentas de `firelzrd/nap/tools`, fixadas no commit
-`57eccac27547244459582bde893c65a5fe2f1b04` (NAP 0.6.1). A procedência e os
-SHA-256 originais constam em `nap-tools/UPSTREAM.json`.
+Cada build consulta o HEAD atual de `firelzrd/nap`, branch `main`, e busca
+as ferramentas de `tools/` nesse commit. A busca ocorre também nos builds locais
+normais, mesmo se uma execução anterior deixou arquivos no diretório de build.
+Commit, SHA-256 originais e hashes dos arquivos adaptados ficam registrados em
+`logs/nap-tools-upstream.json` e no `UPSTREAM.json` instalado com o pacote.
+
+A integração de serviços e as correções de persistência são reaplicadas por
+`git apply --check`, sem fuzz. Uma falha de download, uma mudança incompatível
+ou arquivos modificados depois da busca interrompem o build, sem publicar uma
+cópia antiga como alternativa. Novos arquivos auxiliares upstream também são
+incluídos em `/usr/lib/nap/tools`, preservando imports relativos do `napctl`.
+No PC, a versão do pacote de tuning inclui o timestamp e o commit das ferramentas,
+para que uma atualização upstream seja reconhecida pelo gerenciador de pacotes.
 
 O NAP já aprende dentro do governador de CPU idle. Esta integração preserva os
 pesos aprendidos entre reinicializações e acrescenta comandos de diagnóstico e
@@ -27,7 +37,8 @@ ignoradas e passam a funcionar depois do boot com um kernel compatível. O build
 normal exige a interface de pesos do NAP 0.6 ou posterior; não publica um pacote
 com uma interface antiga e ferramentas incompatíveis. O visualizador é gerado
 com os headers e pesos do NAP efetivamente aplicado ao kernel. Apenas builds
-isolados do pacote de tuning sem árvore de kernel usam o HTML upstream fixado.
+isolados do pacote de tuning sem árvore de kernel usam o HTML upstream.
+Fixtures offline são permitidas somente em testes sem árvore de kernel.
 
 Em SteamOS, o estado fica no `/var/lib/nap` persistente, com diretório `0700` e
 arquivos `0600`. `state.prev` conserva o snapshot anterior. O novo snapshot é
@@ -75,8 +86,21 @@ sudo systemctl disable --now nap-state-save.timer nap-state.service
 
 ## Atualizar as fontes do pacote Arch
 
-O código auditável está em `nap-tools/`. `nap-tools.tar.gz` é um snapshot local
-reproduzível, usado pelo makepkg para preservar a estrutura de diretórios e
-validado por SHA-256. Após modificar as ferramentas, regenere-o com
+`nap-tools/` mantém o integrador, a adaptação revisada `integration.patch` e
+as fixtures para testes sem rede. `nap-tools.tar.gz` é um snapshot reproduzível
+desse bootstrap, validado por SHA-256. Ele não é usado como versão das ferramentas
+nos pacotes de produção: `prepare()` busca o upstream atual em
+`src/nap-tools-latest`, valida os arquivos e empacota esse resultado.
+
+Após alterar o integrador ou suas fixtures, regenere o bootstrap com
 `python3 nap-tools/make-archive.py` e atualize sua entrada em `PKGBUILD`.
-Os testes conferem todo o conteúdo do arquivo contra as fontes auditáveis.
+Para verificar uma busca separadamente:
+
+```bash
+python3 nap-tools/refresh-tools.py --output .resolved-nap-tools --record logs/nap-tools-upstream.json
+NAP_TOOLS_TEST_SOURCE_DIR="$PWD/.resolved-nap-tools" python3 tests/test_nap_tools.py
+```
+
+A instalação do kernel continua habilitando os serviços automaticamente.
+A busca de versões ocorre no build; o Deck recebe as ferramentas dentro do
+pacote e não precisa baixar código no boot.
