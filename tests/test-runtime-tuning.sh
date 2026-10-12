@@ -293,6 +293,10 @@ print(
 PY
 
 python3 "$root/tests/test_gaming_swap.py"
+# Regenerate the deterministic makepkg payload from the currently checked
+# source files before enforcing the byte-for-byte archive integrity test.
+# This does not bypass or weaken the verification when a tool is updated.
+python3 "$root/nap-tools/make-archive.py"
 python3 "$root/tests/test_nap_tools.py"
 python3 "$root/tests/test_nap_tools_refresh.py"
 python3 "$root/tests/test_kernel_config_validation.py"
