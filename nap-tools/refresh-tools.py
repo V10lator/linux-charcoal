@@ -40,6 +40,65 @@ NAPCTL_LEGACY_IMPORT = (
 )
 
 
+
+def normalize_napctl_hunk_offsets(text: str, napctl: str) -> str:
+    """Rebase ONLY the reviewed napctl hunk headers onto exact source context.
+
+    The upstream 0.6.5 napctl added lines before several unchanged hunks.
+    Preserving their 0.6.1 line numbers can produce overlapping or backward
+    patch ranges. Reject nonunique, reordered, missing or altered source
+    contexts instead of using fuzzy matching or suppressing tests.
+    """
+    first = "--- a/napctl\n+++ b/napctl\n"
+    following = "--- a/README\n+++ b/README\n"
+    if text.count(first) != 1 or text.count(following) != 1:
+        raise ValueError("reviewed NAP integration file sections drifted")
+    start = text.index(first)
+    stop = text.index(following, start)
+    chunks = re.split(r"(?=^@@ -\d+,\d+ \+\d+,\d+ @@)", text[start:stop], flags=re.M)
+    if len(chunks) != 10:  # initial file header followed by 9 reviewed hunks
+        raise ValueError("reviewed NAP napctl hunk count changed")
+    cumulative = 0
+    previous_end = 0
+    output = [chunks[0]]
+    for chunk in chunks[1:]:
+        match = re.match(
+            r"@@ -(\d+),(\d+) \+(\d+),(\d+) @@([^\n]*)\n", chunk
+        )
+        if match is None:
+            raise ValueError("malformed NAP patch hunk")
+        old_count, new_count = int(match[2]), int(match[4])
+        old_lines = []
+        added = removed = kept = 0
+        for line in chunk[match.end():].splitlines(keepends=True):
+            if line.startswith(" "):
+                old_lines.append(line[1:])
+                kept += 1
+            elif line.startswith("-"):
+                old_lines.append(line[1:])
+                removed += 1
+            elif line.startswith("+"):
+                added += 1
+            elif line.startswith("\\"):
+                continue
+            else:
+                raise ValueError("unexpected NAP patch hunk syntax")
+        if kept + removed != old_count or kept + added != new_count:
+            raise ValueError("NAP integration patch hunk counts drifted")
+        original = "".join(old_lines)
+        if not original or napctl.count(original) != 1:
+            raise ValueError("NAP upstream hunk context is missing or ambiguous")
+        actual_start = napctl.count("\n", 0, napctl.index(original)) + 1
+        if actual_start < previous_end:
+            raise ValueError("reviewed NAP patch hunks overlap or changed order")
+        output.append(
+            f"@@ -{actual_start},{old_count} +{actual_start + cumulative},{new_count} @@"
+            f"{match[5]}\n" + chunk[match.end():]
+        )
+        previous_end = actual_start + old_count
+        cumulative += new_count - old_count
+    return text[:start] + "".join(output) + text[stop:]
+
 def reviewed_integration_patch(patch: bytes, napctl: str) -> tuple[bytes, list[str]]:
     """Port exactly the two reviewed NAP 0.6.5 CLI hunks, failing on drift."""
     if (
@@ -96,9 +155,11 @@ def reviewed_integration_patch(patch: bytes, napctl: str) -> tuple[bytes, list[s
     new_import = new_import.replace(original, updated, 1)
     text = text[:start] + new_import + text[end:]
 
+    text = normalize_napctl_hunk_offsets(text, napctl)
     return text.encode("utf-8"), [
         "Reviewed upstream NAP 0.6.5 napctl CLI context port, retaining all "
-        "unmodified upstream features and original integration hunks."
+        "unmodified upstream features and original integration hunks; "
+        "strictly rebase hunk offsets to the exact upstream napctl source."
     ]
 
 

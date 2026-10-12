@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -95,6 +96,17 @@ class RefreshTests(unittest.TestCase):
             hashlib.sha256((self.output / "integration.patch").read_bytes()).hexdigest(),
             metadata["integration_sha256"],
         )
+        patched_source = (self.output / "integration.patch").read_text()
+        napctl_diff = patched_source.split("--- a/napctl\n+++ b/napctl\n", 1)[1]
+        napctl_diff = napctl_diff.split("--- a/README\n+++ b/README\n", 1)[0]
+        headers = re.findall(
+            r"^@@ -(\d+),(\d+) \+(\d+),(\d+) @@", napctl_diff, flags=re.M
+        )
+        self.assertEqual(len(headers), 9)
+        previous_end = 0
+        for old_start, old_count, _new_start, _new_count in headers:
+            self.assertGreaterEqual(int(old_start), previous_end)
+            previous_end = int(old_start) + int(old_count)
         adapted = (self.output / "napctl").read_text()
         self.assertIn("the kernel accepted only part of the weight blob", adapted)
         self.assertIn("blob from a nap with another network shape", adapted)
@@ -146,7 +158,7 @@ class RefreshTests(unittest.TestCase):
         command = self.repository / "tools/napctl"
         command.write_text("#!/usr/bin/env python3\nprint('incompatible ABI')\n")
         self.commit("incompatible new command")
-        with self.assertRaises(subprocess.CalledProcessError):
+        with self.assertRaisesRegex(ValueError, "unreviewed NAP napctl upstream"):
             self.resolve()
         self.assertEqual(json.loads((self.output / "UPSTREAM.json").read_text())["commit"], first["commit"])
 
