@@ -508,9 +508,15 @@ def resolve_github_component(
     if not all_candidates:
         raise ResolveError(f"no official upstream patch found for {spec['name']}")
 
-    # A native patch for the target kernel is useful only within the newest
-    # project release. Never let an obsolete 6.16 patch hide a newer release.
-    candidates = latest_project_candidates(all_candidates)
+    # Per-component exception: prefer an official kernel-native release where
+    # explicitly requested (LRU Marie on SteamOS). NAP and all other sources
+    # still prioritize the globally newest release before kernel proximity.
+    prioritized_native = (
+        native_series_candidates(all_candidates)
+        if spec.get("prefer_native_kernel")
+        else []
+    )
+    candidates = latest_project_candidates(prioritized_native or all_candidates)
     native = native_series_candidates(candidates)
     compatibility_reference = native_series_candidates(all_candidates)
     local_port = spec.get("local_port")
