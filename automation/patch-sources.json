@@ -54,7 +54,7 @@
       "ref": "main",
       "target": "latest-bore.patch",
       "source_regex": "(?:6\\.\\d+\\.\\d+-bore-[0-9][^\\s]*|latest-bore\\.patch)",
-      "filename_regex": "(?i)^patches/(?:testing/|stable/(?:linux-\\d+\\.\\d+-bore/)?)0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-bore-[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+|r[0-9]+)?patch$",
+      "filename_regex": "(?i)^patches/(?:testing/|stable/(?:linux-\\d+\\.\\d+-bore/)?)0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-bore-[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+|r[0-9]+)?\\.patch$",
       "kernel_version_regex": "(?i)linux(?P<kernel>\\d+\\.\\d+(?:\\.\\d+)?)",
       "project_version_regex": "(?i)bore-(?P<version>[0-9]+(?:\\.[0-9]+)*(?:(?:-rc|r)[0-9]+)?)\\.patch$",
       "always_latest": true,
