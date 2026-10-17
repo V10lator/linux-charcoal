@@ -470,6 +470,35 @@ class SameReleaseKernelPriorityTests(unittest.TestCase):
                 self.assertEqual(selected["selection"], "latest-native-series")
                 self.assertEqual(selected["latest_upstream_project_version"], "1.1")
 
+    def test_marie_100_rc1_native_patch_over_old_stable(self) -> None:
+        import json
+        import re
+        manifest = json.loads((ROOT / "automation/patch-sources.json").read_text())
+        spec = next(x for x in manifest["components"] if x["name"] == "lru_marie")
+        self.assertLess(MODULE.project_version_key("0.12.0"), MODULE.project_version_key("1.0.0-rc1"))
+        for kernel, native_file, numeric in (
+            ("6.18.53", "6.18.22", (6, 18, 22)),
+            ("7.2.7", "7.2-rc1", (7, 2)),
+        ):
+            with self.subTest(kernel=kernel):
+                native_path = f"patches/testing/0001-linux{native_file}-lru_marie-1.0.0-rc1.patch"
+                self.assertRegex(native_path, re.compile(spec["filename_regex"]))
+                self.assertEqual(MODULE.candidate_project_version(spec, native_path), "1.0.0-rc1")
+                native = MODULE.Candidate(native_path, "a" * 40, "https://example.invalid/native",
+                                          2, numeric, "1.0.0-rc1")
+                foreign = MODULE.Candidate(
+                    "patches/testing/0001-linux7.3-rc7-lru_marie-1.0.0-rc1.patch",
+                    "b" * 40, "https://example.invalid/foreign", 0, (7, 3), "1.0.0-rc1")
+                older = MODULE.Candidate(
+                    f"patches/stable/0001-linux{native_file}-lru_marie-0.12.0.patch",
+                    "c" * 40, "https://example.invalid/older", 2, numeric, "0.12.0")
+                with mock.patch.object(MODULE, "upstream_candidates", return_value=[older, foreign, native]):
+                    record = MODULE.resolve_github_component(spec, kernel, None, ROOT)
+                self.assertEqual(record["path"], native_path)
+                self.assertEqual(record["project_version"], "1.0.0-rc1")
+                self.assertEqual(record["latest_upstream_project_version"], "1.0.0-rc1")
+                self.assertEqual(record["selection"], "latest-native-series")
+
     def test_revision_r2_of_same_base_prefers_618_specific_upstream_patch(self) -> None:
         native = MODULE.Candidate(
             "patches/testing/0001-linux6.18.22-lru_marie-0.12.0.patch",

@@ -15,9 +15,9 @@
       "ref": "main",
       "target": "latest-lru_marie.patch",
       "source_regex": "6\\.\\d+(?:\\.\\d+)?-lru_marie-[^\\s]+\\.patch",
-      "filename_regex": "(?i)^patches/(?:stable|testing)/0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-lru_marie-[0-9]+(?:\\.[0-9]+)*(?:r[0-9]+)?\\.patch$",
+      "filename_regex": "(?i)^patches/(?:stable|testing)/0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-lru_marie-[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+|r[0-9]+)?\\.patch$",
       "kernel_version_regex": "(?i)linux(?P<kernel>\\d+\\.\\d+(?:\\.\\d+)?)",
-      "project_version_regex": "(?i)lru_marie-(?P<version>[0-9]+(?:\\.[0-9]+)*(?:r[0-9]+)?)\\.patch$"
+      "project_version_regex": "(?i)lru_marie-(?P<version>[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+|r[0-9]+)?)\\.patch$"
     },
     {
       "name": "zram_ir",
@@ -26,7 +26,7 @@
       "ref": "main",
       "target": "latest-zram-ir.patch",
       "source_regex": "0001-linux[^\\s]*-zram-ir-[^\\s]+\\.patch",
-      "filename_regex": "(?i)^patches/(?:stable/|testing/)?0001-linux\\d+\\.\\d+(?:\\.\\d+)?(?:\\.y)?-zram-ir-[0-9.]+\\.patch$",
+      "filename_regex": "(?i)^patches/(?:stable/|testing/)?0001-linux\\d+\\.\\d+(?:\\.\\d+)?(?:\\.y)?-zram-ir-[0-9]+(?:\\.[0-9]+)*(?:(?:-rc|r)[0-9]+)?\\.patch$",
       "kernel_version_regex": "(?i)linux(?P<kernel>\\d+\\.\\d+(?:\\.\\d+)?)",
       "project_version_regex": "(?i)zram-ir-(?P<version>[0-9]+(?:\\.[0-9]+)*(?:(?:-rc|r)[0-9]+)?)\\.patch$",
       "port_for_kernel": "6.18",
@@ -42,9 +42,9 @@
       "ref": "main",
       "target": "latest-adios.patch",
       "source_regex": "6\\.\\d+(?:\\.\\d+)?-ADIOS-[^\\s]+\\.patch",
-      "filename_regex": "(?i)^patches/(?:stable|testing)/0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-ADIOS-[0-9]+(?:\\.[0-9]+)*(?:r[0-9]+)?\\.patch$",
+      "filename_regex": "(?i)^patches/(?:stable|testing)/0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-ADIOS-[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+|r[0-9]+)?\\.patch$",
       "kernel_version_regex": "(?i)linux(?P<kernel>\\d+\\.\\d+(?:\\.\\d+)?)",
-      "project_version_regex": "(?i)ADIOS-(?P<version>[0-9]+(?:\\.[0-9]+)*(?:r[0-9]+)?)\\.patch$",
+      "project_version_regex": "(?i)ADIOS-(?P<version>[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+|r[0-9]+)?)\\.patch$",
       "exclude_regex": "(?i)default"
     },
     {
@@ -54,7 +54,7 @@
       "ref": "main",
       "target": "latest-bore.patch",
       "source_regex": "(?:6\\.\\d+\\.\\d+-bore-[0-9][^\\s]*|latest-bore\\.patch)",
-      "filename_regex": "(?i)^patches/(?:testing/|stable/(?:linux-\\d+\\.\\d+-bore/)?)0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-bore-[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+)?\\.patch$",
+      "filename_regex": "(?i)^patches/(?:testing/|stable/(?:linux-\\d+\\.\\d+-bore/)?)0001-linux\\d+\\.\\d+(?:\\.[0-9]+)?(?:-rc[0-9]+)?-bore-[0-9]+(?:\\.[0-9]+)*(?:-rc[0-9]+|r[0-9]+)?patch$",
       "kernel_version_regex": "(?i)linux(?P<kernel>\\d+\\.\\d+(?:\\.\\d+)?)",
       "project_version_regex": "(?i)bore-(?P<version>[0-9]+(?:\\.[0-9]+)*(?:(?:-rc|r)[0-9]+)?)\\.patch$",
       "always_latest": true,
